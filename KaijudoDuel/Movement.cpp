@@ -14,8 +14,15 @@ Movement::~Movement()
 
 void Movement::update(Orientation& newcurrent, int deltaTime)
 {
-	glm::vec3 unitpos = (mTarget.pos - mCurrent.pos) / (float)mTimeLeft;
-	mCurrent.pos += unitpos*(float)deltaTime;
+	if (deltaTime > mTimeLeft)
+	{
+		mCurrent.pos = mTarget.pos;
+	}
+	else
+	{
+		glm::vec3 unitpos = (mTarget.pos - mCurrent.pos) / (float)mTimeLeft;
+		mCurrent.pos += unitpos*(float)deltaTime;
+	}
 
 	mCurrent.dir = mTarget.dir;
 	mCurrent.up = mTarget.up;

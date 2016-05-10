@@ -210,3 +210,10 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+
+*.db
+*.VC.db
+*.opendb
+/KaijudoDuel/Decks/Earthpower decks
+/KaijudoDuel/Decks
+/KaijudoDuel/Resources

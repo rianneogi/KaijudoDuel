@@ -13,37 +13,24 @@ extern int SCREEN_HEIGHT;
 class DuelInterface //: public GameWindow
 {
 public:
-	Duel duel;
-
-	//AIInterface ai;
+	Duel mDuel;
 
 	int dueltype;
 	int duelstate;
 
 	int myPlayer;
 
-	int MouseX;
-	int MouseY;
 	int selectedcard;
 	int selectedcardzone;
 	int iscardevo;
+	int mHoverCardId;
+	int mSelectedCardId;
 
-	//Button endturnbutton;
+	Camera mCamera;
+	Model mTableModel;
 
-	/*Button cancelbutton;
-	Button quitbutton;
-	sf::Text infotext;
-
-	Button cardCountBox;
-
-	vector<Arrow> arrows;*/
 	int mousearrow;
 
-	//sf::Sprite hovercard;
-
-	//ZoneList cardsearch;
-
-	//List decklist;
 	int deckschosen;
 
 	DuelInterface();
@@ -52,9 +39,9 @@ public:
 	int handleMessage(Message& msg);
 	void dispatchMessage(Message& msg);
 	void parseMessages(unsigned int deltatime);
-	void update(int deltaTime, Camera& camera, const Vector2i& mousePos);
-	void render(Camera& camera, const Vector2i& mousePos);
-    //int handleEvent(sf::Event event, int callback);
+	void update(int deltaTime);
+	void render();
+    int handleEvent(const SDL_Event& event, int callback);
 	//int receivePacket(sf::Packet& packet, int callback);
 
 	void setDecklist();

@@ -11,12 +11,7 @@ const float ZOOM_MAX = 20.f;
 SDL_Window* gWindow = NULL;
 SDL_GLContext gContext;
 
-Model gTableModel;
-Camera gCamera;
 DuelInterface* gDuelInterface;
-
-float gZoomDistance = 16.f;
-const float gCameraSpeed = 0.0001f;
 
 bool initSDL()
 {
@@ -149,20 +144,8 @@ bool initGame()
 		return false;
 	}
 
-	gTableModel.setMesh(&gMeshs[MESH_TABLE]);
-	gTableModel.setTexture(&gTableTexture);
-	gTableModel.setPosition(glm::vec3(0, 0, 0));
-	gTableModel.mModelMatrix = glm::scale(gTableModel.mModelMatrix, glm::vec3(3, 3, 3));
-
-	gCamera.setPosition(glm::vec3(0, 0, 0));
-	gCamera.setHorizontalAngle(0);
-	gCamera.setVerticalAngle(-M_PI/2);
-	gCamera.update();
-	gCamera.mPosition = -gCamera.mDirection * gZoomDistance;
-	gCamera.update();
-
 	gDuelInterface = new DuelInterface();
-	ActiveDuel = &(gDuelInterface->duel);
+	ActiveDuel = &(gDuelInterface->mDuel);
 	ActiveDuel->setDecks("Decks\\My Decks\\LFN Starter Deck.txt", "Decks\\My Decks\\FL Burning Light Base Set.txt");
 	ActiveDuel->startDuel();
 	ActiveDuel->dispatchAllMessages();
@@ -177,81 +160,70 @@ void cleanup()
 
 void handleEvent(const SDL_Event& e, unsigned int deltaTime)
 {
-	glm::vec3 dir = gCamera.mDirection;
+	gDuelInterface->handleEvent(e, 0);
+	//glm::vec3 dir = gCamera.mDirection;
 
-	// Movement
-	if (e.type == SDL_KEYDOWN)
-	{
-		if (e.key.keysym.sym == SDLK_w)
-		{
-			//gCamera.direction = glm::rotate(gCamera.direction, gCameraSpeed*deltaTime, glm::vec3(0, 0, 1));
-			gCamera.setVerticalAngle(gCamera.verticalAngle - gCameraSpeed*deltaTime);
-			gCamera.update();
-			gCamera.mPosition = -gCamera.mDirection * gZoomDistance;
-			gCamera.update();
-			//mCamera.position += dir * (deltaTime * gSpeed);
-		}
+	//// Movement
+	//if (e.type == SDL_KEYDOWN)
+	//{
+	//	if (e.key.keysym.sym == SDLK_w)
+	//	{
+	//		//gCamera.direction = glm::rotate(gCamera.direction, gCameraSpeed*deltaTime, glm::vec3(0, 0, 1));
+	//		gCamera.setVerticalAngle(gCamera.verticalAngle - gCameraSpeed*deltaTime);
+	//		gCamera.update();
+	//		gCamera.mPosition = -gCamera.mDirection * gZoomDistance;
+	//		gCamera.update();
+	//		//mCamera.position += dir * (deltaTime * gSpeed);
+	//	}
 
-		if (e.key.keysym.sym == SDLK_s)
-		{
-			gCamera.setVerticalAngle(gCamera.verticalAngle + gCameraSpeed*deltaTime);
-			gCamera.update();
-			gCamera.mPosition = -gCamera.mDirection * gZoomDistance;
-			gCamera.update();
-		}
+	//	if (e.key.keysym.sym == SDLK_s)
+	//	{
+	//		gCamera.setVerticalAngle(gCamera.verticalAngle + gCameraSpeed*deltaTime);
+	//		gCamera.update();
+	//		gCamera.mPosition = -gCamera.mDirection * gZoomDistance;
+	//		gCamera.update();
+	//	}
 
-		if (e.key.keysym.sym == SDLK_a)
-		{
-			gCamera.setHorizontalAngle(gCamera.horizontalAngle - gCameraSpeed*deltaTime);
-			gCamera.update();
-			gCamera.mPosition = -gCamera.mDirection * gZoomDistance;
-			gCamera.update();
-		}
+	//	if (e.key.keysym.sym == SDLK_a)
+	//	{
+	//		gCamera.setHorizontalAngle(gCamera.horizontalAngle - gCameraSpeed*deltaTime);
+	//		gCamera.update();
+	//		gCamera.mPosition = -gCamera.mDirection * gZoomDistance;
+	//		gCamera.update();
+	//	}
 
-		if (e.key.keysym.sym == SDLK_d)
-		{
-			gCamera.setHorizontalAngle(gCamera.horizontalAngle + gCameraSpeed*deltaTime);
-			gCamera.update();
-			gCamera.mPosition = -gCamera.mDirection * gZoomDistance;
-			gCamera.update();
-		}
-	}
-	else if (e.type == SDL_MOUSEWHEEL)
-	{
-		gZoomDistance += e.wheel.y;
-		if (gZoomDistance < ZOOM_MIN)
-		{
-			gZoomDistance = ZOOM_MIN;
-		}
-		if (gZoomDistance > ZOOM_MAX)
-		{
-			gZoomDistance = ZOOM_MAX;
-		}
-		gCamera.mPosition = -gCamera.mDirection * gZoomDistance;
-		gCamera.update();
-	}
+	//	if (e.key.keysym.sym == SDLK_d)
+	//	{
+	//		gCamera.setHorizontalAngle(gCamera.horizontalAngle + gCameraSpeed*deltaTime);
+	//		gCamera.update();
+	//		gCamera.mPosition = -gCamera.mDirection * gZoomDistance;
+	//		gCamera.update();
+	//	}
+	//}
+	//else if (e.type == SDL_MOUSEWHEEL)
+	//{
+	//	gZoomDistance += e.wheel.y;
+	//	if (gZoomDistance < ZOOM_MIN)
+	//	{
+	//		gZoomDistance = ZOOM_MIN;
+	//	}
+	//	if (gZoomDistance > ZOOM_MAX)
+	//	{
+	//		gZoomDistance = ZOOM_MAX;
+	//	}
+	//	gCamera.mPosition = -gCamera.mDirection * gZoomDistance;
+	//	gCamera.update();
+	//}
 }
 
 void render()
 {
-	glm::mat4 view, projection;
-	gCamera.render(view, projection);
-	gActiveShader = SHADER_BASIC;
-	gShaders[gActiveShader].bind();
-	gShaders[gActiveShader].setUniformMat4f(0, gTableModel.mModelMatrix);
-	gShaders[gActiveShader].setUniformMat4f(1, view);
-	gShaders[gActiveShader].setUniformMat4f(2, projection);
-	gTableModel.render();
-	Vector2i mpos;
-	SDL_GetMouseState(&mpos.x, &mpos.y);
-	gDuelInterface->render(gCamera, mpos);
+	gDuelInterface->render();
 }
 
 void update(int deltaTime)
 {
-	Vector2i mpos;
-	SDL_GetMouseState(&mpos.x, &mpos.y);
-	gDuelInterface->update(deltaTime, gCamera, mpos);
+	gDuelInterface->update(deltaTime);
 }
 
 void mainLoop()

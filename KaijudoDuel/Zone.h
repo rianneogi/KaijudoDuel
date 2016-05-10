@@ -3,7 +3,7 @@
 #include "Card.h"
 #include "CRandom.h"
 
-const float CONST_CARDSEPERATION = 2.6f;
+const float CONST_CARDSEPERATION = 2.2f;
 const float CONST_CARDELEVATION = 0.1f;
 const float CONST_CARDTHICKNESS = 0.0125f;
 
