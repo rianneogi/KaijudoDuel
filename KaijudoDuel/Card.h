@@ -54,6 +54,7 @@ public:
 	void callOnCast();
 	void setPosition(glm::vec3 pos);
 	void move(Orientation target, int time);
+	void hover(Orientation target, int time);
 	void updatePower(int pow);
 	void flip();
 	void unflip();

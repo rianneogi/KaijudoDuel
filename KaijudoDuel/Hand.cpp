@@ -41,12 +41,13 @@ void Hand::update(int hovercard)
 		if (cards.at(i)->UniqueId == hovercard)
 		{
 			o.pos = centerhover + offset;
+			cards.at(i)->hover(o, 1000);
 		}
 		else
 		{
 			o.pos = center + offset;
+			cards.at(i)->move(o, 1000);
 		}
-		cards.at(i)->move(o, 1000);
 	}
 }
 

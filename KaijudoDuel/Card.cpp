@@ -109,7 +109,7 @@ bool Card::rayTrace(Vector2i mousePos, const glm::mat4& projview, const Vector2i
 	Vector2f mousepixel;
 	mousepixel.x = mousePos.x / (screenDimensions.x / 2.f) - 1.f;
 	mousepixel.y = -(mousePos.y / (screenDimensions.y / 2.f) - 1.f);
-	glm::mat4 finalmat = projview*mModel.getModelMatrix();
+	glm::mat4 finalmat = projview*mModel.getHoverModelMatrix();
 
 	std::vector<glm::vec4> newverts;
 	newverts.push_back(finalmat*glm::vec4(-1.f, 0.f, -1.38f, 1));
@@ -176,6 +176,11 @@ void Card::callOnCast()
 void Card::move(Orientation target, int time)
 {
 	mModel.setMovement(target, time);
+}
+
+void Card::hover(Orientation target, int time)
+{
+	mModel.setHoverMovement(target, time);
 }
 
 void Card::setPosition(glm::vec3 pos)

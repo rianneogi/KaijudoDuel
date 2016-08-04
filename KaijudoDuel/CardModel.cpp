@@ -21,6 +21,7 @@ CardModel::~CardModel()
 glm::mat4 CardModel::getModelMatrix()
 {
 	glm::mat4 pos = glm::translate(glm::mat4(1.0f), mOrientation.pos);
+
 	mOrientation.dir = glm::normalize(mOrientation.dir);
 	mOrientation.up = glm::normalize(mOrientation.up);
 	glm::vec3 right = glm::cross(mOrientation.dir, mOrientation.up);
@@ -29,6 +30,23 @@ glm::mat4 CardModel::getModelMatrix()
 	glm::vec3 newUp = frontq * glm::vec3(0.0f, 1.0f, 0.0f);
 	glm::quat rot2 = getRotationBetweenVectors(newUp, mOrientation.up);
 	glm::mat4 frontrot = glm::toMat4(rot2*frontq);
+
+	return (pos*frontrot);
+}
+
+glm::mat4 CardModel::getHoverModelMatrix()
+{
+	glm::mat4 pos = glm::translate(glm::mat4(1.0f), mHoverPos);
+
+	mOrientation.dir = glm::normalize(mOrientation.dir);
+	mOrientation.up = glm::normalize(mOrientation.up);
+	glm::vec3 right = glm::cross(mOrientation.dir, mOrientation.up);
+	mOrientation.up = glm::cross(right, mOrientation.dir);
+	glm::quat frontq = getRotationBetweenVectors(glm::vec3(0, 0, 1), mOrientation.dir);
+	glm::vec3 newUp = frontq * glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::quat rot2 = getRotationBetweenVectors(newUp, mOrientation.up);
+	glm::mat4 frontrot = glm::toMat4(rot2*frontq);
+
 	return (pos*frontrot);
 }
 
@@ -81,11 +99,18 @@ void CardModel::update(int deltaTime)
 void CardModel::setMovement(Orientation target, int time)
 {
 	mMovement = Movement(mOrientation, target, time);
+	mHoverPos = target.pos;
+}
+
+void CardModel::setHoverMovement(Orientation target, int time)
+{
+	mMovement = Movement(mOrientation, target, time);
 }
 
 void CardModel::setPosition(const glm::vec3& pos)
 {
 	mOrientation.pos = pos;
+	mHoverPos = pos;
 }
 
 void CardModel::setDirection(const glm::vec3& dir)

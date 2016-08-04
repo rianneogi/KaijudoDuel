@@ -11,6 +11,7 @@ public:
 	Model mBackModel;
 
 	Orientation mOrientation;
+	glm::vec3 mHoverPos;
 	/*glm::vec3 mPosition;
 	glm::vec3 mDirection;
 	glm::vec3 mUp;*/
@@ -26,7 +27,9 @@ public:
 	void setDirection(const glm::vec3& dir);
 	void setUp(const glm::vec3& up);
 	void setMovement(Orientation target, int time);
+	void setHoverMovement(Orientation target, int time);
 	void update(int deltaTime);
 	glm::mat4 getModelMatrix();
+	glm::mat4 getHoverModelMatrix();
 };
 
