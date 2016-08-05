@@ -49,6 +49,17 @@ bool loadShaders()
 	gShaders[SHADER_BASIC].addUniform("M");
 	gShaders[SHADER_BASIC].addUniform("V");
 	gShaders[SHADER_BASIC].addUniform("P");
+
+	/*if (!gShaders[SHADER_BASIC].loadProgram("Resources/Shaders/zone"))
+	{
+		printf("ERROR: Could not load shader\n");
+		return false;
+	}
+	gShaders[SHADER_BASIC].setMaxUniforms(4);
+	gShaders[SHADER_BASIC].addUniform("M");
+	gShaders[SHADER_BASIC].addUniform("V");
+	gShaders[SHADER_BASIC].addUniform("P");
+	gShaders[SHADER_BASIC].addUniform("zoneColor");*/
 	return true;
 }
 

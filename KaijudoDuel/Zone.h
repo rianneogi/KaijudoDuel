@@ -27,5 +27,6 @@ public:
 	//virtual void handleEvent(sf::Event event) = 0;
 	//sf::FloatRect getBounds();
 	virtual void removeCard(Card* id);
+	bool rayTrace(Vector2i mousePos, const glm::mat4& projview, const Vector2i& screenDimensions);
 };
 

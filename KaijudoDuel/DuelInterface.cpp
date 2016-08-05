@@ -50,7 +50,7 @@ void DuelInterface::render()
 	gShaders[gActiveShader].setUniformMat4f(2, projection);
 	mTableModel.render();
 
-	//render zones
+	//render cards
 	for (int i = 0; i < 2; i++)
 	{
 		mDuel.decks[i].renderCards(myPlayer);
@@ -73,13 +73,29 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 		{
 			if (mHoverCardId != -1)
 			{
-				assert(mHoverCardId < mDuel.CardList.size());
+				assert(mHoverCardId < mDuel.mCardList.size());
 				mSelectedCardId = mHoverCardId;
 				//mDuel.CardList[mHoverCardId]->move(target, 0);
 			}
 		}
 		else if (event.button.button == SDL_BUTTON_RIGHT)
 		{
+			glm::mat4 view, proj, projview;
+			mCamera.render(view, proj);
+			projview = proj*view;
+			Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
+			if (mDuel.battlezones[0].rayTrace(mousePos, projview, screendim))
+			{
+				Card* c = mDuel.mCardList[mSelectedCardId];
+				mDuel.hands[0].removeCard(c);
+				mDuel.battlezones[0].addCard(c);
+			}
+			else if (mDuel.manazones[0].rayTrace(mousePos, projview, screendim))
+			{
+				Card* c = mDuel.mCardList[mSelectedCardId];
+				mDuel.hands[0].removeCard(c);
+				mDuel.manazones[0].addCard(c);
+			}
 			mSelectedCardId = -1;
 		}
 	}
@@ -190,7 +206,7 @@ void DuelInterface::update(int deltaTime)
 		}
 		if (mSelectedCardId != -1)
 		{
-			assert(mSelectedCardId < mDuel.CardList.size());
+			assert(mSelectedCardId < mDuel.mCardList.size());
 
 			Vector2f mousepixel;
 			mousepixel.x = -(mousePos.x / (SCREEN_WIDTH / 2.f) - 1.f);
@@ -200,19 +216,19 @@ void DuelInterface::update(int deltaTime)
 			o.pos = glm::vec3(8*mousepixel.x, (mCamera.mPosition + mCamera.mDirection*gHandStraightDistance).y, 8*mousepixel.y);
 			o.dir = mCamera.mUp;
 			o.up = -mCamera.mDirection;
-			mDuel.CardList[mSelectedCardId]->move(o, 1);
+			mDuel.mCardList[mSelectedCardId]->move(o, 1);
 		}
 	}
-	if (newhovercard != mHoverCardId)
+	if (newhovercard != mHoverCardId && mSelectedCardId == -1)
 	{
 		mHoverCardId = newhovercard;
 		printf("Hover: %d\n", mHoverCardId);
 		mDuel.hands[0].update(mHoverCardId); //update hand
 	}
 
-	for (int i = 0;i < mDuel.CardList.size();i++) //update cards
+	for (int i = 0;i < mDuel.mCardList.size();i++) //update cards
 	{
-		mDuel.CardList[i]->update(deltaTime);
+		mDuel.mCardList[i]->update(deltaTime);
 	}
 }
 

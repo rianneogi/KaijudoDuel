@@ -21,7 +21,7 @@ public:
 	ShieldZone shields[2];
 	BattleZone battlezones[2];
 
-	std::vector<Card*> CardList;
+	std::vector<Card*> mCardList;
 
 	std::string decknames[2];
 
