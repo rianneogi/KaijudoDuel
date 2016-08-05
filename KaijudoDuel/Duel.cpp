@@ -585,6 +585,7 @@ int Duel::handleInterfaceInput(Message& msg)
 	currentMoveCount++;
 	MoveHistory.push_back(msg);
 	std::string type = msg.getType();
+	printf("handling interface input: %s\n", msg.getType().c_str());
 	if (type == "cardplay")
 	{
 		int whichCard = msg.getInt("card");
@@ -857,12 +858,12 @@ bool Duel::dispatchAllMessages()
 		MsgMngr.dispatch();
 		if (!isSimulation)
 		{
-			//std::cout << "dispatching message: ";
+			printf("Dispatching Message:\n");
 			for (std::map<std::string, std::string>::iterator i = msg.map.begin(); i != msg.map.end(); i++)
 			{
-				//std::cout << i->first << " " << i->second << " ";
+				printf("	%s %s\n", (i->first).c_str(), (i->second).c_str());
 			}
-			//std::cout << "\n";
+			printf("\n");
 		}
 		dispatchMessage(msg);
 		worldchanged = true;

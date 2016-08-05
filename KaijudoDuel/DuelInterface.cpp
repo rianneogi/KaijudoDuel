@@ -71,31 +71,39 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 	{
 		if (event.button.button == SDL_BUTTON_LEFT)
 		{
-			if (mHoverCardId != -1)
+			if (mSelectedCardId == -1)
 			{
-				assert(mHoverCardId < mDuel.mCardList.size());
-				mSelectedCardId = mHoverCardId;
-				//mDuel.CardList[mHoverCardId]->move(target, 0);
+				if (mHoverCardId != -1)
+				{
+					assert(mHoverCardId < mDuel.mCardList.size());
+					mSelectedCardId = mHoverCardId;
+					//mDuel.CardList[mHoverCardId]->move(target, 0);
+				}
+			}
+			else
+			{
+				glm::mat4 view, proj, projview;
+				mCamera.render(view, proj);
+				projview = proj*view;
+				Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
+				if (mDuel.battlezones[0].rayTrace(mousePos, projview, screendim))
+				{
+					Message msg("cardplay");
+					msg.addValue("card", mSelectedCardId);
+					msg.addValue("evobait", -1);
+					mDuel.handleInterfaceInput(msg);
+				}
+				else if (mDuel.manazones[0].rayTrace(mousePos, projview, screendim))
+				{
+					Message msg("cardmana");
+					msg.addValue("card", mSelectedCardId);
+					mDuel.handleInterfaceInput(msg);
+				}
+				mSelectedCardId = -1;
 			}
 		}
 		else if (event.button.button == SDL_BUTTON_RIGHT)
 		{
-			glm::mat4 view, proj, projview;
-			mCamera.render(view, proj);
-			projview = proj*view;
-			Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
-			if (mDuel.battlezones[0].rayTrace(mousePos, projview, screendim))
-			{
-				Card* c = mDuel.mCardList[mSelectedCardId];
-				mDuel.hands[0].removeCard(c);
-				mDuel.battlezones[0].addCard(c);
-			}
-			else if (mDuel.manazones[0].rayTrace(mousePos, projview, screendim))
-			{
-				Card* c = mDuel.mCardList[mSelectedCardId];
-				mDuel.hands[0].removeCard(c);
-				mDuel.manazones[0].addCard(c);
-			}
 			mSelectedCardId = -1;
 		}
 	}
@@ -183,6 +191,8 @@ void DuelInterface::parseMessages(unsigned int deltatime)
 
 void DuelInterface::update(int deltaTime)
 {
+	mDuel.dispatchAllMessages();
+
 	int newhovercard = -1;
 	Vector2i mousePos;
 	SDL_GetMouseState(&mousePos.x, &mousePos.y);

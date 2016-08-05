@@ -36,8 +36,8 @@ std::string Message::getString(std::string key)
 	auto search = map.find(key);
 	if(search!=map.end())
 		return map[key];
-	//else
-	//	std::cout << "ERROR unable to access value " << key << " in message " << getType() << "\n"; 
+	else
+		printf("ERROR unable to access value %s in message %s\n",key.c_str(),getType().c_str()); 
 	return "";
 }
 
@@ -46,8 +46,8 @@ int Message::getInt(std::string key)
 	auto search = map.find(key);
 	if(search!=map.end())
 		return atoi(map[key].c_str());
-	//else
-	//	std::cout << "ERROR unable to access value " << key << " in message " << getType() << "\n";
+	else
+		printf("ERROR unable to access value %s in message %s\n", key.c_str(), getType().c_str());
 	return 0;
 }
 
