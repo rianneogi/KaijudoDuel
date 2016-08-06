@@ -25,6 +25,12 @@ DuelInterface::DuelInterface()
 	mTableModel.setPosition(glm::vec3(0, 0, 0));
 	mTableModel.mModelMatrix = glm::scale(mTableModel.mModelMatrix, glm::vec3(5, 5, 5));
 
+	mEndTurnModel.setMesh(&gMeshs[MESH_ENDTURN]);
+	mEndTurnModel.setTexture(&gTableTexture);
+	mEndTurnModel.mModelMatrix = glm::scale(mTableModel.mModelMatrix, glm::vec3(0.25f, 0.25f, 0.25f));
+	mEndTurnModel.setPosition(glm::vec3(-8.f, 1.0, 0.0));
+	mEndTurnModel.setModelMatrix(glm::rotate(mEndTurnModel.mModelMatrix, float(M_PI), glm::vec3(0, 1, 0)));
+
 	for (int i = 0;i < 2;i++)
 	{
 		mDuel.hands[i].setCamera(&mCamera);
@@ -49,6 +55,8 @@ void DuelInterface::render()
 	gShaders[gActiveShader].setUniformMat4f(1, view);
 	gShaders[gActiveShader].setUniformMat4f(2, projection);
 	mTableModel.render();
+	gShaders[gActiveShader].setUniformMat4f(0, mEndTurnModel.mModelMatrix);
+	mEndTurnModel.render();
 
 	//render cards
 	for (int i = 0; i < 2; i++)

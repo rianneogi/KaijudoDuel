@@ -28,6 +28,7 @@ public:
 
 	Camera mCamera;
 	Model mTableModel;
+	Model mEndTurnModel;
 
 	int mousearrow;
 

@@ -34,6 +34,11 @@ bool loadMeshs()
 		printf("ERROR: Could not load table\n");
 		return false;
 	}
+	if (!gMeshs[MESH_ENDTURN].loadFromFile("Resources/Meshs/endturn.obj"))
+	{
+		printf("ERROR: Could not load table\n");
+		return false;
+	}
 	return true;
 }
 
