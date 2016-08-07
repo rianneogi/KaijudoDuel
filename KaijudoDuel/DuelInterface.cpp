@@ -87,6 +87,17 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 					mSelectedCardId = mHoverCardId;
 					//mDuel.CardList[mHoverCardId]->move(target, 0);
 				}
+
+				glm::mat4 view, proj, projview;
+				mCamera.render(view, proj);
+				projview = proj*view;
+				Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
+				if (mEndTurnModel.rayTrace(mousePos, projview, screendim))
+				{
+					Message msg("endturn");
+					mDuel.handleInterfaceInput(msg);
+					printf("end turn pressed\n");
+				}
 			}
 			else
 			{

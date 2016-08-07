@@ -22,6 +22,7 @@ public:
 	void setShader(ShaderProgram* shader);
 	void setModelMatrix(const glm::mat4& mat);
 	void scale(float value);
+	bool rayTrace(Vector2i mousePos, const glm::mat4& projview, const Vector2i& screenDimensions);
 
 	Mesh* mMesh;
 	Texture* mTexture;
