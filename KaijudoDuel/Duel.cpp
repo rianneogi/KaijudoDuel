@@ -580,6 +580,200 @@ void Duel::undoMessage(Message& msg)
 	}
 }
 
+int Duel::getPlayerToMove()
+{
+	if (isChoiceActive)
+		return choicePlayer;
+	if (attackphase == PHASE_BLOCK || attackphase == PHASE_TRIGGER)
+		return getOpponent(turn);
+	return turn;
+}
+
+std::vector<Message> Duel::getPossibleMoves()
+{
+	std::vector<Message> moves(0);
+	int player = getPlayerToMove();
+	if (turn == player && attackphase == PHASE_NONE && !(isChoiceActive) && castingcard == -1)
+	{
+		Message m("endturn");
+		m.addValue("player", turn);
+		moves.push_back(m);
+	}
+	else if (isChoiceActive && player == choicePlayer)
+	{
+		if (choice->buttoncount > 0)
+		{
+			Message msg("choiceselect");
+			msg.addValue("selection", RETURN_BUTTON1);
+			moves.push_back(msg);
+		}
+		if (choice->buttoncount > 1)
+		{
+			Message msg("choiceselect");
+			msg.addValue("selection", RETURN_BUTTON2);
+			moves.push_back(msg);
+		}
+		for (std::vector<Card*>::iterator i = mCardList.begin(); i != mCardList.end(); i++)
+		{
+			if ((*i)->Zone != ZONE_EVOLVED)
+			{
+				if (choice->callvalid(choiceCard, (*i)->UniqueId) == 1)
+				{
+					Message msg("choiceselect");
+					msg.addValue("selection", (*i)->UniqueId);
+					moves.push_back(msg);
+				}
+			}
+		}
+	}
+	else if (attackphase == PHASE_TRIGGER && player == getOpponent(turn)) //use shield triggers
+	{
+		for (std::vector<Card*>::iterator i = hands[getOpponent(turn)].cards.begin(); i != hands[getOpponent(turn)].cards.end(); i++)
+		{
+			for (std::vector<int>::iterator j = shieldtargets.begin(); j != shieldtargets.end(); j++)
+			{
+				if (*j == (*i)->UniqueId)
+				{
+					if (getIsShieldTrigger(*j) && canUseShieldTrigger(*j) && getCardCanCast(*j))
+					{
+						Message msg("triggeruse");
+						msg.addValue("trigger", *j);
+						moves.push_back(msg);
+					}
+				}
+			}
+		}
+		Message m("triggerskip");
+		moves.push_back(m);
+	}
+	else if (attackphase == PHASE_TARGET && player == turn) //target shields
+	{
+		for (std::vector<Card*>::iterator i = shields[getOpponent(turn)].cards.begin(); i != shields[getOpponent(turn)].cards.end(); i++)
+		{
+			Message m("targetshield");
+			m.addValue("attacker", attacker);
+			m.addValue("shield", (*i)->UniqueId);
+			moves.push_back(m);
+		}
+	}
+	else if (attackphase == PHASE_BLOCK && player == getOpponent(turn)) //block
+	{
+		for (std::vector<Card*>::iterator i = battlezones[getOpponent(turn)].cards.begin(); i != battlezones[getOpponent(turn)].cards.end(); i++)
+		{
+			if (getCreatureCanBlock(attacker, (*i)->UniqueId) && (*i)->isTapped == false
+				&& ((*i)->UniqueId != defender || defendertype == DEFENDER_PLAYER))
+			{
+				/*Message msg2("cardtap");
+				msg2.addValue("card", (*i)->UniqueId);
+				MsgMngr.sendMessage(msg2);*/
+
+				Message msg("creatureblock");
+				msg.addValue("attacker", attacker);
+				msg.addValue("blocker", (*i)->UniqueId);
+				moves.push_back(msg);
+			}
+		}
+		Message m("blockskip");
+		moves.push_back(m);
+	}
+	else if (castingcard != -1 && player == turn) //tap mana
+	{
+		for (std::vector<Card*>::iterator i = manazones[turn].cards.begin(); i != manazones[turn].cards.end(); i++)
+		{
+			if ((*i)->isTapped == false)
+			{
+				if (castingcost == 1) //last card to be tapped
+				{
+					if (getCardCivilization((*i)->UniqueId) == castingciv || castingcivtapped)
+					{
+						Message m("manatap");
+						m.addValue("card", (*i)->UniqueId);
+						moves.push_back(m);
+					}
+				}
+				else
+				{
+					Message m("manatap");
+					m.addValue("card", (*i)->UniqueId);
+					moves.push_back(m);
+				}
+			}
+		}
+	}
+
+	if (player == turn && !isChoiceActive)
+	{
+		for (std::vector<Card*>::iterator i = hands[turn].cards.begin(); i != hands[turn].cards.end(); i++)
+		{
+			if (getCardCost((*i)->UniqueId) <= manazones[turn].getUntappedMana()
+				&& isThereUntappedManaOfCiv(turn, getCardCivilization((*i)->UniqueId)) && getCardCanCast((*i)->UniqueId) == 1)
+			{
+				if (getIsEvolution((*i)->UniqueId) == 1)
+				{
+					for (std::vector<Card*>::iterator j = battlezones[turn].cards.begin(); j != battlezones[turn].cards.end(); j++)
+					{
+						if (getCreatureCanEvolve((*i)->UniqueId, (*j)->UniqueId) == 1)
+						{
+							Message msg("cardplay");
+							msg.addValue("card", (*i)->UniqueId);
+							msg.addValue("evobait", (*j)->UniqueId);
+							moves.push_back(msg);
+						}
+					}
+				}
+				else
+				{
+					Message msg("cardplay");
+					msg.addValue("card", (*i)->UniqueId);
+					msg.addValue("evobait", -1);
+					moves.push_back(msg);
+				}
+			}
+			if (manaUsed == 0)
+			{
+				Message msg("cardmana");
+				msg.addValue("card", (*i)->UniqueId);
+				moves.push_back(msg);
+			}
+		}
+	}
+
+	if (player == turn && !isChoiceActive)
+	{
+		for (std::vector<Card*>::iterator i = battlezones[turn].cards.begin(); i != battlezones[turn].cards.end(); i++)
+		{
+			int canattack = getCreatureCanAttackPlayers((*i)->UniqueId);
+			if ((canattack == CANATTACK_ALWAYS ||
+				((mCardList.at((*i)->UniqueId)->summoningSickness == 0 || getIsSpeedAttacker((*i)->UniqueId) == 1) && (canattack == CANATTACK_TAPPED || canattack == CANATTACK_UNTAPPED)))
+				&& mCardList.at((*i)->UniqueId)->isTapped == false)
+			{
+				Message msg("creatureattack");
+				msg.addValue("attacker", (*i)->UniqueId);
+				msg.addValue("defender", getOpponent(turn));
+				msg.addValue("defendertype", DEFENDER_PLAYER);
+				moves.push_back(msg);
+			}
+			for (std::vector<Card*>::iterator j = battlezones[getOpponent(turn)].cards.begin(); j != battlezones[getOpponent(turn)].cards.end(); j++)
+			{
+				int canattack = getCreatureCanAttackCreature((*i)->UniqueId, (*j)->UniqueId);
+				if (((*j)->isTapped == true || canattack == CANATTACK_UNTAPPED)
+					&& canattack <= CANATTACK_UNTAPPED
+					&& mCardList.at((*i)->UniqueId)->summoningSickness == 0
+					&& mCardList.at((*i)->UniqueId)->isTapped == false)
+				{
+					Message msg("creatureattack");
+					msg.addValue("attacker", (*i)->UniqueId);
+					msg.addValue("defender", (*j)->UniqueId);
+					msg.addValue("defendertype", DEFENDER_CREATURE);
+					moves.push_back(msg);
+				}
+			}
+		}
+	}
+
+	return moves;
+}
+
 int Duel::handleInterfaceInput(Message& msg)
 {
 	currentMoveCount++;

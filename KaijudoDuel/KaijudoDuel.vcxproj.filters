@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Zones">
       <UniqueIdentifier>{ec8c3a4d-e8dd-4171-bbcf-4c3e34c94e86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shaders">
+      <UniqueIdentifier>{4ff043d5-e1c6-45a5-a69d-3a3f496d954e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -206,5 +209,19 @@
     <ClInclude Include="Movement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Shaders\mvp.glfs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\zone.glfs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\mvp.glvs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\zone.glvs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
