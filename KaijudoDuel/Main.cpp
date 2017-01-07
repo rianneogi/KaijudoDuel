@@ -1,5 +1,8 @@
 #include "DuelInterface.h"
 
+#include <iostream>
+#include <conio.h>
+
 const int MAX_FPS = 60;
 
 int SCREEN_WIDTH = 800;
@@ -144,8 +147,9 @@ bool initGame()
 		return false;
 	}
 
-	gDuelInterface = new DuelInterface();
-	ActiveDuel = &(gDuelInterface->mDuel);
+	ActiveDuel = new Duel();
+	gDuelInterface = new DuelInterface(ActiveDuel);
+	//ActiveDuel = &(gDuelInterface->mDuel);
 	ActiveDuel->setDecks("Decks\\My Decks\\LFN Starter Deck.txt", "Decks\\My Decks\\FL Burning Light Base Set.txt");
 	ActiveDuel->startDuel();
 	ActiveDuel->dispatchAllMessages();
@@ -307,7 +311,7 @@ void mainLoop()
 	}
 }
 
-int main(int argc, char* args[])
+void startGUI()
 {
 	if (!initSDL())
 	{
@@ -342,6 +346,49 @@ int main(int argc, char* args[])
 	mainLoop();
 
 	cleanup();
+}
+
+void startConsole()
+{
+	//using namespace std;
+	if (!initGame())
+	{
+		printf("ERROR initializing game\n");
+		_getch();
+	}
+
+	std::string s;
+
+	while (true)
+	{
+		std::cin >> s;
+		std::vector<Message> moves = ActiveDuel->getPossibleMoves();
+
+		if (s == "moves")
+		{
+			for (int i = 0; i < moves.size(); i++)
+			{
+				printf("Action %d:\n", i);
+				moves[i].printMessage();
+				printf("\n");
+			}
+		}
+
+		if (s == "action")
+		{
+			int d = -1;
+			std::cin >> d;
+			ActiveDuel->handleInterfaceInput(moves[d]);
+		}
+	}
+
+	cleanup();
+}
+
+int main(int argc, char* args[])
+{
+	//startGUI();
+	startConsole();
 
 	return 0;
 }

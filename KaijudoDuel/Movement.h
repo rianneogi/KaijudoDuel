@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CardData.h"
+#include "Camera.h"
 
 struct Orientation
 {

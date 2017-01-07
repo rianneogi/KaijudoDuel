@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Duel.h"
+#include "CardModel.h"
 
 enum DuelState { DUELSTATE_DUEL, DUELSTATE_MENU, DUELSTATE_SINGLE, DUELSTATE_MULTI };
 enum DuelType { DUELTYPE_SINGLE, DUELTYPE_MULTI, DUELTYPE_AI };
@@ -13,7 +13,9 @@ extern int SCREEN_HEIGHT;
 class DuelInterface //: public GameWindow
 {
 public:
-	Duel mDuel;
+	Duel* mDuel;
+
+	std::vector<CardModel*> mCardModels;
 
 	int dueltype;
 	int duelstate;
@@ -35,6 +37,7 @@ public:
 	int deckschosen;
 
 	DuelInterface();
+	DuelInterface(Duel* duel);
 	~DuelInterface();
 
 	int handleMessage(Message& msg);

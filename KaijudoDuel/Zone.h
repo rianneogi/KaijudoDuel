@@ -13,20 +13,18 @@ public:
 	int owner;
 	std::vector<Card*> cards;
 	
-	glm::vec3 mPos;
+	/*glm::vec3 mPos;
 	float mWidth;
-	float mHeight;
+	float mHeight;*/
 
 	Zone();
 	Zone(glm::vec3 p, float w, float h);
 	~Zone();
 
-	//void render(sf::RenderWindow& window);
-	virtual void renderCards(int myPlayer) = 0;
 	virtual void addCard(Card* c) = 0;
-	//virtual void handleEvent(sf::Event event) = 0;
-	//sf::FloatRect getBounds();
 	virtual void removeCard(Card* id);
-	bool rayTrace(Vector2i mousePos, const glm::mat4& projview, const Vector2i& screenDimensions);
+	
+	//virtual void renderCards(int myPlayer) = 0;
+	//bool rayTrace(Vector2i mousePos, const glm::mat4& projview, const Vector2i& screenDimensions);
 };
 

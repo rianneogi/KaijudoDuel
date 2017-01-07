@@ -5,6 +5,13 @@ const float gCameraSpeed = 0.0001f;
 
 DuelInterface::DuelInterface()
 {
+	printf("WARNING: Duel interface init through default constructor\n");
+}
+
+DuelInterface::DuelInterface(Duel* duel)
+{
+	mDuel = duel;
+
 	duelstate = DUELSTATE_MENU;
 	dueltype = DUELTYPE_SINGLE;
 
@@ -33,7 +40,7 @@ DuelInterface::DuelInterface()
 
 	for (int i = 0;i < 2;i++)
 	{
-		mDuel.hands[i].setCamera(&mCamera);
+		mDuel->hands[i].setCamera(&mCamera);
 	}
 }
 
@@ -61,12 +68,12 @@ void DuelInterface::render()
 	//render cards
 	for (int i = 0; i < 2; i++)
 	{
-		mDuel.decks[i].renderCards(myPlayer);
-		mDuel.hands[i].renderCards(myPlayer);
-		mDuel.manazones[i].renderCards(myPlayer);
-		mDuel.graveyards[i].renderCards(myPlayer);
-		mDuel.shields[i].renderCards(myPlayer);
-		mDuel.battlezones[i].renderCards(myPlayer);
+		mDuel->decks[i].renderCards(myPlayer);
+		mDuel->hands[i].renderCards(myPlayer);
+		mDuel->manazones[i].renderCards(myPlayer);
+		mDuel->graveyards[i].renderCards(myPlayer);
+		mDuel->shields[i].renderCards(myPlayer);
+		mDuel->battlezones[i].renderCards(myPlayer);
 	}
 	
 }
@@ -83,7 +90,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 			{
 				if (mHoverCardId != -1)
 				{
-					assert(mHoverCardId < mDuel.mCardList.size());
+					assert(mHoverCardId < mDuel->mCardList.size());
 					mSelectedCardId = mHoverCardId;
 					//mDuel.CardList[mHoverCardId]->move(target, 0);
 				}
@@ -95,7 +102,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 				if (mEndTurnModel.rayTrace(mousePos, projview, screendim))
 				{
 					Message msg("endturn");
-					mDuel.handleInterfaceInput(msg);
+					mDuel->handleInterfaceInput(msg);
 					printf("end turn pressed\n");
 				}
 			}
@@ -105,18 +112,18 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 				mCamera.render(view, proj);
 				projview = proj*view;
 				Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
-				if (mDuel.battlezones[0].rayTrace(mousePos, projview, screendim))
+				if (mDuel->battlezones[0].rayTrace(mousePos, projview, screendim))
 				{
 					Message msg("cardplay");
 					msg.addValue("card", mSelectedCardId);
 					msg.addValue("evobait", -1);
-					mDuel.handleInterfaceInput(msg);
+					mDuel->handleInterfaceInput(msg);
 				}
-				else if (mDuel.manazones[0].rayTrace(mousePos, projview, screendim))
+				else if (mDuel->manazones[0].rayTrace(mousePos, projview, screendim))
 				{
 					Message msg("cardmana");
 					msg.addValue("card", mSelectedCardId);
-					mDuel.handleInterfaceInput(msg);
+					mDuel->handleInterfaceInput(msg);
 				}
 				mSelectedCardId = -1;
 			}
@@ -203,14 +210,14 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 //	return RETURN_NOTHING;
 //}
 
-void DuelInterface::parseMessages(unsigned int deltatime)
-{
-	mDuel.parseMessages(deltatime);
-}
+//void DuelInterface::parseMessages(unsigned int deltatime)
+//{
+//	mDuel->parseMessages(deltatime);
+//}
 
 void DuelInterface::update(int deltaTime)
 {
-	mDuel.dispatchAllMessages();
+	mDuel->dispatchAllMessages();
 
 	int newhovercard = -1;
 	Vector2i mousePos;
@@ -222,20 +229,20 @@ void DuelInterface::update(int deltaTime)
 		projview = proj*view;
 		Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
 		float minDepth = 1;
-		for (int i = mDuel.hands[0].cards.size() - 1;i >= 0;i--)
+		for (int i = mDuel->hands[0].cards.size() - 1;i >= 0;i--)
 		{
-			if (mDuel.hands[0].cards[i]->rayTrace(mousePos, projview, screendim))
+			if (mDuel->hands[0].cards[i]->rayTrace(mousePos, projview, screendim))
 			{
-				if (newhovercard != mDuel.hands[0].cards[i]->UniqueId)
+				if (newhovercard != mDuel->hands[0].cards[i]->UniqueId)
 				{
-					newhovercard = mDuel.hands[0].cards[i]->UniqueId;
+					newhovercard = mDuel->hands[0].cards[i]->UniqueId;
 				}
 				break;
 			}
 		}
 		if (mSelectedCardId != -1)
 		{
-			assert(mSelectedCardId < mDuel.mCardList.size());
+			assert(mSelectedCardId < mDuel->mCardList.size());
 
 			Vector2f mousepixel;
 			mousepixel.x = -(mousePos.x / (SCREEN_WIDTH / 2.f) - 1.f);
@@ -245,19 +252,19 @@ void DuelInterface::update(int deltaTime)
 			o.pos = glm::vec3(8*mousepixel.x, (mCamera.mPosition + mCamera.mDirection*gHandStraightDistance).y, 8*mousepixel.y);
 			o.dir = mCamera.mUp;
 			o.up = -mCamera.mDirection;
-			mDuel.mCardList[mSelectedCardId]->move(o, 1);
+			mCardModels[mSelectedCardId]->setMovement(o, 1);
 		}
 	}
 	if (newhovercard != mHoverCardId && mSelectedCardId == -1)
 	{
 		mHoverCardId = newhovercard;
 		printf("Hover: %d\n", mHoverCardId);
-		mDuel.hands[0].update(mHoverCardId); //update hand
+		mDuel->hands[0].update(mHoverCardId); //update hand
 	}
 
-	for (int i = 0;i < mDuel.mCardList.size();i++) //update cards
+	for (int i = 0;i < mCardModels.size();i++) //update cards
 	{
-		mDuel.mCardList[i]->update(deltaTime);
+		mCardModels[i]->update(deltaTime);
 	}
 }
 
@@ -311,8 +318,8 @@ void DuelInterface::setDecklist()
 void DuelInterface::setMyPlayer(int p)
 {
 	myPlayer = p;
-	mDuel.hands[0].mMyPlayer = p;
-	mDuel.hands[1].mMyPlayer = p;
+	mDuel->hands[0].mMyPlayer = p;
+	mDuel->hands[1].mMyPlayer = p;
 	//duel.hands[0].flipAllCards();
 	//duel.hands[1].flipAllCards();
 }

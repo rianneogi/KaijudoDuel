@@ -96,6 +96,33 @@ void CardModel::update(int deltaTime)
 	}
 }
 
+bool CardModel::rayTrace(Vector2i mousePos, const glm::mat4& projview, const Vector2i& screenDimensions)
+{
+	Vector2f mousepixel;
+	mousepixel.x = mousePos.x / (screenDimensions.x / 2.f) - 1.f;
+	mousepixel.y = -(mousePos.y / (screenDimensions.y / 2.f) - 1.f);
+	glm::mat4 finalmat = projview*getHoverModelMatrix();
+
+	std::vector<glm::vec4> newverts;
+	newverts.push_back(finalmat*glm::vec4(-1.f, 0.f, -1.38f, 1));
+	newverts.push_back(finalmat*glm::vec4(1.f, 0.f, -1.38f, 1));
+	newverts.push_back(finalmat*glm::vec4(1.f, 0.f, 1.38f, 1));
+	newverts.push_back(finalmat*glm::vec4(-1.f, 0.f, 1.38f, 1));
+
+	for (int i = 0; i < 4; i++) //perspective divide
+	{
+		newverts[i].x /= newverts[i].w;
+		newverts[i].y /= newverts[i].w;
+		newverts[i].z /= newverts[i].w;
+	}
+
+	if (isPointInsidePolygon(newverts, mousepixel.x, mousepixel.y))
+	{
+		return true;
+	}
+	return false;
+}
+
 void CardModel::setMovement(Orientation target, int time)
 {
 	mMovement = Movement(mOrientation, target, time);
@@ -121,4 +148,18 @@ void CardModel::setDirection(const glm::vec3& dir)
 void CardModel::setUp(const glm::vec3& up)
 {
 	mOrientation.up = up;
+}
+
+int loadCardTexture(const std::string& name, const std::string& set)
+{
+	std::string path = "Resources\\Cards\\" + set + "\\" + name + ".png";
+	gCardTextures.push_back(new Texture());
+	if (!gCardTextures.at(gCardTextures.size() - 1)->loadFromFile(path))
+	{
+		//cout << "ERROR cant load texture " << CardNames.at(CardNames.size() - 1) << endl;
+		printf("ERROR: cant load card texture %s\n", gCardNames.at(gCardNames.size() - 1).c_str());
+	}
+	//printf("Generated texture: %d\n", gCardTextures[gCardTextures.size() - 1]->mTextureID);
+	//gCardTextures.at(gCardTextures.size() - 1).setSmooth(true);
+	return 1;
 }

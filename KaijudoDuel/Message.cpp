@@ -56,6 +56,15 @@ void Message::clear()
 	map.clear();
 }
 
+void Message::printMessage()
+{
+	for (std::map<std::string, std::string>::iterator i = map.begin(); i != map.end(); i++)
+	{
+		printf("	%s %s\n", (i->first).c_str(), (i->second).c_str());
+	}
+	printf("\n");
+}
+
 //sf::Packet& operator <<(sf::Packet& packet, const Message& m)
 //{
 //	sf::Uint32 size = m.map.size();

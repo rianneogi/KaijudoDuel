@@ -13,13 +13,25 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Zones">
+    <Filter Include="Header Files\Game">
+      <UniqueIdentifier>{3b39ba9b-9af7-4634-858f-339c31da60b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game\Zones">
       <UniqueIdentifier>{d05a6061-3013-4d35-929c-c1f1ad2e4786}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Zones">
+    <Filter Include="Header Files\GUI">
+      <UniqueIdentifier>{0723d0e4-7a50-4c14-954c-1a5a8c4ba5b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{9389f115-3b32-4fa9-b9e8-23b96b3cc72b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Zones">
       <UniqueIdentifier>{ec8c3a4d-e8dd-4171-bbcf-4c3e34c94e86}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shaders">
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{c6630454-c157-4061-9faf-902ff352175c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI\Shaders">
       <UniqueIdentifier>{4ff043d5-e1c6-45a5-a69d-3a3f496d954e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -27,201 +39,201 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsInclude.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderProgram.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LoadResources.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Card.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Duel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DuelInterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Message.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MessageManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Modifier.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Choice.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LuaFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CRandom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CardModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CardData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BattleZone.cpp">
-      <Filter>Source Files\Zones</Filter>
+      <Filter>Source Files\Game\Zones</Filter>
     </ClCompile>
     <ClCompile Include="Deck.cpp">
-      <Filter>Source Files\Zones</Filter>
+      <Filter>Source Files\Game\Zones</Filter>
     </ClCompile>
     <ClCompile Include="Graveyard.cpp">
-      <Filter>Source Files\Zones</Filter>
+      <Filter>Source Files\Game\Zones</Filter>
     </ClCompile>
     <ClCompile Include="Hand.cpp">
-      <Filter>Source Files\Zones</Filter>
+      <Filter>Source Files\Game\Zones</Filter>
     </ClCompile>
     <ClCompile Include="Zone.cpp">
-      <Filter>Source Files\Zones</Filter>
+      <Filter>Source Files\Game\Zones</Filter>
     </ClCompile>
     <ClCompile Include="ManaZone.cpp">
-      <Filter>Source Files\Zones</Filter>
+      <Filter>Source Files\Game\Zones</Filter>
     </ClCompile>
     <ClCompile Include="ShieldZone.cpp">
-      <Filter>Source Files\Zones</Filter>
+      <Filter>Source Files\Game\Zones</Filter>
+    </ClCompile>
+    <ClCompile Include="Card.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="CardData.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Choice.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Duel.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaFunctions.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Message.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageManager.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Modifier.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CardModel.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="DuelInterface.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsInclude.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadResources.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshData.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source Files\GUI</Filter>
     </ClCompile>
     <ClCompile Include="Movement.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderProgram.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsInclude.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsTypedefs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderProgram.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LoadResources.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Card.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Duel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Message.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MessageManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Modifier.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Choice.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LuaFunctions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LuaInclude.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DuelInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CRandom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CardModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CardData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BattleZone.h">
-      <Filter>Header Files\Zones</Filter>
+      <Filter>Header Files\Game\Zones</Filter>
     </ClInclude>
     <ClInclude Include="Hand.h">
-      <Filter>Header Files\Zones</Filter>
+      <Filter>Header Files\Game\Zones</Filter>
     </ClInclude>
     <ClInclude Include="Graveyard.h">
-      <Filter>Header Files\Zones</Filter>
+      <Filter>Header Files\Game\Zones</Filter>
     </ClInclude>
     <ClInclude Include="ManaZone.h">
-      <Filter>Header Files\Zones</Filter>
+      <Filter>Header Files\Game\Zones</Filter>
     </ClInclude>
     <ClInclude Include="Zone.h">
-      <Filter>Header Files\Zones</Filter>
+      <Filter>Header Files\Game\Zones</Filter>
     </ClInclude>
     <ClInclude Include="ShieldZone.h">
-      <Filter>Header Files\Zones</Filter>
+      <Filter>Header Files\Game\Zones</Filter>
     </ClInclude>
     <ClInclude Include="Deck.h">
-      <Filter>Header Files\Zones</Filter>
+      <Filter>Header Files\Game\Zones</Filter>
+    </ClInclude>
+    <ClInclude Include="Card.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="CardData.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Choice.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Duel.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaFunctions.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaInclude.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Message.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageManager.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Modifier.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CardModel.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="DuelInterface.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsInclude.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsTypedefs.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshData.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadResources.h">
+      <Filter>Header Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="Movement.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderProgram.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\mvp.glfs">
-      <Filter>Source Files\Shaders</Filter>
+      <Filter>Source Files\GUI\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\zone.glfs">
-      <Filter>Source Files\Shaders</Filter>
+      <Filter>Source Files\GUI\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\mvp.glvs">
-      <Filter>Source Files\Shaders</Filter>
+      <Filter>Source Files\GUI\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\zone.glvs">
-      <Filter>Source Files\Shaders</Filter>
+      <Filter>Source Files\GUI\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

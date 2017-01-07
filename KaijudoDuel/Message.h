@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LoadResources.h"
+//#include "LoadResources.h"
 #include <map>
 
 enum PacketType { PACKET_MSG, PACKET_SETDECK, PACKET_SETSEED, PACKET_CHOICESELECT, PACKET_ADDARROW, PACKET_CLEARARROWS };
@@ -20,6 +20,8 @@ public:
 	std::string getString(std::string key);
 	int getInt(std::string key);
 	void clear();
+
+	void printMessage();
 };
 
 //sf::Packet& operator <<(sf::Packet& packet, const Message& m);

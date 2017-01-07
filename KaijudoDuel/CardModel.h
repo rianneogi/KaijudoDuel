@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Movement.h"
+#include "LoadResources.h"
+#include "Duel.h"
 
 class CardModel
 {
@@ -22,6 +23,14 @@ public:
 	CardModel(int cid);
 	~CardModel();
 
+	//void render(int myPlayer);
+	//void update(int deltaTime);
+	bool rayTrace(Vector2i mousePos, const glm::mat4& projview, const Vector2i& screenDimensions);
+	//void handleEvent(const SDL_Event& e);
+	//void setPosition(glm::vec3 pos);
+	//void move(Orientation target, int time);
+	//void hover(Orientation target, int time);
+
 	void render(bool visible);
 	void setPosition(const glm::vec3& pos);
 	void setDirection(const glm::vec3& dir);
@@ -32,4 +41,6 @@ public:
 	glm::mat4 getModelMatrix();
 	glm::mat4 getHoverModelMatrix();
 };
+
+int loadCardTexture(const std::string& name, const std::string& set);
 

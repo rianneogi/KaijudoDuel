@@ -2,6 +2,8 @@
 
 #include "Choice.h"
 
+#include <fstream>
+
 enum AttackPhase { PHASE_NONE, PHASE_BLOCK, PHASE_TARGET, PHASE_TRIGGER };
 enum CanAttack { CANATTACK_TAPPED, CANATTACK_UNTAPPED, CANATTACK_NO, CANATTACK_ALWAYS };
 enum ReturnValue { RETURN_BUTTON1 = -1, RETURN_BUTTON2 = -2, RETURN_NOVALID = -3, RETURN_NOTHING = -4, RETURN_QUIT = -5 };
@@ -75,7 +77,7 @@ public:
 	int handleMessage(Message& msg);
 	bool dispatchAllMessages();
 	void dispatchMessage(Message& msg);
-	void parseMessages(unsigned int deltatime);
+	//void parseMessages(unsigned int deltatime);
 
 	//Interface Messages
 	int handleInterfaceInput(Message& msg);

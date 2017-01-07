@@ -1025,23 +1025,23 @@ int Duel::handleInterfaceInput(Message& msg)
 	return 0;
 }
 
-void Duel::parseMessages(unsigned int deltatime)
-{
-	if (!isChoiceActive)
-	{
-		bool worldchanged = dispatchAllMessages();
-		if (worldchanged)
-		{
-			for (std::vector<Card*>::iterator i = mCardList.begin(); i != mCardList.end(); i++)
-			{
-				if ((*i)->Zone == ZONE_BATTLE)
-				{
-					(*i)->updatePower(getCreaturePower((*i)->UniqueId));
-				}
-			}
-		}
-	}
-}
+//void Duel::parseMessages(unsigned int deltatime)
+//{
+//	if (!isChoiceActive)
+//	{
+//		bool worldchanged = dispatchAllMessages();
+//		if (worldchanged)
+//		{
+//			for (std::vector<Card*>::iterator i = mCardList.begin(); i != mCardList.end(); i++)
+//			{
+//				if ((*i)->Zone == ZONE_BATTLE)
+//				{
+//					(*i)->updatePower(getCreaturePower((*i)->UniqueId));
+//				}
+//			}
+//		}
+//	}
+//}
 
 bool Duel::dispatchAllMessages()
 {

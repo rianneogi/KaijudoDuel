@@ -2,7 +2,7 @@
 
 std::vector<std::string> gCardNames;
 
-Card::Card() : UniqueId(-1), CardId(0), Owner(0), mModel(CardId)
+Card::Card() : UniqueId(-1), CardId(0), Owner(0)
 {
 	isFlipped = false;
 	isTapped = false;
@@ -11,7 +11,7 @@ Card::Card() : UniqueId(-1), CardId(0), Owner(0), mModel(CardId)
 	summoningSickness = 1;
 }
 
-Card::Card(int uid, int cid, int owner) : UniqueId(uid), CardId(cid), Owner(owner), mModel(cid)
+Card::Card(int uid, int cid, int owner) : UniqueId(uid), CardId(cid), Owner(owner)
 {
 	//if (uid == -1)
 	//	cout << "ERROR unit id = -1" << endl;
@@ -94,42 +94,15 @@ Card::~Card()
 {
 }
 
-void Card::render(int myPlayer)
-{
-	mModel.render(isVisible[myPlayer]);
-}
-
-void Card::update(int deltaTime)
-{
-	mModel.update(deltaTime);
-}
-
-bool Card::rayTrace(Vector2i mousePos, const glm::mat4& projview, const Vector2i& screenDimensions)
-{
-	Vector2f mousepixel;
-	mousepixel.x = mousePos.x / (screenDimensions.x / 2.f) - 1.f;
-	mousepixel.y = -(mousePos.y / (screenDimensions.y / 2.f) - 1.f);
-	glm::mat4 finalmat = projview*mModel.getHoverModelMatrix();
-
-	std::vector<glm::vec4> newverts;
-	newverts.push_back(finalmat*glm::vec4(-1.f, 0.f, -1.38f, 1));
-	newverts.push_back(finalmat*glm::vec4(1.f, 0.f, -1.38f, 1));
-	newverts.push_back(finalmat*glm::vec4(1.f, 0.f, 1.38f, 1));
-	newverts.push_back(finalmat*glm::vec4(-1.f, 0.f, 1.38f, 1));
-
-	for (int i = 0;i < 4;i++) //perspective divide
-	{
-		newverts[i].x /= newverts[i].w;
-		newverts[i].y /= newverts[i].w;
-		newverts[i].z /= newverts[i].w;
-	}
-
-	if (isPointInsidePolygon(newverts, mousepixel.x, mousepixel.y))
-	{
-		return true;
-	}
-	return false;
-}
+//void Card::render(int myPlayer)
+//{
+//	mModel.render(isVisible[myPlayer]);
+//}
+//
+//void Card::update(int deltaTime)
+//{
+//	mModel.update(deltaTime);
+//}
 
 void Card::copyFrom(Card* c)
 {
@@ -138,9 +111,9 @@ void Card::copyFrom(Card* c)
 
 }
 
-void Card::handleEvent(const SDL_Event& e)
-{
-}
+//void Card::handleEvent(const SDL_Event& e)
+//{
+//}
 
 int Card::handleMessage(Message& msg)
 {
@@ -173,25 +146,25 @@ void Card::callOnCast()
 	lua_pop(LuaCards, 1);
 }
 
-void Card::move(Orientation target, int time)
-{
-	mModel.setMovement(target, time);
-}
+//void Card::move(Orientation target, int time)
+//{
+//	mModel.setMovement(target, time);
+//}
+//
+//void Card::hover(Orientation target, int time)
+//{
+//	mModel.setHoverMovement(target, time);
+//}
+//
+//void Card::setPosition(glm::vec3 pos)
+//{
+//	mModel.setPosition(pos);
+//}
 
-void Card::hover(Orientation target, int time)
-{
-	mModel.setHoverMovement(target, time);
-}
-
-void Card::setPosition(glm::vec3 pos)
-{
-	mModel.setPosition(pos);
-}
-
-void Card::updatePower(int pow)
-{
-	//powertext.setString(std::to_string(pow));
-}
+//void Card::updatePower(int pow)
+//{
+//	//powertext.setString(std::to_string(pow));
+//}
 
 void Card::flip()
 {
@@ -284,15 +257,6 @@ static int loadcard(lua_State* L)
 	CardData cd(CardDatabase.size(), name, set, race, civ, type, cost, power);
 	CardDatabase.push_back(cd);
 
-	name = "Resources\\Cards\\" + set + "\\" + name + ".png";
-	gCardTextures.push_back(new Texture());
-	if (!gCardTextures.at(gCardTextures.size() - 1)->loadFromFile(name))
-	{
-		//cout << "ERROR cant load texture " << CardNames.at(CardNames.size() - 1) << endl;
-		printf("ERROR: cant load card texture %s\n", gCardNames.at(gCardNames.size() - 1).c_str());
-	}
-	//printf("Generated texture: %d\n", gCardTextures[gCardTextures.size() - 1]->mTextureID);
-	//gCardTextures.at(gCardTextures.size() - 1).setSmooth(true);
 	return 0;
 }
 
