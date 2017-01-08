@@ -4,16 +4,26 @@ ZoneRenderer::ZoneRenderer()
 {
 }
 
-ZoneRenderer::ZoneRenderer(Zone * zone) : mZone(zone), mPos(glm::vec3(0,0,0)), mWidth(0), mHeight(0)
+ZoneRenderer::ZoneRenderer(Zone * zone, std::vector<CardModel*>* models) : mZone(zone), mCardModels(models),
+mPos(glm::vec3(0,0,0)), mWidth(0), mHeight(0)
 {
 }
 
-ZoneRenderer::ZoneRenderer(Zone * zone, glm::vec3 pos, float w, float h) : mZone(zone), mPos(pos), mWidth(w), mHeight(h)
+ZoneRenderer::ZoneRenderer(Zone * zone, std::vector<CardModel*>* models, glm::vec3 pos, float w, float h) : mZone(zone), mCardModels(models),
+mPos(pos), mWidth(w), mHeight(h)
 {
 }
 
 ZoneRenderer::~ZoneRenderer()
 {
+}
+
+void ZoneRenderer::renderCards(int myPlayer)
+{
+	for (int i = 0; i < mZone->cards.size(); i++)
+	{
+		mCardModels->at(mZone->cards[i]->UniqueId)->render(myPlayer);
+	}
 }
 
 bool ZoneRenderer::rayTrace(Vector2i mousePos, const glm::mat4& projview, const Vector2i& screenDimensions)

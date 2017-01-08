@@ -8,13 +8,13 @@ ManaZone::~ManaZone()
 {
 }
 
-void ManaZone::renderCards(int myPlayer)
-{
-	for (int i = 0; i < cards.size(); i++)
-	{
-		cards.at(i)->render(myPlayer);
-	}
-}
+//void ManaZone::renderCards(int myPlayer)
+//{
+//	for (int i = 0; i < cards.size(); i++)
+//	{
+//		cards.at(i)->render(myPlayer);
+//	}
+//}
 
 //void ManaZone::handleEvent(sf::Event event)
 //{

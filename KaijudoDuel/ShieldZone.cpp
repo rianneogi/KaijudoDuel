@@ -9,13 +9,13 @@ ShieldZone::~ShieldZone()
 {
 }
 
-void ShieldZone::renderCards(int myPlayer)
-{
-	for (int i = 0; i < cards.size(); i++)
-	{
-		cards.at(i)->render(myPlayer);
-	}
-}
+//void ShieldZone::renderCards(int myPlayer)
+//{
+//	for (int i = 0; i < cards.size(); i++)
+//	{
+//		cards.at(i)->render(myPlayer);
+//	}
+//}
 //
 //void ShieldZone::handleEvent(sf::Event event)
 //{

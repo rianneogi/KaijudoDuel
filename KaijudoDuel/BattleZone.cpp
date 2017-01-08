@@ -8,13 +8,13 @@ BattleZone::~BattleZone()
 {
 }
 
-void BattleZone::renderCards(int myPlayer)
-{
-	for (int i = 0; i < cards.size(); i++)
-	{
-		cards.at(i)->render(myPlayer);
-	}
-}
+//void BattleZone::renderCards(int myPlayer)
+//{
+//	for (int i = 0; i < cards.size(); i++)
+//	{
+//		cards.at(i)->render(myPlayer);
+//	}
+//}
 
 //void BattleZone::handleEvent(sf::Event event)
 //{

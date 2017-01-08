@@ -6,14 +6,15 @@ class ZoneRenderer
 {
 public:
 	Zone* mZone;
+	std::vector<CardModel*>* mCardModels;
 
 	glm::vec3 mPos;
 	float mWidth;
 	float mHeight;
 
 	ZoneRenderer();
-	ZoneRenderer(Zone* zone);
-	ZoneRenderer(Zone* zone, glm::vec3 pos, float w, float h);
+	ZoneRenderer(Zone* zone, std::vector<CardModel*>* models);
+	ZoneRenderer(Zone* zone, std::vector<CardModel*>* models, glm::vec3 pos, float w, float h);
 	~ZoneRenderer();
 
 	void renderCards(int myPlayer);

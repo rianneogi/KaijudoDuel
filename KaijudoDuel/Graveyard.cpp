@@ -8,13 +8,14 @@ Graveyard::~Graveyard()
 {
 }
 
-void Graveyard::renderCards(int myPlayer)
-{
-	if (cards.size() != 0)
-	{
-		cards.at(cards.size() - 1)->render(myPlayer);
-	}
-}
+//void Graveyard::renderCards(int myPlayer)
+//{
+//	if (cards.size() != 0)
+//	{
+//		cards.at(cards.size() - 1)->render(myPlayer);
+//	}
+//}
+
 //
 //void Graveyard::handleEvent(sf::Event event)
 //{

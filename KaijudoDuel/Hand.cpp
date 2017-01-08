@@ -12,18 +12,18 @@ Hand::~Hand()
 {
 }
 
-void Hand::setCamera(Camera* cam)
-{
-	mCamera = cam;
-}
+//void Hand::setCamera(Camera* cam)
+//{
+//	mCamera = cam;
+//}
 
-void Hand::renderCards(int myPlayer)
-{
-	for (int i = 0; i < cards.size(); i++)
-	{
-		cards.at(i)->render(myPlayer);
-	}
-}
+//void Hand::renderCards(int myPlayer)
+//{
+//	for (int i = 0; i < cards.size(); i++)
+//	{
+//		cards.at(i)->render(myPlayer);
+//	}
+//}
 
 void Hand::update(int hovercard)
 {

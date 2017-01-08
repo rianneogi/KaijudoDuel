@@ -17,9 +17,9 @@ public:
 	Hand(int p);
 	~Hand();
 
-	void renderCards(int myPlayer);
-	void setCamera(Camera* cam);
-	void update(int hovercard);
+	//void renderCards(int myPlayer);
+	//void setCamera(Camera* cam);
+	//void update(int hovercard);
 	//void handleEvent(sf::Event event);
 	void addCard(Card* c);
 	void removeCard(Card* c);

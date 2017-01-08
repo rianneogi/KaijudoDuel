@@ -8,7 +8,7 @@ public:
 	Graveyard();
 	~Graveyard();
 
-	void renderCards(int myPlayer);
+	//void renderCards(int myPlayer);
 	//void handleEvent(sf::Event event);
 	void addCard(Card* c);
 };

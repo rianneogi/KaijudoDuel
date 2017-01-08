@@ -21,13 +21,13 @@ int Deck::getTopCard()
 	return cards.at(cards.size() - 1)->UniqueId;
 }
 
-void Deck::renderCards(int myPlayer)
-{
-	for (int i = 0; i < cards.size(); i++)
-	{
-		cards.at(i)->render(myPlayer);
-	}
-}
+//void Deck::renderCards(int myPlayer)
+//{
+//	for (int i = 0; i < cards.size(); i++)
+//	{
+//		cards.at(i)->render(myPlayer);
+//	}
+//}
 
 //void Deck::handleEvent(sf::Event event)
 //{

@@ -12,6 +12,11 @@ DuelInterface::DuelInterface(Duel* duel)
 {
 	mDuel = duel;
 
+	for (int i = 0; i < mDuel->mCardList.size(); i++)
+	{
+		mCardModels.push_back(new CardModel(mDuel->mCardList[i]->CardId));
+	}
+
 	int Factor[2] = { -1, 1 };
 	int Factor2[2] = { 1,0 };
 
@@ -19,29 +24,29 @@ DuelInterface::DuelInterface(Duel* duel)
 	{
 		for (int j = 0; j < 6; j++)
 		{
-			mZoneRenderers[i][j] = new ZoneRenderer(mDuel->getZone(i, j));
+			mZoneRenderers[i][j] = new ZoneRenderer(mDuel->getZone(i, j), &mCardModels);
 		}
 
-		decks[i].mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		graveyards[i].mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (2 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		hands[i].mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (3 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		manazones[i].mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (2 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		shields[i].mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		battlezones[i].mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (0 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		mZoneRenderers[i][ZONE_DECK]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		mZoneRenderers[i][ZONE_GRAVEYARD]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (2 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		mZoneRenderers[i][ZONE_HAND]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (3 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		mZoneRenderers[i][ZONE_MANA]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (2 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		mZoneRenderers[i][ZONE_SHIELD]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		mZoneRenderers[i][ZONE_BATTLE]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (0 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
 
-		decks[i].mHeight = CONST_CARDSEPERATION;
-		graveyards[i].mHeight = CONST_CARDSEPERATION;
-		hands[i].mHeight = CONST_CARDSEPERATION;
-		manazones[i].mHeight = CONST_CARDSEPERATION;
-		shields[i].mHeight = CONST_CARDSEPERATION;
-		battlezones[i].mHeight = CONST_CARDSEPERATION;
+		mZoneRenderers[i][ZONE_DECK]->mHeight = CONST_CARDSEPERATION;
+		mZoneRenderers[i][ZONE_GRAVEYARD]->mHeight = CONST_CARDSEPERATION;
+		mZoneRenderers[i][ZONE_HAND]->mHeight = CONST_CARDSEPERATION;
+		mZoneRenderers[i][ZONE_MANA]->mHeight = CONST_CARDSEPERATION;
+		mZoneRenderers[i][ZONE_SHIELD]->mHeight = CONST_CARDSEPERATION;
+		mZoneRenderers[i][ZONE_BATTLE]->mHeight = CONST_CARDSEPERATION;
 
-		decks[i].mWidth = CONST_CARDSEPERATION;
-		graveyards[i].mWidth = CONST_CARDSEPERATION;
-		hands[i].mWidth = CONST_CARDSEPERATION;
-		manazones[i].mWidth = CONST_CARDSEPERATION * 5;
-		shields[i].mWidth = CONST_CARDSEPERATION * 5;
-		battlezones[i].mWidth = CONST_CARDSEPERATION * 5;
+		mZoneRenderers[i][ZONE_DECK]->mWidth = CONST_CARDSEPERATION;
+		mZoneRenderers[i][ZONE_GRAVEYARD]->mWidth = CONST_CARDSEPERATION;
+		mZoneRenderers[i][ZONE_HAND]->mWidth = CONST_CARDSEPERATION;
+		mZoneRenderers[i][ZONE_MANA]->mWidth = CONST_CARDSEPERATION * 5;
+		mZoneRenderers[i][ZONE_SHIELD]->mWidth = CONST_CARDSEPERATION * 5;
+		mZoneRenderers[i][ZONE_BATTLE]->mWidth = CONST_CARDSEPERATION * 5;
 	}
 
 	duelstate = DUELSTATE_MENU;
@@ -100,14 +105,11 @@ void DuelInterface::render()
 	//render cards
 	for (int i = 0; i < 2; i++)
 	{
-		mDuel->decks[i].renderCards(myPlayer);
-		mDuel->hands[i].renderCards(myPlayer);
-		mDuel->manazones[i].renderCards(myPlayer);
-		mDuel->graveyards[i].renderCards(myPlayer);
-		mDuel->shields[i].renderCards(myPlayer);
-		mDuel->battlezones[i].renderCards(myPlayer);
+		for (int j = 0; j < 6; j++)
+		{
+			mZoneRenderers[i][j]->renderCards(myPlayer);
+		}
 	}
-	
 }
 
 int DuelInterface::handleEvent(const SDL_Event& event, int callback)
@@ -144,14 +146,14 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 				mCamera.render(view, proj);
 				projview = proj*view;
 				Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
-				if (mDuel->battlezones[0].rayTrace(mousePos, projview, screendim))
+				if (mZoneRenderers[0][ZONE_BATTLE]->rayTrace(mousePos, projview, screendim))
 				{
 					Message msg("cardplay");
 					msg.addValue("card", mSelectedCardId);
 					msg.addValue("evobait", -1);
 					mDuel->handleInterfaceInput(msg);
 				}
-				else if (mDuel->manazones[0].rayTrace(mousePos, projview, screendim))
+				else if (mZoneRenderers[0][ZONE_MANA]->rayTrace(mousePos, projview, screendim))
 				{
 					Message msg("cardmana");
 					msg.addValue("card", mSelectedCardId);
@@ -263,7 +265,7 @@ void DuelInterface::update(int deltaTime)
 		float minDepth = 1;
 		for (int i = mDuel->hands[0].cards.size() - 1;i >= 0;i--)
 		{
-			if (mDuel->hands[0].cards[i]->rayTrace(mousePos, projview, screendim))
+			if (mCardModels[i]->rayTrace(mousePos, projview, screendim))
 			{
 				if (newhovercard != mDuel->hands[0].cards[i]->UniqueId)
 				{

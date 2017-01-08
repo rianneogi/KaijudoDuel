@@ -8,7 +8,7 @@ public:
 	BattleZone();
 	~BattleZone();
 
-	void renderCards(int myPlayer);
+	//void renderCards(int myPlayer);
 	//void handleEvent(sf::Event event);
 	void addCard(Card* c);
 	//void addCard(Card* c, int speedattacker);

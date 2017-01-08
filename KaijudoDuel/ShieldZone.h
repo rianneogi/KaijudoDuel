@@ -10,7 +10,7 @@ public:
 
 	int slotsUsed;
 
-	void renderCards(int myPlayer);
+	//void renderCards(int myPlayer);
 	//void handleEvent(sf::Event event);
 	void addCard(Card* c);
 	void removeCard(Card* c);

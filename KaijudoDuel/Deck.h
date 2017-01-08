@@ -13,7 +13,7 @@ public:
 	Card* draw();
 	int getTopCard();
 
-	void renderCards(int myPlayer);
+	//void renderCards(int myPlayer);
 	//void handleEvent(sf::Event event);
 	void addCard(Card* c);
 	void shuffle();
