@@ -36,11 +36,8 @@ public:
 	bool isFlipped;
 	int summoningSickness;
 
-	//sf::Sprite sprite;
-	//sf::Text powertext;
 	bool isVisible[2];
 	//CardModel mModel;
-	//int displayPower;
 	
 	Card();
 	Card(int uid, int cid, int owner);
@@ -62,10 +59,11 @@ public:
 	void callOnCast();
 	void flip();
 	void unflip();
-	void flipForPlayer(int p);
-	void unflipForPlayer(int p);
 	void tap();
 	void untap();
+
+	//void flipForPlayer(int p);
+	//void unflipForPlayer(int p);
 };
 
 int getCardIdFromName(std::string s);

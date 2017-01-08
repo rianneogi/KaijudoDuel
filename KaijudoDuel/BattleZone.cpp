@@ -27,7 +27,7 @@ BattleZone::~BattleZone()
 void BattleZone::addCard(Card* c)
 {
 	//c->move(x + CARDZONEOFFSET + CARDORIGINOFFSET + cards.size() * CARDSEPERATION, y + CARDZONEOFFSET + CARDORIGINOFFSET);
-	c->setPosition(glm::vec3(mPos.x + CONST_CARDSEPERATION*cards.size(), mPos.y, mPos.z + (mPos.z+mHeight)/2));
+	//c->setPosition(glm::vec3(mPos.x + CONST_CARDSEPERATION*cards.size(), mPos.y, mPos.z + (mPos.z+mHeight)/2));
 	c->unflip();
 	c->untap();
 	c->summoningSickness = 1;

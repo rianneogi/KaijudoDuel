@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ZoneRenderer.h"
+#include "BattleZoneRenderer.h"
 
 enum DuelState { DUELSTATE_DUEL, DUELSTATE_MENU, DUELSTATE_SINGLE, DUELSTATE_MULTI };
 enum DuelType { DUELTYPE_SINGLE, DUELTYPE_MULTI, DUELTYPE_AI };
@@ -16,7 +16,13 @@ public:
 	Duel* mDuel;
 
 	std::vector<CardModel*> mCardModels;
-	ZoneRenderer* mZoneRenderers[2][6];
+	//ZoneRenderer* mZoneRenderers[2][6];
+	BattleZoneRenderer mBattleZoneRenderers[2];
+	ManaZoneRenderer mManaZoneRenderers[2];
+	ShieldZoneRenderer mShieldZoneRenderers[2];
+	GraveyardRenderer mGraveyardRenderers[2];
+	DeckRenderer mDeckRenderers[2];
+	HandRenderer mHandRenderers[2];
 
 	int dueltype;
 	int duelstate;
@@ -48,6 +54,8 @@ public:
 	void render();
     int handleEvent(const SDL_Event& event, int callback);
 	//int receivePacket(sf::Packet& packet, int callback);
+
+	ZoneRenderer* getZoneRenderer(int player, int zone);
 
 	void setDecklist();
 

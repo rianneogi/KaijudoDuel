@@ -22,7 +22,7 @@ public:
 	~Zone();
 
 	virtual void addCard(Card* c) = 0;
-	virtual void removeCard(Card* id);
+	virtual void removeCard(Card* c);
 	
 	//virtual void renderCards(int myPlayer) = 0;
 	//bool rayTrace(Vector2i mousePos, const glm::mat4& projview, const Vector2i& screenDimensions);

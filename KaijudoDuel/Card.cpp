@@ -169,28 +169,28 @@ void Card::callOnCast()
 void Card::flip()
 {
 	isFlipped = true;
-	mModel.mOrientation.up = glm::vec3(0, -1, 0);
+	//mModel.mOrientation.up = glm::vec3(0, -1, 0);
 	//sprite.setTexture(Textures.at(TEXTURE_CARDBACK));
 }
 
 void Card::unflip()
 {
 	isFlipped = false;
-	mModel.mOrientation.up = glm::vec3(0, 1, 0);
+	//mModel.mOrientation.up = glm::vec3(0, 1, 0);
 	//sprite.setTexture(CardTextures.at(CardId));
 }
 
 void Card::tap()
 {
 	isTapped = true;
-	mModel.mOrientation.dir = glm::vec3(1, 0, 0);
+	//mModel.mOrientation.dir = glm::vec3(1, 0, 0);
 	//sprite.setRotation(90);
 }
 
 void Card::untap()
 {
 	isTapped = false;
-	mModel.mOrientation.dir = glm::vec3(0, 0, 1);
+	//mModel.mOrientation.dir = glm::vec3(0, 0, 1);
 	//sprite.setRotation(0);
 }
 

@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BattleZone.cpp" />
+    <ClCompile Include="BattleZoneRenderer.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="CardData.cpp" />
@@ -139,15 +140,19 @@
     <ClCompile Include="Choice.cpp" />
     <ClCompile Include="CRandom.cpp" />
     <ClCompile Include="Deck.cpp" />
+    <ClCompile Include="DeckRenderer.cpp" />
     <ClCompile Include="Duel.cpp" />
     <ClCompile Include="DuelInterface.cpp" />
     <ClCompile Include="GraphicsInclude.cpp" />
     <ClCompile Include="Graveyard.cpp" />
+    <ClCompile Include="GraveyardRenderer.cpp" />
     <ClCompile Include="Hand.cpp" />
+    <ClCompile Include="HandRenderer.cpp" />
     <ClCompile Include="LoadResources.cpp" />
     <ClCompile Include="LuaFunctions.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ManaZone.cpp" />
+    <ClCompile Include="ManaZoneRenderer.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshData.cpp" />
     <ClCompile Include="Message.cpp" />
@@ -157,6 +162,7 @@
     <ClCompile Include="Movement.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="ShieldZone.cpp" />
+    <ClCompile Include="ShieldZoneRenderer.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -165,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BattleZone.h" />
+    <ClInclude Include="BattleZoneRenderer.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Card.h" />
     <ClInclude Include="CardData.h" />
@@ -172,16 +179,20 @@
     <ClInclude Include="Choice.h" />
     <ClInclude Include="CRandom.h" />
     <ClInclude Include="Deck.h" />
+    <ClInclude Include="DeckRenderer.h" />
     <ClInclude Include="Duel.h" />
     <ClInclude Include="DuelInterface.h" />
     <ClInclude Include="GraphicsInclude.h" />
     <ClInclude Include="GraphicsTypedefs.h" />
     <ClInclude Include="Graveyard.h" />
+    <ClInclude Include="GraveyardRenderer.h" />
     <ClInclude Include="Hand.h" />
+    <ClInclude Include="HandRenderer.h" />
     <ClInclude Include="LoadResources.h" />
     <ClInclude Include="LuaFunctions.h" />
     <ClInclude Include="LuaInclude.h" />
     <ClInclude Include="ManaZone.h" />
+    <ClInclude Include="ManaZoneRenderer.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshData.h" />
     <ClInclude Include="Message.h" />
@@ -191,6 +202,7 @@
     <ClInclude Include="Movement.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="ShieldZone.h" />
+    <ClInclude Include="ShieldZoneRenderer.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />

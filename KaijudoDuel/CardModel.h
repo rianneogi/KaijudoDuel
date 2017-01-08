@@ -6,6 +6,7 @@
 class CardModel
 {
 public:
+	int mUniqueId;
 	int mCardId;
 
 	Model mFrontModel;
@@ -20,7 +21,7 @@ public:
 	Movement mMovement;
 
 	CardModel();
-	CardModel(int cid);
+	CardModel(int uid, int cid);
 	~CardModel();
 
 	//void render(int myPlayer);
@@ -40,6 +41,11 @@ public:
 	void update(int deltaTime);
 	glm::mat4 getModelMatrix();
 	glm::mat4 getHoverModelMatrix();
+
+	void flip();
+	void unflip();
+	void tap();
+	void untap();
 };
 
 int loadCardTexture(const std::string& name, const std::string& set);

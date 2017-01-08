@@ -41,7 +41,7 @@ void ShieldZone::addCard(Card* c)
 		}
 	}
 	//c->move(x + CARDZONEOFFSET + CARDORIGINOFFSET + cn * CARDSEPERATION, y + CARDZONEOFFSET + CARDORIGINOFFSET);
-	c->setPosition(glm::vec3(mPos.x + CONST_CARDSEPERATION*cards.size() + CONST_CARDSEPERATION/2, mPos.y, mPos.z + (mPos.z + mHeight) / 2));
+	//c->setPosition(glm::vec3(mPos.x + CONST_CARDSEPERATION*cards.size() + CONST_CARDSEPERATION/2, mPos.y, mPos.z + (mPos.z + mHeight) / 2));
 	c->flip();
 	c->untap();
 	cards.push_back(c);

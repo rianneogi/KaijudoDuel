@@ -11,7 +11,7 @@ class Hand : public Zone
 {
 public:
 	int mMyPlayer;
-	Camera* mCamera;
+	//Camera* mCamera;
 
 	Hand();
 	Hand(int p);

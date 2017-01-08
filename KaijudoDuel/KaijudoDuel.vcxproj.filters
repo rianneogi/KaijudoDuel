@@ -34,6 +34,12 @@
     <Filter Include="Source Files\GUI\Shaders">
       <UniqueIdentifier>{4ff043d5-e1c6-45a5-a69d-3a3f496d954e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GUI\ZoneRenderers">
+      <UniqueIdentifier>{0a866a33-39e2-42bb-8c63-11cc765cc7b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI\ZoneRenderers">
+      <UniqueIdentifier>{c5c349e0-c285-4189-8974-8c1b2a43be43}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -127,7 +133,25 @@
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
     <ClCompile Include="ZoneRenderer.cpp">
-      <Filter>Source Files\GUI</Filter>
+      <Filter>Source Files\GUI\ZoneRenderers</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleZoneRenderer.cpp">
+      <Filter>Source Files\GUI\ZoneRenderers</Filter>
+    </ClCompile>
+    <ClCompile Include="DeckRenderer.cpp">
+      <Filter>Source Files\GUI\ZoneRenderers</Filter>
+    </ClCompile>
+    <ClCompile Include="GraveyardRenderer.cpp">
+      <Filter>Source Files\GUI\ZoneRenderers</Filter>
+    </ClCompile>
+    <ClCompile Include="HandRenderer.cpp">
+      <Filter>Source Files\GUI\ZoneRenderers</Filter>
+    </ClCompile>
+    <ClCompile Include="ManaZoneRenderer.cpp">
+      <Filter>Source Files\GUI\ZoneRenderers</Filter>
+    </ClCompile>
+    <ClCompile Include="ShieldZoneRenderer.cpp">
+      <Filter>Source Files\GUI\ZoneRenderers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -225,7 +249,25 @@
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="ZoneRenderer.h">
-      <Filter>Header Files\GUI</Filter>
+      <Filter>Header Files\GUI\ZoneRenderers</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleZoneRenderer.h">
+      <Filter>Header Files\GUI\ZoneRenderers</Filter>
+    </ClInclude>
+    <ClInclude Include="HandRenderer.h">
+      <Filter>Header Files\GUI\ZoneRenderers</Filter>
+    </ClInclude>
+    <ClInclude Include="DeckRenderer.h">
+      <Filter>Header Files\GUI\ZoneRenderers</Filter>
+    </ClInclude>
+    <ClInclude Include="ManaZoneRenderer.h">
+      <Filter>Header Files\GUI\ZoneRenderers</Filter>
+    </ClInclude>
+    <ClInclude Include="ShieldZoneRenderer.h">
+      <Filter>Header Files\GUI\ZoneRenderers</Filter>
+    </ClInclude>
+    <ClInclude Include="GraveyardRenderer.h">
+      <Filter>Header Files\GUI\ZoneRenderers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

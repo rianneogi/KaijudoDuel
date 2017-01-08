@@ -14,7 +14,8 @@ DuelInterface::DuelInterface(Duel* duel)
 
 	for (int i = 0; i < mDuel->mCardList.size(); i++)
 	{
-		mCardModels.push_back(new CardModel(mDuel->mCardList[i]->CardId));
+		assert(i == mDuel->mCardList[i]->UniqueId);
+		mCardModels.push_back(new CardModel(i, mDuel->mCardList[i]->CardId));
 	}
 
 	int Factor[2] = { -1, 1 };
@@ -22,31 +23,31 @@ DuelInterface::DuelInterface(Duel* duel)
 
 	for (int i = 0; i < 2; i++)
 	{
-		for (int j = 0; j < 6; j++)
+		/*for (int j = 0; j < 6; j++)
 		{
 			mZoneRenderers[i][j] = new ZoneRenderer(mDuel->getZone(i, j), &mCardModels);
-		}
+		}*/
 
-		mZoneRenderers[i][ZONE_DECK]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		mZoneRenderers[i][ZONE_GRAVEYARD]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (2 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		mZoneRenderers[i][ZONE_HAND]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (3 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		mZoneRenderers[i][ZONE_MANA]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (2 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		mZoneRenderers[i][ZONE_SHIELD]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		mZoneRenderers[i][ZONE_BATTLE]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (0 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		mDeckRenderers[i].mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		mGraveyardRenderers[i].mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (2 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		mHandRenderers[i].mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (3 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		mManaZoneRenderers[i].mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (2 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		mShieldZoneRenderers[i].mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		mBattleZoneRenderers[i].mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (0 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
 
-		mZoneRenderers[i][ZONE_DECK]->mHeight = CONST_CARDSEPERATION;
-		mZoneRenderers[i][ZONE_GRAVEYARD]->mHeight = CONST_CARDSEPERATION;
-		mZoneRenderers[i][ZONE_HAND]->mHeight = CONST_CARDSEPERATION;
-		mZoneRenderers[i][ZONE_MANA]->mHeight = CONST_CARDSEPERATION;
-		mZoneRenderers[i][ZONE_SHIELD]->mHeight = CONST_CARDSEPERATION;
-		mZoneRenderers[i][ZONE_BATTLE]->mHeight = CONST_CARDSEPERATION;
+		mDeckRenderers[i].mHeight = CONST_CARDSEPERATION;
+		mGraveyardRenderers[i].mHeight = CONST_CARDSEPERATION;
+		mHandRenderers[i].mHeight = CONST_CARDSEPERATION;
+		mManaZoneRenderers[i].mHeight = CONST_CARDSEPERATION;
+		mShieldZoneRenderers[i].mHeight = CONST_CARDSEPERATION;
+		mBattleZoneRenderers[i].mHeight = CONST_CARDSEPERATION;
 
-		mZoneRenderers[i][ZONE_DECK]->mWidth = CONST_CARDSEPERATION;
-		mZoneRenderers[i][ZONE_GRAVEYARD]->mWidth = CONST_CARDSEPERATION;
-		mZoneRenderers[i][ZONE_HAND]->mWidth = CONST_CARDSEPERATION;
-		mZoneRenderers[i][ZONE_MANA]->mWidth = CONST_CARDSEPERATION * 5;
-		mZoneRenderers[i][ZONE_SHIELD]->mWidth = CONST_CARDSEPERATION * 5;
-		mZoneRenderers[i][ZONE_BATTLE]->mWidth = CONST_CARDSEPERATION * 5;
+		mDeckRenderers[i].mWidth = CONST_CARDSEPERATION;
+		mGraveyardRenderers[i].mWidth = CONST_CARDSEPERATION;
+		mHandRenderers[i].mWidth = CONST_CARDSEPERATION;
+		mManaZoneRenderers[i].mWidth = CONST_CARDSEPERATION * 5;
+		mShieldZoneRenderers[i].mWidth = CONST_CARDSEPERATION * 5;
+		mBattleZoneRenderers[i].mWidth = CONST_CARDSEPERATION * 5;
 	}
 
 	duelstate = DUELSTATE_MENU;
@@ -75,10 +76,10 @@ DuelInterface::DuelInterface(Duel* duel)
 	mEndTurnModel.setPosition(glm::vec3(-8.f, 1.0, 0.0));
 	mEndTurnModel.setModelMatrix(glm::rotate(mEndTurnModel.mModelMatrix, float(M_PI), glm::vec3(0, 1, 0)));
 
-	for (int i = 0;i < 2;i++)
+	/*for (int i = 0;i < 2;i++)
 	{
 		mDuel->hands[i].setCamera(&mCamera);
-	}
+	}*/
 }
 
 DuelInterface::~DuelInterface()
@@ -107,7 +108,7 @@ void DuelInterface::render()
 	{
 		for (int j = 0; j < 6; j++)
 		{
-			mZoneRenderers[i][j]->renderCards(myPlayer);
+			getZoneRenderer(i,j)->renderCards(myPlayer);
 		}
 	}
 }
@@ -146,14 +147,14 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 				mCamera.render(view, proj);
 				projview = proj*view;
 				Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
-				if (mZoneRenderers[0][ZONE_BATTLE]->rayTrace(mousePos, projview, screendim))
+				if (mBattleZoneRenderers[0].rayTrace(mousePos, projview, screendim))
 				{
 					Message msg("cardplay");
 					msg.addValue("card", mSelectedCardId);
 					msg.addValue("evobait", -1);
 					mDuel->handleInterfaceInput(msg);
 				}
-				else if (mZoneRenderers[0][ZONE_MANA]->rayTrace(mousePos, projview, screendim))
+				else if (mManaZoneRenderers[0].rayTrace(mousePos, projview, screendim))
 				{
 					Message msg("cardmana");
 					msg.addValue("card", mSelectedCardId);
@@ -293,7 +294,7 @@ void DuelInterface::update(int deltaTime)
 	{
 		mHoverCardId = newhovercard;
 		printf("Hover: %d\n", mHoverCardId);
-		mDuel->hands[0].update(mHoverCardId); //update hand
+		mHandRenderers[0].update(mHoverCardId); //update hand
 	}
 
 	for (int i = 0;i < mCardModels.size();i++) //update cards
@@ -319,17 +320,39 @@ void DuelInterface::undoSelection()
 	}*/
 }
 
-//void DuelInterface::flipCardForPlayer(int cid, int p)
-//{
-//	if (myPlayer == p || dueltype == DUELTYPE_SINGLE)
-//		duel.CardList.at(cid)->flip();
-//}
-//
-//void DuelInterface::unflipCardForPlayer(int cid, int p)
-//{
-//	if (myPlayer == p || dueltype == DUELTYPE_SINGLE)
-//		duel.CardList.at(cid)->unflip();
-//}
+ZoneRenderer* DuelInterface::getZoneRenderer(int player, int zone)
+{
+	if (zone == ZONE_BATTLE)
+	{
+		return &mBattleZoneRenderers[player];
+	}
+	else if (zone == ZONE_MANA)
+	{
+		return &mManaZoneRenderers[player];
+	}
+	else if (zone == ZONE_HAND)
+	{
+		return &mHandRenderers[player];
+	}
+	else if (zone == ZONE_DECK)
+	{
+		return &mDeckRenderers[player];
+	}
+	else if (zone == ZONE_SHIELD)
+	{
+		return &mShieldZoneRenderers[player];
+	}
+	else if (zone == ZONE_GRAVEYARD)
+	{
+		return &mGraveyardRenderers[player];
+	}
+	else if (zone == ZONE_EVOLVED)
+	{
+		return &mBattleZoneRenderers[player];
+	}
+	printf("WARNING: getZoneRenderer called with unknown zone type: %d\n", zone);
+	return NULL;
+}
 
 void DuelInterface::setDecklist()
 {

@@ -1734,6 +1734,7 @@ Zone* Duel::getZone(int player, int zone)
 	{
 		return &battlezones[player];
 	}
+	printf("WARNING: getZone called with unknown zone type: %d\n", zone);
 	return NULL;
 }
 

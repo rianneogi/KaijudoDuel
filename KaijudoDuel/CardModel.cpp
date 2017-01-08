@@ -6,7 +6,7 @@ CardModel::CardModel() : mCardId(-1), mOrientation(glm::vec3(0, 0, 0), glm::vec3
 	mBackModel.mMesh = &gMeshs[MESH_CARD];
 }
 
-CardModel::CardModel(int cid) : mCardId(cid), mOrientation(glm::vec3(0,0,0), glm::vec3(0, 0, 1), glm::vec3(0,1,0))
+CardModel::CardModel(int uid, int cid) : mUniqueId(uid), mCardId(cid), mOrientation(glm::vec3(0,0,0), glm::vec3(0, 0, 1), glm::vec3(0,1,0))
 {
 	mFrontModel.mTexture = gCardTextures[mCardId];
 	mBackModel.mTexture = &gCardBackTexture;
@@ -48,6 +48,26 @@ glm::mat4 CardModel::getHoverModelMatrix()
 	glm::mat4 frontrot = glm::toMat4(rot2*frontq);
 
 	return (pos*frontrot);
+}
+
+void CardModel::flip()
+{
+	mOrientation.up = glm::vec3(0, -1, 0);
+}
+
+void CardModel::unflip()
+{
+	mOrientation.up = glm::vec3(0, 1, 0);
+}
+
+void CardModel::tap()
+{
+	mOrientation.dir = glm::vec3(1, 0, 0);
+}
+
+void CardModel::untap()
+{
+	mOrientation.dir = glm::vec3(0, 0, 1);
 }
 
 void CardModel::render(bool visible)
