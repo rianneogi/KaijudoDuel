@@ -2,6 +2,8 @@
 
 #include "Modifier.h"
 
+#include <vector>
+
 class CardData
 {
 public:
