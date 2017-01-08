@@ -19,27 +19,6 @@ Duel::Duel()
 		manazones[i].owner = i;
 		shields[i].owner = i;
 
-		decks[i].mPos = glm::vec3(-2*CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (1*CONST_CARDSEPERATION+Factor2[i]*CONST_CARDSEPERATION));
-		graveyards[i].mPos = glm::vec3(-2*CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (2*CONST_CARDSEPERATION+Factor2[i]*CONST_CARDSEPERATION));
-		hands[i].mPos = glm::vec3(-2*CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (3 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		manazones[i].mPos = glm::vec3(-2*CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (2 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		shields[i].mPos = glm::vec3(-2*CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		battlezones[i].mPos = glm::vec3(-2*CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (0 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-
-		decks[i].mHeight = CONST_CARDSEPERATION;
-		graveyards[i].mHeight = CONST_CARDSEPERATION;
-		hands[i].mHeight = CONST_CARDSEPERATION;
-		manazones[i].mHeight = CONST_CARDSEPERATION;
-		shields[i].mHeight = CONST_CARDSEPERATION;
-		battlezones[i].mHeight = CONST_CARDSEPERATION;
-
-		decks[i].mWidth = CONST_CARDSEPERATION;
-		graveyards[i].mWidth = CONST_CARDSEPERATION;
-		hands[i].mWidth = CONST_CARDSEPERATION;
-		manazones[i].mWidth = CONST_CARDSEPERATION*5;
-		shields[i].mWidth = CONST_CARDSEPERATION*5;
-		battlezones[i].mWidth = CONST_CARDSEPERATION*5;
-
 	//	decks[i].x = ZONE2X;
 	//	graveyards[i].x = ZONE2X;
 	//	hands[i].x = ZONE1X;

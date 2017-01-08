@@ -126,6 +126,9 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="ZoneRenderer.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Timer.h">
@@ -219,6 +222,9 @@
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ZoneRenderer.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
   </ItemGroup>

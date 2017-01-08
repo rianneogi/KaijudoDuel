@@ -18,7 +18,7 @@ public:
 	float mHeight;*/
 
 	Zone();
-	Zone(glm::vec3 p, float w, float h);
+	//Zone(glm::vec3 p, float w, float h);
 	~Zone();
 
 	virtual void addCard(Card* c) = 0;

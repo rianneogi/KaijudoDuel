@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CardModel.h"
+#include "ZoneRenderer.h"
 
 enum DuelState { DUELSTATE_DUEL, DUELSTATE_MENU, DUELSTATE_SINGLE, DUELSTATE_MULTI };
 enum DuelType { DUELTYPE_SINGLE, DUELTYPE_MULTI, DUELTYPE_AI };
@@ -16,6 +16,7 @@ public:
 	Duel* mDuel;
 
 	std::vector<CardModel*> mCardModels;
+	ZoneRenderer* mZoneRenderers[2][6];
 
 	int dueltype;
 	int duelstate;

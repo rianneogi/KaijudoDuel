@@ -161,6 +161,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Zone.cpp" />
+    <ClCompile Include="ZoneRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BattleZone.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Zone.h" />
+    <ClInclude Include="ZoneRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\mvp.glfs" />

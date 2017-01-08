@@ -12,6 +12,38 @@ DuelInterface::DuelInterface(Duel* duel)
 {
 	mDuel = duel;
 
+	int Factor[2] = { -1, 1 };
+	int Factor2[2] = { 1,0 };
+
+	for (int i = 0; i < 2; i++)
+	{
+		for (int j = 0; j < 6; j++)
+		{
+			mZoneRenderers[i][j] = new ZoneRenderer(mDuel->getZone(i, j));
+		}
+
+		decks[i].mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		graveyards[i].mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (2 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		hands[i].mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (3 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		manazones[i].mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (2 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		shields[i].mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		battlezones[i].mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (0 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+
+		decks[i].mHeight = CONST_CARDSEPERATION;
+		graveyards[i].mHeight = CONST_CARDSEPERATION;
+		hands[i].mHeight = CONST_CARDSEPERATION;
+		manazones[i].mHeight = CONST_CARDSEPERATION;
+		shields[i].mHeight = CONST_CARDSEPERATION;
+		battlezones[i].mHeight = CONST_CARDSEPERATION;
+
+		decks[i].mWidth = CONST_CARDSEPERATION;
+		graveyards[i].mWidth = CONST_CARDSEPERATION;
+		hands[i].mWidth = CONST_CARDSEPERATION;
+		manazones[i].mWidth = CONST_CARDSEPERATION * 5;
+		shields[i].mWidth = CONST_CARDSEPERATION * 5;
+		battlezones[i].mWidth = CONST_CARDSEPERATION * 5;
+	}
+
 	duelstate = DUELSTATE_MENU;
 	dueltype = DUELTYPE_SINGLE;
 
