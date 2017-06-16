@@ -9,10 +9,14 @@ public:
 	int mUniqueId;
 	int mCardId;
 
+	float mSpeed;
+
 	Model mFrontModel;
 	Model mBackModel;
 
-	Orientation mOrientation;
+	Orientation mRender;
+	Orientation mTarget;
+	Orientation mCollision;
 	glm::vec3 mHoverPos;
 	/*glm::vec3 mPosition;
 	glm::vec3 mDirection;
@@ -38,6 +42,7 @@ public:
 	void setUp(const glm::vec3& up);
 	void setMovement(Orientation target, int time);
 	void setHoverMovement(Orientation target, int time);
+	void setOrientation(Orientation o);
 	void update(int deltaTime);
 	glm::mat4 getModelMatrix();
 	glm::mat4 getHoverModelMatrix();
@@ -50,3 +55,5 @@ public:
 
 int loadCardTexture(const std::string& name, const std::string& set);
 
+bool initCardModels();
+void cleanupCardModels();

@@ -5,6 +5,7 @@
 #include <IL\ilu.h>
 #include <gl\glew.h>
 #include <SDL_opengl.h>
+#include <vector>
 
 #include <glm\glm.hpp>
 #include <glm\gtx\transform.hpp>

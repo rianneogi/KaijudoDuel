@@ -2,6 +2,8 @@
 
 //#include "LoadResources.h"
 #include <map>
+#include <string>
+#include <conio.h>
 
 enum PacketType { PACKET_MSG, PACKET_SETDECK, PACKET_SETSEED, PACKET_CHOICESELECT, PACKET_ADDARROW, PACKET_CLEARARROWS };
 

@@ -9,5 +9,6 @@ public:
 	~DeckRenderer();
 
 	void addCard(CardModel* c);
+	void updateCard(CardModel* c, int pos, int size);
 };
 

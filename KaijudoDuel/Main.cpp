@@ -141,19 +141,13 @@ bool initGL()
 
 bool initGame()
 {
-	if (!initCards())
-	{
-		printf("ERROR initializing cards\n");
-		return false;
-	}
-
 	ActiveDuel = new Duel();
-	gDuelInterface = new DuelInterface(ActiveDuel);
+	
 	//ActiveDuel = &(gDuelInterface->mDuel);
 	ActiveDuel->setDecks("Decks\\My Decks\\LFN Starter Deck.txt", "Decks\\My Decks\\FL Burning Light Base Set.txt");
 	ActiveDuel->startDuel();
 	ActiveDuel->dispatchAllMessages();
-
+	gDuelInterface = new DuelInterface(ActiveDuel);
 	return true;
 }
 
@@ -337,6 +331,18 @@ void startGUI()
 		_getch();
 	}
 
+	if (!initCards())
+	{
+		printf("ERROR initializing cards\n");
+		_getch();
+	}
+
+	if (!initCardModels())
+	{
+		printf("ERROR initializing card models\n");
+		_getch();
+	}
+
 	if (!initGame())
 	{
 		printf("ERROR initializing game\n");
@@ -387,8 +393,8 @@ void startConsole()
 
 int main(int argc, char* args[])
 {
-	//startGUI();
-	startConsole();
+	startGUI();
+	//startConsole();
 
 	return 0;
 }

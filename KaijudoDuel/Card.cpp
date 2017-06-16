@@ -287,9 +287,5 @@ bool initCards()
 
 void cleanupCards()
 {
-	for (int i = 0;i < gCardTextures.size();i++)
-	{
-		delete gCardTextures[i];
-	}
 	lua_close(LuaCards);
 }

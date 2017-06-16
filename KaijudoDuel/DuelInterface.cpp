@@ -12,7 +12,7 @@ DuelInterface::DuelInterface(Duel* duel)
 {
 	mDuel = duel;
 
-	for (int i = 0; i < mDuel->mCardList.size(); i++)
+	for (size_t i = 0; i < mDuel->mCardList.size(); i++)
 	{
 		assert(i == mDuel->mCardList[i]->UniqueId);
 		mCardModels.push_back(new CardModel(i, mDuel->mCardList[i]->CardId));
@@ -76,10 +76,10 @@ DuelInterface::DuelInterface(Duel* duel)
 	mEndTurnModel.setPosition(glm::vec3(-8.f, 1.0, 0.0));
 	mEndTurnModel.setModelMatrix(glm::rotate(mEndTurnModel.mModelMatrix, float(M_PI), glm::vec3(0, 1, 0)));
 
-	/*for (int i = 0;i < 2;i++)
+	for (int i = 0;i < 2;i++)
 	{
-		mDuel->hands[i].setCamera(&mCamera);
-	}*/
+		mHandRenderers[i].setCamera(&mCamera);
+	}
 }
 
 DuelInterface::~DuelInterface()
@@ -104,13 +104,18 @@ void DuelInterface::render()
 	mEndTurnModel.render();
 
 	//render cards
-	for (int i = 0; i < 2; i++)
+	for (size_t i = 0; i < mCardModels.size(); i++)
+	{
+		mCardModels[i]->render(true);
+	}
+
+	/*for (int i = 0; i < 2; i++)
 	{
 		for (int j = 0; j < 6; j++)
 		{
 			getZoneRenderer(i,j)->renderCards(myPlayer);
 		}
-	}
+	}*/
 }
 
 int DuelInterface::handleEvent(const SDL_Event& event, int callback)
@@ -287,14 +292,30 @@ void DuelInterface::update(int deltaTime)
 			o.pos = glm::vec3(8*mousepixel.x, (mCamera.mPosition + mCamera.mDirection*gHandStraightDistance).y, 8*mousepixel.y);
 			o.dir = mCamera.mUp;
 			o.up = -mCamera.mDirection;
-			mCardModels[mSelectedCardId]->setMovement(o, 1);
+			mCardModels[mSelectedCardId]->setOrientation(o);
 		}
 	}
+
+	//Set hover card
 	if (newhovercard != mHoverCardId && mSelectedCardId == -1)
 	{
 		mHoverCardId = newhovercard;
 		printf("Hover: %d\n", mHoverCardId);
-		mHandRenderers[0].update(mHoverCardId); //update hand
+		mHandRenderers[0].mHoverCard = mHoverCardId;
+		//mHandRenderers[0].update(mHoverCardId); //update hand
+	}
+
+	//Card Movement
+	for (int i = 0; i < 2; i++)
+	{
+		for (int j = 0; j < 6; j++)
+		{
+			for (size_t k = 0; k < mDuel->getZone(i, j)->cards.size(); k++)
+			{
+				if(mDuel->getZone(i, j)->cards[k]->UniqueId != mSelectedCardId)
+					getZoneRenderer(i, j)->updateCard(mCardModels[mDuel->getZone(i, j)->cards[k]->UniqueId], k, mDuel->getZone(i, j)->cards.size());
+			}
+		}
 	}
 
 	for (int i = 0;i < mCardModels.size();i++) //update cards
