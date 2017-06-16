@@ -5,7 +5,8 @@ CardModel::CardModel() : mCardId(-1), mRender(glm::vec3(0, 0, 0), glm::vec3(0, 0
 	mFrontModel.mMesh = &gMeshs[MESH_CARD];
 	mBackModel.mMesh = &gMeshs[MESH_CARD];
 
-	mSpeed = 0.0005;
+	mMoveSpeed = 0.0005;
+	mTurnSpeed = 0.0000005;
 }
 
 CardModel::CardModel(int uid, int cid) : mUniqueId(uid), mCardId(cid), mRender(glm::vec3(0,0,0), glm::vec3(0, 0, 1), glm::vec3(0,1,0))
@@ -15,7 +16,8 @@ CardModel::CardModel(int uid, int cid) : mUniqueId(uid), mCardId(cid), mRender(g
 	mFrontModel.mMesh = &gMeshs[MESH_CARD];
 	mBackModel.mMesh = &gMeshs[MESH_CARD];
 
-	mSpeed = 0.0005;
+	mMoveSpeed = 0.0005;
+	mTurnSpeed = 0.00005;
 }
 
 CardModel::~CardModel()
@@ -119,10 +121,14 @@ void CardModel::update(int deltaTime)
 		mMovement.update(mOrientation, deltaTime);
 	}*/
 
-	glm::vec3 unitpos = (mTarget.pos - mRender.pos) * (float)mSpeed;
+	glm::vec3 unitpos = (mTarget.pos - mRender.pos) * (float)mMoveSpeed;
 	mRender.pos += unitpos*(float)deltaTime;
 
+	glm::vec3 unitdir = (mTarget.dir - mRender.dir) * (float)mTurnSpeed;
+	mRender.dir += unitdir*(float)deltaTime;
 
+	glm::vec3 unitup = (mTarget.up - mRender.up) * (float)mTurnSpeed;
+	mRender.up += unitup*(float)deltaTime;
 }
 
 bool CardModel::rayTrace(Vector2i mousePos, const glm::mat4& projview, const Vector2i& screenDimensions)

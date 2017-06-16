@@ -9,7 +9,8 @@ public:
 	int mUniqueId;
 	int mCardId;
 
-	float mSpeed;
+	float mMoveSpeed;
+	float mTurnSpeed;
 
 	Model mFrontModel;
 	Model mBackModel;

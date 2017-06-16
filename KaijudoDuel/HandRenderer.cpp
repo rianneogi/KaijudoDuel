@@ -44,7 +44,7 @@ void HandRenderer::update(int hovercard)
 	
 }
 
-void HandRenderer::setCamera(Camera * cam)
+void HandRenderer::setCamera(Camera* cam)
 {
 	mCamera = cam;
 }

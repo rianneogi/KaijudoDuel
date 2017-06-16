@@ -76,10 +76,7 @@ DuelInterface::DuelInterface(Duel* duel)
 	mEndTurnModel.setPosition(glm::vec3(-8.f, 1.0, 0.0));
 	mEndTurnModel.setModelMatrix(glm::rotate(mEndTurnModel.mModelMatrix, float(M_PI), glm::vec3(0, 1, 0)));
 
-	for (int i = 0;i < 2;i++)
-	{
-		mHandRenderers[i].setCamera(&mCamera);
-	}
+	mHandRenderers[0].setCamera(&mCamera);
 }
 
 DuelInterface::~DuelInterface()
@@ -312,6 +309,8 @@ void DuelInterface::update(int deltaTime)
 		{
 			for (size_t k = 0; k < mDuel->getZone(i, j)->cards.size(); k++)
 			{
+				if (i == 1 && j == ZONE_HAND) continue;
+
 				if(mDuel->getZone(i, j)->cards[k]->UniqueId != mSelectedCardId)
 					getZoneRenderer(i, j)->updateCard(mCardModels[mDuel->getZone(i, j)->cards[k]->UniqueId], k, mDuel->getZone(i, j)->cards.size());
 			}
