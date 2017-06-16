@@ -27,17 +27,21 @@ void MeshData::clear()
 	//Index Buffer
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glDeleteBuffers(1, &IB);
+
+	mVertices.clear();
 }
 
-bool MeshData::init(const std::vector<Vertex>& Vertices, const std::vector<unsigned int>& Indices)
+bool MeshData::init(const std::vector<Vertex>& verts, const std::vector<unsigned int>& inds)
 {
 	clear();
+
+	mVertices = verts;
 
 	glGenBuffers(1, &VB);
 	// The following commands will talk about our 'vertexbuffer' buffer
 	glBindBuffer(GL_ARRAY_BUFFER, VB);
 	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*Vertices.size(), &Vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*verts.size(), &verts[0], GL_STATIC_DRAW);
 
 	/*for (int i = Vertices.size()-1;i >=0;i--)
 	{
@@ -49,9 +53,9 @@ bool MeshData::init(const std::vector<Vertex>& Vertices, const std::vector<unsig
 
 	// Bind the index buffer and load the index data into it.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IB);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, Indices.size() * sizeof(unsigned int), &Indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, inds.size() * sizeof(unsigned int), &inds[0], GL_STATIC_DRAW);
 
-	NumIndices = Indices.size();
+	NumIndices = inds.size();
 	printf("making mesh %d %d\n", (int)VB, (int)IB);
 	return true;
 }

@@ -6,7 +6,7 @@ CardModel::CardModel() : mCardId(-1), mRender(glm::vec3(0, 0, 0), glm::vec3(0, 0
 	mBackModel.mMesh = &gMeshs[MESH_CARD];
 
 	mMoveSpeed = 0.0005;
-	mTurnSpeed = 0.0000005;
+	mTurnSpeed = 0.00010;
 }
 
 CardModel::CardModel(int uid, int cid) : mUniqueId(uid), mCardId(cid), mRender(glm::vec3(0,0,0), glm::vec3(0, 0, 1), glm::vec3(0,1,0))
@@ -17,7 +17,7 @@ CardModel::CardModel(int uid, int cid) : mUniqueId(uid), mCardId(cid), mRender(g
 	mBackModel.mMesh = &gMeshs[MESH_CARD];
 
 	mMoveSpeed = 0.0005;
-	mTurnSpeed = 0.00005;
+	mTurnSpeed = 0.00015;
 }
 
 CardModel::~CardModel()
@@ -139,12 +139,17 @@ bool CardModel::rayTrace(Vector2i mousePos, const glm::mat4& projview, const Vec
 	glm::mat4 finalmat = projview*getHoverModelMatrix();
 
 	std::vector<glm::vec4> newverts;
-	newverts.push_back(finalmat*glm::vec4(-1.f, 0.f, -1.38f, 1));
+	/*newverts.push_back(finalmat*glm::vec4(-1.f, 0.f, -1.38f, 1));
 	newverts.push_back(finalmat*glm::vec4(1.f, 0.f, -1.38f, 1));
 	newverts.push_back(finalmat*glm::vec4(1.f, 0.f, 1.38f, 1));
-	newverts.push_back(finalmat*glm::vec4(-1.f, 0.f, 1.38f, 1));
+	newverts.push_back(finalmat*glm::vec4(-1.f, 0.f, 1.38f, 1));*/
+	for (size_t i = 0; i < gMeshs[MESH_CARD].mEntries[0].mVertices.size(); i++)
+	{
+		Vector3f v = gMeshs[MESH_CARD].mEntries[0].mVertices[i].Pos;
+		newverts.push_back(finalmat*glm::vec4(v.x, v.y, v.z, 1));
+	}
 
-	for (int i = 0; i < 4; i++) //perspective divide
+	for (size_t i = 0; i < newverts.size(); i++) //perspective divide
 	{
 		newverts[i].x /= newverts[i].w;
 		newverts[i].y /= newverts[i].w;

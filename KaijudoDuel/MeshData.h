@@ -27,9 +27,11 @@ public:
 	MeshData();
 	~MeshData();
 
-	bool init(const std::vector<Vertex>& Vertices, const std::vector<unsigned int>& Indices);
+	bool init(const std::vector<Vertex>& verts, const std::vector<unsigned int>& inds);
 	void render();
 	void clear();
+
+	std::vector<Vertex> mVertices;
 
 	GLuint VB;
 	GLuint IB;

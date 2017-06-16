@@ -265,10 +265,10 @@ void DuelInterface::update(int deltaTime)
 		mCamera.render(view, proj);
 		projview = proj*view;
 		Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
-		float minDepth = 1;
+		//float minDepth = 1;
 		for (int i = mDuel->hands[0].cards.size() - 1;i >= 0;i--)
 		{
-			if (mCardModels[i]->rayTrace(mousePos, projview, screendim))
+			if (mCardModels[mDuel->hands[0].cards[i]->UniqueId]->rayTrace(mousePos, projview, screendim))
 			{
 				if (newhovercard != mDuel->hands[0].cards[i]->UniqueId)
 				{
