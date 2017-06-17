@@ -32,8 +32,10 @@ public:
 	int selectedcard;
 	int selectedcardzone;
 	int iscardevo;
+
 	int mHoverCardId;
 	int mSelectedCardId;
+	int mHoverException;
 
 	Camera mCamera;
 	Model mTableModel;

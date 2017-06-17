@@ -58,6 +58,7 @@ DuelInterface::DuelInterface(Duel* duel)
 
 	mHoverCardId = -1;
 	mSelectedCardId = -1;
+	mHoverException = -1;
 
 	setMyPlayer(0);
 
@@ -148,7 +149,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 					{
 						assert(mHoverCardId < mDuel->mCardList.size());
 						mSelectedCardId = mHoverCardId;
-						printf("select %d\n", mSelectedCardId);
+						printf("Select: %d\n", mSelectedCardId);
 						//mDuel.CardList[mHoverCardId]->move(target, 0);
 					}
 					else if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_MANA) //tap mana
@@ -156,6 +157,8 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 						Message msg("manatap");
 						msg.addValue("card", mHoverCardId);
 						mDuel->handleInterfaceInput(msg);
+
+						mHoverException = mHoverCardId;
 					}
 					else if (mDuel->attackphase == PHASE_BLOCK)
 					{
@@ -175,6 +178,8 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 							Message msg("creatureblock");
 							msg.addValue("blocker", mHoverCardId);
 							mDuel->handleInterfaceInput(msg);
+
+							mHoverException = mHoverCardId;
 						}
 					}
 					else if (mDuel->attackphase == PHASE_TARGET)
@@ -195,6 +200,8 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 							Message msg("targetshield");
 							msg.addValue("shield", mHoverCardId);
 							mDuel->handleInterfaceInput(msg);
+
+							mHoverException = mHoverCardId;
 						}
 					}
 					else if (mDuel->attackphase == PHASE_TRIGGER)
@@ -214,6 +221,8 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 							Message msg("targetshield");
 							msg.addValue("shield", mHoverCardId);
 							mDuel->handleInterfaceInput(msg);
+
+							mHoverException = mHoverCardId;
 						}
 					}
 				}
@@ -256,54 +265,82 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 						msg.addValue("card", mSelectedCardId);
 						msg.addValue("evobait", -1);
 						mDuel->handleInterfaceInput(msg);
+
+						mHoverException = mSelectedCardId;
 					}
 					else if (mManaZoneRenderers[mDuel->turn]->rayTrace(mousePos, projview, screendim)) //put card in mana
 					{
 						Message msg("cardmana");
 						msg.addValue("card", mSelectedCardId);
 						mDuel->handleInterfaceInput(msg);
+
+						mHoverException = mSelectedCardId;
 					}
 					mSelectedCardId = -1;
 				}
 				else if (mDuel->mCardList[mSelectedCardId]->Zone == ZONE_BATTLE) 
 				{
-					glm::mat4 view, proj, projview;
-					mCamera.render(view, proj);
-					projview = proj*view;
-					Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-					int has_attacked = 0;
-					for (size_t i = 0; i < mDuel->battlezones[!mDuel->turn].cards.size(); i++) //attack creatures
+					if (mHoverCardId != -1)
 					{
-						if (mCardModels[mDuel->battlezones[!mDuel->turn].cards[i]->UniqueId]->rayTrace(mousePos, projview, screendim))
+						if (mDuel->mCardList[mHoverCardId]->Owner != mDuel->turn)
 						{
-							Message msg("creatureattack");
-							msg.addValue("attacker", mSelectedCardId);
-							msg.addValue("defender", mDuel->battlezones[!mDuel->turn].cards[i]->UniqueId);
-							msg.addValue("defendertype", DEFENDER_CREATURE);
-							mDuel->handleInterfaceInput(msg);
-							has_attacked = 1;
-							mSelectedCardId = -1;
-							break;
-						}
-					}
-
-					if (!has_attacked) //attack shields
-					{
-						for (size_t i = 0; i < mDuel->shields[!mDuel->turn].cards.size(); i++)
-						{
-							if (mCardModels[mDuel->shields[!mDuel->turn].cards[i]->UniqueId]->rayTrace(mousePos, projview, screendim))
+							if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_BATTLE)
 							{
 								Message msg("creatureattack");
 								msg.addValue("attacker", mSelectedCardId);
-								msg.addValue("defender", mDuel->shields[!mDuel->turn].cards[i]->UniqueId);
+								msg.addValue("defender", mHoverCardId);
+								msg.addValue("defendertype", DEFENDER_CREATURE);
+								mDuel->handleInterfaceInput(msg);
+								mSelectedCardId = -1;
+							}
+							else if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_SHIELD)
+							{
+								Message msg("creatureattack");
+								msg.addValue("attacker", mSelectedCardId);
+								msg.addValue("defender", mHoverCardId);
 								msg.addValue("defendertype", DEFENDER_PLAYER);
 								mDuel->handleInterfaceInput(msg);
 								mSelectedCardId = -1;
-								break;
 							}
 						}
 					}
+					//glm::mat4 view, proj, projview;
+					//mCamera.render(view, proj);
+					//projview = proj*view;
+					//Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+					//int has_attacked = 0;
+					//for (size_t i = 0; i < mDuel->battlezones[!mDuel->turn].cards.size(); i++) //attack creatures
+					//{
+					//	if (mCardModels[mDuel->battlezones[!mDuel->turn].cards[i]->UniqueId]->rayTrace(mousePos, projview, screendim))
+					//	{
+					//		Message msg("creatureattack");
+					//		msg.addValue("attacker", mSelectedCardId);
+					//		msg.addValue("defender", mDuel->battlezones[!mDuel->turn].cards[i]->UniqueId);
+					//		msg.addValue("defendertype", DEFENDER_CREATURE);
+					//		mDuel->handleInterfaceInput(msg);
+					//		has_attacked = 1;
+					//		mSelectedCardId = -1;
+					//		break;
+					//	}
+					//}
+
+					//if (!has_attacked) //attack shields
+					//{
+					//	for (size_t i = 0; i < mDuel->shields[!mDuel->turn].cards.size(); i++)
+					//	{
+					//		if (mCardModels[mDuel->shields[!mDuel->turn].cards[i]->UniqueId]->rayTrace(mousePos, projview, screendim))
+					//		{
+					//			Message msg("creatureattack");
+					//			msg.addValue("attacker", mSelectedCardId);
+					//			msg.addValue("defender", mDuel->shields[!mDuel->turn].cards[i]->UniqueId);
+					//			msg.addValue("defendertype", DEFENDER_PLAYER);
+					//			mDuel->handleInterfaceInput(msg);
+					//			mSelectedCardId = -1;
+					//			break;
+					//		}
+					//	}
+					//}
 				}
 			}
 		}
@@ -450,12 +487,21 @@ void DuelInterface::update(int deltaTime)
 	}
 
 	//Set hover card
-	if (newhovercard != mHoverCardId && mSelectedCardId == -1)
+	if (newhovercard == mHoverException && mHoverException != -1)
+	{
+		mHoverCardId = -1;
+	}
+	else if (newhovercard != mHoverCardId && (mSelectedCardId == -1 || mDuel->mCardList[mSelectedCardId]->Zone != ZONE_HAND)
+		&& (newhovercard != mHoverException || mHoverException == -1))
 	{
 		mHoverCardId = newhovercard;
 		printf("Hover: %d\n", mHoverCardId);
 		//mHandRenderers[mDuel->turn]->mHoverCard = mHoverCardId;
 		//mHandRenderers[0].update(mHoverCardId); //update hand
+	}
+	if (newhovercard != mHoverException)
+	{
+		mHoverException = -1;
 	}
 
 	//Card Movement
