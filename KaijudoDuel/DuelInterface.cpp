@@ -143,10 +143,12 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 			{
 				if (mHoverCardId != -1)
 				{
-					if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_HAND || mDuel->mCardList[mHoverCardId]->Zone == ZONE_BATTLE) //select card
+					if ((mDuel->mCardList[mHoverCardId]->Zone == ZONE_HAND || mDuel->mCardList[mHoverCardId]->Zone == ZONE_BATTLE) //select card
+						&& mDuel->mCardList[mHoverCardId]->Owner == mDuel->turn && mDuel->attackphase == PHASE_NONE) 
 					{
 						assert(mHoverCardId < mDuel->mCardList.size());
 						mSelectedCardId = mHoverCardId;
+						printf("select %d\n", mSelectedCardId);
 						//mDuel.CardList[mHoverCardId]->move(target, 0);
 					}
 					else if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_MANA) //tap mana
@@ -154,6 +156,65 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 						Message msg("manatap");
 						msg.addValue("card", mHoverCardId);
 						mDuel->handleInterfaceInput(msg);
+					}
+					else if (mDuel->attackphase == PHASE_BLOCK)
+					{
+						//for (size_t i = 0; i < mDuel->battlezones[!mDuel->turn].cards.size(); i++) //choose blocker
+						//{
+						//	if (mCardModels[mDuel->battlezones[!mDuel->turn].cards[i]->UniqueId]->rayTrace(mousePos, projview, screendim))
+						//	{
+						//		Message msg("creatureblock");
+						//		msg.addValue("blocker", mDuel->battlezones[!mDuel->turn].cards[i]->UniqueId);
+						//		mDuel->handleInterfaceInput(msg);
+						//		break;
+						//	}
+						//}
+
+						if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_BATTLE && mDuel->mCardList[mHoverCardId]->Owner == !mDuel->turn)
+						{
+							Message msg("creatureblock");
+							msg.addValue("blocker", mHoverCardId);
+							mDuel->handleInterfaceInput(msg);
+						}
+					}
+					else if (mDuel->attackphase == PHASE_TARGET)
+					{
+						//for (size_t i = 0; i < mDuel->shields[!mDuel->turn].cards.size(); i++) //choose shields
+						//{
+						//	if (mCardModels[mDuel->shields[!mDuel->turn].cards[i]->UniqueId]->rayTrace(mousePos, projview, screendim))
+						//	{
+						//		Message msg("targetshield");
+						//		msg.addValue("shield", mDuel->shields[!mDuel->turn].cards[i]->UniqueId);
+						//		mDuel->handleInterfaceInput(msg);
+						//		break;
+						//	}
+						//}
+
+						if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_SHIELD && mDuel->mCardList[mHoverCardId]->Owner == !mDuel->turn)
+						{
+							Message msg("targetshield");
+							msg.addValue("shield", mHoverCardId);
+							mDuel->handleInterfaceInput(msg);
+						}
+					}
+					else if (mDuel->attackphase == PHASE_TRIGGER)
+					{
+						//for (size_t i = 0; i < mDuel->hands[!mDuel->turn].cards.size(); i++) //use shield trigger
+						//{
+						//	if (mCardModels[mDuel->hands[!mDuel->turn].cards[i]->UniqueId]->rayTrace(mousePos, projview, screendim))
+						//	{
+						//		Message msg("triggeruse");
+						//		msg.addValue("trigger", mDuel->shields[!mDuel->turn].cards[i]->UniqueId);
+						//		mDuel->handleInterfaceInput(msg);
+						//	}
+						//}
+
+						if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_HAND && mDuel->mCardList[mHoverCardId]->Owner == !mDuel->turn)
+						{
+							Message msg("targetshield");
+							msg.addValue("shield", mHoverCardId);
+							mDuel->handleInterfaceInput(msg);
+						}
 					}
 				}
 
@@ -163,9 +224,22 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 				Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
 				if (mEndTurnModel.rayTrace(mousePos, projview, screendim)) //end turn
 				{
-					Message msg("endturn");
-					mDuel->handleInterfaceInput(msg);
-					printf("end turn pressed\n");
+					if (mDuel->attackphase == PHASE_BLOCK)
+					{
+						Message msg("blockskip");
+						mDuel->handleInterfaceInput(msg);
+					}
+					else if (mDuel->attackphase == PHASE_TRIGGER)
+					{
+						Message msg("triggerskip");
+						mDuel->handleInterfaceInput(msg);
+					}
+					else
+					{
+						Message msg("endturn");
+						mDuel->handleInterfaceInput(msg);
+						printf("end turn pressed\n");
+					}
 				}
 			}
 			else
@@ -210,6 +284,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 							mDuel->handleInterfaceInput(msg);
 							has_attacked = 1;
 							mSelectedCardId = -1;
+							break;
 						}
 					}
 
@@ -225,6 +300,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 								msg.addValue("defendertype", DEFENDER_PLAYER);
 								mDuel->handleInterfaceInput(msg);
 								mSelectedCardId = -1;
+								break;
 							}
 						}
 					}
@@ -349,7 +425,7 @@ void DuelInterface::update(int deltaTime)
 		for (int i = 0; i < mCardModels.size(); i++)
 		{
 			if (mDuel->mCardList[i]->Zone == ZONE_BATTLE || mDuel->mCardList[i]->Zone == ZONE_MANA
-				|| mDuel->mCardList[i]->Zone == ZONE_HAND)
+				|| mDuel->mCardList[i]->Zone == ZONE_HAND || mDuel->mCardList[i]->Zone == ZONE_SHIELD)
 			{
 				if (mCardModels[i]->rayTrace(mousePos, projview, screendim))
 				{

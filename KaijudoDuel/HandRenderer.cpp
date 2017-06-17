@@ -19,8 +19,10 @@ void HandRenderer::updateCard(CardModel* c, int pos, int size, int hovercard, in
 {
 	if (mOwner == 0)
 	{
-		glm::vec3 center(mCamera->mPosition + mCamera->mDirection*gHandStraightDistance - gHandDownDistance*mCamera->mUp);
-		glm::vec3 centerhover(mCamera->mPosition + mCamera->mDirection*gHandHoverStraightDistance - gHandHoverDownDistance*mCamera->mUp);
+		glm::vec3 center(mCamera->mPosition + mCamera->mDirection*gHandStraightDistance - 
+			gHandDownDistance*mCamera->mUp + mCamera->mRight*gHandRightDistance);
+		glm::vec3 centerhover(mCamera->mPosition + mCamera->mDirection*gHandHoverStraightDistance - 
+			gHandHoverDownDistance*mCamera->mUp + mCamera->mRight*gHandHoverRightDistance);
 
 		float angle = M_PI / 2 + (M_PI / 8)*(float(size) / -2.f + pos);
 		glm::vec3 dir(sin(angle)*mCamera->mUp - cos(angle)*mCamera->mRight);
@@ -35,7 +37,7 @@ void HandRenderer::updateCard(CardModel* c, int pos, int size, int hovercard, in
 			o.up = mCamera->mDirection;
 			o.dir.x *= -1;
 		}
-		if (c->mUniqueId == hovercard)
+		if (c->mUniqueId == hovercard && mTurn == mOwner)
 		{
 			o.pos = centerhover + offset;
 			o.calculateQuat();
@@ -50,8 +52,10 @@ void HandRenderer::updateCard(CardModel* c, int pos, int size, int hovercard, in
 	}
 	else
 	{
-		glm::vec3 center(mCamera->mPosition + mCamera->mDirection*gHandStraightDistance + gHandDownDistance*mCamera->mUp);
-		glm::vec3 centerhover(mCamera->mPosition + mCamera->mDirection*gHandHoverStraightDistance + gHandHoverDownDistance*mCamera->mUp);
+		glm::vec3 center(mCamera->mPosition + mCamera->mDirection*gHandStraightDistance +
+			gHandDownDistance*mCamera->mUp + mCamera->mRight*gHandRightDistance);
+		glm::vec3 centerhover(mCamera->mPosition + mCamera->mDirection*gHandHoverStraightDistance +
+			gHandHoverDownDistance*mCamera->mUp + mCamera->mRight*gHandHoverRightDistance);
 
 		float angle = M_PI / 2 + (M_PI / 8)*(float(size) / -2.f + pos);
 		glm::vec3 dir(sin(angle)*mCamera->mUp - cos(angle)*mCamera->mRight);
@@ -66,7 +70,7 @@ void HandRenderer::updateCard(CardModel* c, int pos, int size, int hovercard, in
 			o.up = mCamera->mDirection;
 			o.dir.x *= -1;
 		}
-		if (c->mUniqueId == hovercard)
+		if (c->mUniqueId == hovercard && mTurn == mOwner)
 		{
 			o.dir = glm::vec3(0, 0, 1);
 			o.up = glm::vec3(0, 1, 0);

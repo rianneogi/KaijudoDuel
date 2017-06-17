@@ -2,6 +2,13 @@
 
 #include "ZoneRenderer.h"
 
+const float gHandStraightDistance = 10.f;
+const float gHandDownDistance = 6.5f;
+const float gHandHoverStraightDistance = 4.f;
+const float gHandHoverDownDistance = 2.f;
+const float gHandRightDistance = 3.f;
+const float gHandHoverRightDistance = 1.5f;
+
 class HandRenderer : public ZoneRenderer
 {
 public:
