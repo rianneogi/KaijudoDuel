@@ -209,6 +209,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 							msg.addValue("defendertype", DEFENDER_CREATURE);
 							mDuel->handleInterfaceInput(msg);
 							has_attacked = 1;
+							mSelectedCardId = -1;
 						}
 					}
 
@@ -223,6 +224,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 								msg.addValue("defender", mDuel->shields[!mDuel->turn].cards[i]->UniqueId);
 								msg.addValue("defendertype", DEFENDER_PLAYER);
 								mDuel->handleInterfaceInput(msg);
+								mSelectedCardId = -1;
 							}
 						}
 					}
@@ -355,7 +357,7 @@ void DuelInterface::update(int deltaTime)
 				}
 			}
 		}
-		if (mSelectedCardId != -1)
+		if (mSelectedCardId != -1 && mDuel->mCardList[mSelectedCardId]->Zone == ZONE_HAND)
 		{
 			assert(mSelectedCardId < mDuel->mCardList.size());
 
@@ -376,7 +378,7 @@ void DuelInterface::update(int deltaTime)
 	{
 		mHoverCardId = newhovercard;
 		printf("Hover: %d\n", mHoverCardId);
-		mHandRenderers[mDuel->turn]->mHoverCard = mHoverCardId;
+		//mHandRenderers[mDuel->turn]->mHoverCard = mHoverCardId;
 		//mHandRenderers[0].update(mHoverCardId); //update hand
 	}
 
@@ -387,8 +389,10 @@ void DuelInterface::update(int deltaTime)
 		{
 			for (size_t k = 0; k < mDuel->getZone(i, j)->cards.size(); k++)
 			{
-				if(mDuel->getZone(i, j)->cards[k]->UniqueId != mSelectedCardId)
-					getZoneRenderer(i, j)->updateCard(mCardModels[mDuel->getZone(i, j)->cards[k]->UniqueId], k, mDuel->getZone(i, j)->cards.size());
+				Card* c = mDuel->getZone(i, j)->cards[k];
+				if(c->UniqueId != mSelectedCardId)
+					getZoneRenderer(i, j)->updateCard(mCardModels[c->UniqueId], k, mDuel->getZone(i, j)->cards.size(), 
+						mHoverCardId, c->isTapped, c->isFlipped);
 			}
 		}
 	}
