@@ -28,7 +28,13 @@ void HandRenderer::updateCard(CardModel* c, int pos, int size)
 
 		Orientation o;
 		o.dir = mCamera->mUp + dir;
-		o.up = -mCamera->mDirection;
+		if (mTurn == mOwner)
+			o.up = -mCamera->mDirection;
+		else
+		{
+			o.up = mCamera->mDirection;
+			o.dir.x *= -1;
+		}
 		if (c->mUniqueId == mHoverCard)
 		{
 			o.pos = centerhover + offset;
@@ -52,10 +58,18 @@ void HandRenderer::updateCard(CardModel* c, int pos, int size)
 		glm::vec3 offset(-1.75f*dir - pos*0.1f*mCamera->mDirection);
 
 		Orientation o;
-		o.dir = mCamera->mUp + dir;
-		o.up = mCamera->mDirection;
+		o.dir = -mCamera->mUp - dir;
+		if (mTurn == mOwner)
+			o.up = -mCamera->mDirection;
+		else
+		{
+			o.up = mCamera->mDirection;
+			o.dir.x *= -1;
+		}
 		if (c->mUniqueId == mHoverCard)
 		{
+			o.dir = glm::vec3(0, 0, 1);
+			o.up = glm::vec3(0, 1, 0);
 			o.pos = centerhover + offset;
 			o.calculateQuat();
 			c->setHoverMovement(o, 1000);

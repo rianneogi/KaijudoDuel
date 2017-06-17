@@ -143,16 +143,25 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 			{
 				if (mHoverCardId != -1)
 				{
-					assert(mHoverCardId < mDuel->mCardList.size());
-					mSelectedCardId = mHoverCardId;
-					//mDuel.CardList[mHoverCardId]->move(target, 0);
+					if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_HAND || mDuel->mCardList[mHoverCardId]->Zone == ZONE_BATTLE) //select card
+					{
+						assert(mHoverCardId < mDuel->mCardList.size());
+						mSelectedCardId = mHoverCardId;
+						//mDuel.CardList[mHoverCardId]->move(target, 0);
+					}
+					else if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_MANA) //tap mana
+					{
+						Message msg("manatap");
+						msg.addValue("card", mHoverCardId);
+						mDuel->handleInterfaceInput(msg);
+					}
 				}
 
 				glm::mat4 view, proj, projview;
 				mCamera.render(view, proj);
 				projview = proj*view;
 				Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
-				if (mEndTurnModel.rayTrace(mousePos, projview, screendim))
+				if (mEndTurnModel.rayTrace(mousePos, projview, screendim)) //end turn
 				{
 					Message msg("endturn");
 					mDuel->handleInterfaceInput(msg);
@@ -161,24 +170,63 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 			}
 			else
 			{
-				glm::mat4 view, proj, projview;
-				mCamera.render(view, proj);
-				projview = proj*view;
-				Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
-				if (mBattleZoneRenderers[0]->rayTrace(mousePos, projview, screendim))
+				if (mDuel->mCardList[mSelectedCardId]->Zone == ZONE_HAND)
 				{
-					Message msg("cardplay");
-					msg.addValue("card", mSelectedCardId);
-					msg.addValue("evobait", -1);
-					mDuel->handleInterfaceInput(msg);
+					glm::mat4 view, proj, projview;
+					mCamera.render(view, proj);
+					projview = proj*view;
+					Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
+					if (mBattleZoneRenderers[mDuel->turn]->rayTrace(mousePos, projview, screendim)) //play card
+					{
+						Message msg("cardplay");
+						msg.addValue("card", mSelectedCardId);
+						msg.addValue("evobait", -1);
+						mDuel->handleInterfaceInput(msg);
+					}
+					else if (mManaZoneRenderers[mDuel->turn]->rayTrace(mousePos, projview, screendim)) //put card in mana
+					{
+						Message msg("cardmana");
+						msg.addValue("card", mSelectedCardId);
+						mDuel->handleInterfaceInput(msg);
+					}
+					mSelectedCardId = -1;
 				}
-				else if (mManaZoneRenderers[0]->rayTrace(mousePos, projview, screendim))
+				else if (mDuel->mCardList[mSelectedCardId]->Zone == ZONE_BATTLE) 
 				{
-					Message msg("cardmana");
-					msg.addValue("card", mSelectedCardId);
-					mDuel->handleInterfaceInput(msg);
+					glm::mat4 view, proj, projview;
+					mCamera.render(view, proj);
+					projview = proj*view;
+					Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+					int has_attacked = 0;
+					for (size_t i = 0; i < mDuel->battlezones[!mDuel->turn].cards.size(); i++) //attack creatures
+					{
+						if (mCardModels[mDuel->battlezones[!mDuel->turn].cards[i]->UniqueId]->rayTrace(mousePos, projview, screendim))
+						{
+							Message msg("creatureattack");
+							msg.addValue("attacker", mSelectedCardId);
+							msg.addValue("defender", mDuel->battlezones[!mDuel->turn].cards[i]->UniqueId);
+							msg.addValue("defendertype", DEFENDER_CREATURE);
+							mDuel->handleInterfaceInput(msg);
+							has_attacked = 1;
+						}
+					}
+
+					if (!has_attacked) //attack shields
+					{
+						for (size_t i = 0; i < mDuel->shields[!mDuel->turn].cards.size(); i++)
+						{
+							if (mCardModels[mDuel->shields[!mDuel->turn].cards[i]->UniqueId]->rayTrace(mousePos, projview, screendim))
+							{
+								Message msg("creatureattack");
+								msg.addValue("attacker", mSelectedCardId);
+								msg.addValue("defender", mDuel->shields[!mDuel->turn].cards[i]->UniqueId);
+								msg.addValue("defendertype", DEFENDER_PLAYER);
+								mDuel->handleInterfaceInput(msg);
+							}
+						}
+					}
 				}
-				mSelectedCardId = -1;
 			}
 		}
 		else if (event.button.button == SDL_BUTTON_RIGHT)
@@ -272,6 +320,9 @@ void DuelInterface::update(int deltaTime)
 {
 	mDuel->dispatchAllMessages();
 
+	for (int i = 0; i < 2; i++)
+		mHandRenderers[i]->mTurn = mDuel->turn;
+
 	int newhovercard = -1;
 	Vector2i mousePos;
 	SDL_GetMouseState(&mousePos.x, &mousePos.y);
@@ -282,15 +333,26 @@ void DuelInterface::update(int deltaTime)
 		projview = proj*view;
 		Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
 		//float minDepth = 1;
-		for (int i = mDuel->hands[0].cards.size() - 1;i >= 0;i--)
+		for (int i = mDuel->hands[mDuel->turn].cards.size() - 1;i >= 0;i--)
 		{
-			if (mCardModels[mDuel->hands[0].cards[i]->UniqueId]->rayTrace(mousePos, projview, screendim))
+			if (mCardModels[mDuel->hands[mDuel->turn].cards[i]->UniqueId]->rayTrace(mousePos, projview, screendim))
 			{
-				if (newhovercard != mDuel->hands[0].cards[i]->UniqueId)
+				if (newhovercard != mDuel->hands[mDuel->turn].cards[i]->UniqueId)
 				{
-					newhovercard = mDuel->hands[0].cards[i]->UniqueId;
+					newhovercard = mDuel->hands[mDuel->turn].cards[i]->UniqueId;
 				}
 				break;
+			}
+		}
+		for (int i = 0; i < mCardModels.size(); i++)
+		{
+			if (mDuel->mCardList[i]->Zone == ZONE_BATTLE || mDuel->mCardList[i]->Zone == ZONE_MANA
+				|| mDuel->mCardList[i]->Zone == ZONE_HAND)
+			{
+				if (mCardModels[i]->rayTrace(mousePos, projview, screendim))
+				{
+					newhovercard = i;
+				}
 			}
 		}
 		if (mSelectedCardId != -1)
@@ -314,7 +376,7 @@ void DuelInterface::update(int deltaTime)
 	{
 		mHoverCardId = newhovercard;
 		printf("Hover: %d\n", mHoverCardId);
-		mHandRenderers[0]->mHoverCard = mHoverCardId;
+		mHandRenderers[mDuel->turn]->mHoverCard = mHoverCardId;
 		//mHandRenderers[0].update(mHoverCardId); //update hand
 	}
 
@@ -325,8 +387,6 @@ void DuelInterface::update(int deltaTime)
 		{
 			for (size_t k = 0; k < mDuel->getZone(i, j)->cards.size(); k++)
 			{
-				if (i == 1 && j == ZONE_HAND) continue;
-
 				if(mDuel->getZone(i, j)->cards[k]->UniqueId != mSelectedCardId)
 					getZoneRenderer(i, j)->updateCard(mCardModels[mDuel->getZone(i, j)->cards[k]->UniqueId], k, mDuel->getZone(i, j)->cards.size());
 			}

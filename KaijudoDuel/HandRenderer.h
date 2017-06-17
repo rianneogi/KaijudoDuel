@@ -8,6 +8,7 @@ public:
 	Camera* mCamera;
 	int mHoverCard;
 	int mOwner;
+	int mTurn;
 
 	HandRenderer(int owner);
 	~HandRenderer();
