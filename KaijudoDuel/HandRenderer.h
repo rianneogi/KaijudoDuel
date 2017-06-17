@@ -7,8 +7,9 @@ class HandRenderer : public ZoneRenderer
 public:
 	Camera* mCamera;
 	int mHoverCard;
+	int mOwner;
 
-	HandRenderer();
+	HandRenderer(int owner);
 	~HandRenderer();
 
 	void addCard(CardModel* c);

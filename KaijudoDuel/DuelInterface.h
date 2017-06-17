@@ -17,12 +17,12 @@ public:
 
 	std::vector<CardModel*> mCardModels;
 	//ZoneRenderer* mZoneRenderers[2][6];
-	BattleZoneRenderer mBattleZoneRenderers[2];
-	ManaZoneRenderer mManaZoneRenderers[2];
-	ShieldZoneRenderer mShieldZoneRenderers[2];
-	GraveyardRenderer mGraveyardRenderers[2];
-	DeckRenderer mDeckRenderers[2];
-	HandRenderer mHandRenderers[2];
+	BattleZoneRenderer* mBattleZoneRenderers[2];
+	ManaZoneRenderer* mManaZoneRenderers[2];
+	ShieldZoneRenderer* mShieldZoneRenderers[2];
+	GraveyardRenderer* mGraveyardRenderers[2];
+	DeckRenderer* mDeckRenderers[2];
+	HandRenderer* mHandRenderers[2];
 
 	int dueltype;
 	int duelstate;
