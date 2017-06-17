@@ -1,6 +1,6 @@
 #include "DuelInterface.h"
 
-float gZoomDistance = 18.f;
+float gZoomDistance = 25.f;
 const float gCameraSpeed = 0.0001f;
 
 DuelInterface::DuelInterface()

@@ -3,7 +3,7 @@
 #include "Zone.h"
 
 const float gHandStraightDistance = 10.f;
-const float gHandDownDistance = 5.f;
+const float gHandDownDistance = 7.5f;
 const float gHandHoverStraightDistance = 4.f;
 const float gHandHoverDownDistance = 2.f;
 

@@ -20,4 +20,5 @@
 
 glm::quat getRotationBetweenVectors(glm::vec3 start, glm::vec3 dest);
 int isPointInsidePolygon(std::vector<glm::vec4> points, float x, float y);
+glm::vec3 slerp(glm::vec3 v0, glm::vec3 v1, float t);
 bool debugOpengl(std::string errorstring);

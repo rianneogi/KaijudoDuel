@@ -30,11 +30,13 @@ void HandRenderer::updateCard(CardModel* c, int pos, int size)
 	if (c->mUniqueId == mHoverCard)
 	{
 		o.pos = centerhover + offset;
+		o.calculateQuat();
 		c->setHoverMovement(o, 1000);
 	}
 	else
 	{
 		o.pos = center + offset;
+		o.calculateQuat();
 		c->setMovement(o, 1000);
 	}
 }

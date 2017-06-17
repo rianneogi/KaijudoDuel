@@ -6,7 +6,7 @@ CardModel::CardModel() : mCardId(-1), mRender(glm::vec3(0, 0, 0), glm::vec3(0, 0
 	mBackModel.mMesh = &gMeshs[MESH_CARD];
 
 	mMoveSpeed = 0.0005;
-	mTurnSpeed = 0.00010;
+	mTurnSpeed = 0.00015;
 }
 
 CardModel::CardModel(int uid, int cid) : mUniqueId(uid), mCardId(cid), mRender(glm::vec3(0,0,0), glm::vec3(0, 0, 1), glm::vec3(0,1,0))
@@ -28,14 +28,14 @@ glm::mat4 CardModel::getModelMatrix()
 {
 	glm::mat4 pos = glm::translate(glm::mat4(1.0f), mRender.pos);
 
-	mRender.dir = glm::normalize(mRender.dir);
+	/*mRender.dir = glm::normalize(mRender.dir);
 	mRender.up = glm::normalize(mRender.up);
 	glm::vec3 right = glm::cross(mRender.dir, mRender.up);
 	mRender.up = glm::cross(right, mRender.dir);
 	glm::quat frontq = getRotationBetweenVectors(glm::vec3(0, 0, 1), mRender.dir);
 	glm::vec3 newUp = frontq * glm::vec3(0.0f, 1.0f, 0.0f);
-	glm::quat rot2 = getRotationBetweenVectors(newUp, mRender.up);
-	glm::mat4 frontrot = glm::toMat4(rot2*frontq);
+	glm::quat rot2 = getRotationBetweenVectors(newUp, mRender.up);*/
+	glm::mat4 frontrot = glm::toMat4(mRender.quat);
 
 	return (pos*frontrot);
 }
@@ -44,14 +44,14 @@ glm::mat4 CardModel::getHoverModelMatrix()
 {
 	glm::mat4 pos = glm::translate(glm::mat4(1.0f), mCollision.pos);
 
-	mCollision.dir = glm::normalize(mCollision.dir);
+	/*mCollision.dir = glm::normalize(mCollision.dir);
 	mCollision.up = glm::normalize(mCollision.up);
 	glm::vec3 right = glm::cross(mCollision.dir, mCollision.up);
 	mCollision.up = glm::cross(right, mCollision.dir);
 	glm::quat frontq = getRotationBetweenVectors(glm::vec3(0, 0, 1), mCollision.dir);
 	glm::vec3 newUp = frontq * glm::vec3(0.0f, 1.0f, 0.0f);
-	glm::quat rot2 = getRotationBetweenVectors(newUp, mCollision.up);
-	glm::mat4 frontrot = glm::toMat4(rot2*frontq);
+	glm::quat rot2 = getRotationBetweenVectors(newUp, mCollision.up);*/
+	glm::mat4 frontrot = glm::toMat4(mCollision.quat);
 
 	return (pos*frontrot);
 }
@@ -90,25 +90,25 @@ void CardModel::render(bool visible)
 	{
 		mFrontModel.mTexture = &gCardBackTexture;
 	}
-	mRender.dir = glm::normalize(mRender.dir);
-	mRender.up = glm::normalize(mRender.up);
-	glm::vec3 right = glm::cross(mRender.dir, mRender.up);
-	mRender.up = glm::cross(right, mRender.dir);
+	//mRender.dir = glm::normalize(mRender.dir);
+	//mRender.up = glm::normalize(mRender.up);
+	//glm::vec3 right = glm::cross(mRender.dir, mRender.up);
+	//mRender.up = glm::cross(right, mRender.dir);
 
 	//glm::mat4 front = (glm::lookAt(glm::vec3(0, 0, 0), -mDirection, mUp));
-	glm::quat frontq = getRotationBetweenVectors(glm::vec3(0, 0, 1), mRender.dir);
-	glm::vec3 newUp = frontq * glm::vec3(0.0f, 1.0f, 0.0f);
-	glm::quat rot2 = getRotationBetweenVectors(newUp, mRender.up);
-	glm::mat4 frontrot = glm::toMat4(rot2*frontq);
+	//glm::quat frontq = getRotationBetweenVectors(glm::vec3(0, 0, 1), mRender.dir);
+	//glm::vec3 newUp = frontq * glm::vec3(0.0f, 1.0f, 0.0f);
+	//glm::quat rot2 = getRotationBetweenVectors(newUp, mRender.up);
+	glm::mat4 frontrot = glm::toMat4(mRender.quat);
 
 	gShaders[gActiveShader].setUniformMat4f(0, pos*frontrot);
 	mFrontModel.render();
 
 	//glm::mat4 back = (glm::lookAt(glm::vec3(0, 0, 0), -mDirection, -mUp));
-	glm::quat backq = getRotationBetweenVectors(glm::vec3(0, 0, 1), mRender.dir);
-	newUp = backq * glm::vec3(0.0f, 1.0f, 0.0f);
-	rot2 = getRotationBetweenVectors(newUp, -mRender.up);
-	glm::mat4 backrot = glm::toMat4(rot2*backq);
+	//glm::quat backq = getRotationBetweenVectors(glm::vec3(0, 0, 1), mRender.dir);
+	//newUp = backq * glm::vec3(0.0f, 1.0f, 0.0f);
+	//rot2 = getRotationBetweenVectors(newUp, -mRender.up);
+	glm::mat4 backrot = glm::toMat4(glm::rotate(mRender.quat, float(M_PI), glm::vec3(0, 0, 1)));
 
 	gShaders[gActiveShader].setUniformMat4f(0, pos*backrot);
 	mBackModel.render();
@@ -124,11 +124,37 @@ void CardModel::update(int deltaTime)
 	glm::vec3 unitpos = (mTarget.pos - mRender.pos) * (float)mMoveSpeed;
 	mRender.pos += unitpos*(float)deltaTime;
 
-	glm::vec3 unitdir = (mTarget.dir - mRender.dir) * (float)mTurnSpeed;
-	mRender.dir += unitdir*(float)deltaTime;
+	//glm::vec3 unitdir = (mTarget.dir - mRender.dir) * (float)mTurnSpeed;
+	//mRender.dir += unitdir*(float)deltaTime;
 
-	glm::vec3 unitup = (mTarget.up - mRender.up) * (float)mTurnSpeed;
-	mRender.up += unitup*(float)deltaTime;
+	//mRender.dir = glm::mix(mRender.dir, mTarget.dir, deltaTime*mTurnSpeed);
+
+	//glm::vec3 unitup = (mTarget.up - mRender.up) * (float)mTurnSpeed;
+	//mRender.up += unitup*(float)deltaTime;
+	//mRender.up = glm::mix(mRender.up, mTarget.up, deltaTime*mTurnSpeed);
+
+	//printf("dir %f %f %f\n", mRender.dir.x, mRender.dir.y, mRender.dir.z);
+	//printf("up %f %f %f\n", mRender.up.x, mRender.up.y, mRender.up.z);
+
+	/*if (glm::length(mTarget.dir - mRender.dir) <= 0.1 && glm::length(mTarget.up - mRender.up) <= 0.1)
+	{
+		mRender.dir = mTarget.dir;
+		mRender.up = mTarget.up;
+	}
+	else
+	{*/
+		/*glm::quat tq1 = getRotationBetweenVectors(glm::vec3(0, 0, 1), mTarget.dir);
+		glm::vec3 newUp = tq1*glm::vec3(0, 1, 0);
+		glm::quat tq2 = getRotationBetweenVectors(newUp, mTarget.up);
+		glm::quat tq = tq2*tq1;
+
+		glm::quat sq1 = getRotationBetweenVectors(glm::vec3(0, 0, 1), mRender.dir);
+		newUp = sq1*glm::vec3(0, 1, 0);
+		glm::quat sq2 = getRotationBetweenVectors(newUp, mRender.up);
+		glm::quat sq = sq2*sq1;*/
+
+		mRender.quat = glm::slerp(mRender.quat, mTarget.quat, deltaTime*mTurnSpeed);
+	//}
 }
 
 bool CardModel::rayTrace(Vector2i mousePos, const glm::mat4& projview, const Vector2i& screenDimensions)
@@ -198,6 +224,9 @@ void CardModel::setDirection(const glm::vec3& dir)
 	mRender.dir = dir;
 	mTarget.dir = dir;
 	mCollision.dir = dir;
+	mRender.calculateQuat();
+	mTarget.calculateQuat();
+	mCollision.calculateQuat();
 }
 
 void CardModel::setUp(const glm::vec3& up)
@@ -206,6 +235,9 @@ void CardModel::setUp(const glm::vec3& up)
 	mRender.up = up;
 	mTarget.up = up;
 	mCollision.up = up;
+	mRender.calculateQuat();
+	mTarget.calculateQuat();
+	mCollision.calculateQuat();
 }
 
 int loadCardTexture(const std::string& name, const std::string& set)
