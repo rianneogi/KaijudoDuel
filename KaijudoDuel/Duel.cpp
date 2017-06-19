@@ -775,7 +775,7 @@ int Duel::handleInterfaceInput(Message& msg)
 				castingcivtapped = false;
 				castingevobait = msg.getInt("evobait");
 			}
-			MsgMngr.sendMessage(msg);
+			//MsgMngr.sendMessage(msg);
 		}
 	}
 	else if (type == "cardmana")

@@ -140,6 +140,16 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 	{
 		if (event.button.button == SDL_BUTTON_LEFT)
 		{
+			if (mDuel->isChoiceActive)
+			{
+				assert(mSelectedCardId == -1);
+				if (mHoverCardId != -1)
+				{
+					Message m("choiceselect");
+					m.addValue("selection", mHoverCardId);
+					mDuel->handleInterfaceInput(m);
+				}
+			}
 			if (mSelectedCardId == -1)
 			{
 				if (mHoverCardId != -1)
@@ -447,7 +457,7 @@ void DuelInterface::update(int deltaTime)
 		mCamera.render(view, proj);
 		projview = proj*view;
 		Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
-		//float minDepth = 1;
+		int flag = 0;
 		for (int i = mDuel->hands[mDuel->turn].cards.size() - 1;i >= 0;i--)
 		{
 			if (mCardModels[mDuel->hands[mDuel->turn].cards[i]->UniqueId]->rayTrace(mousePos, projview, screendim))
@@ -455,21 +465,27 @@ void DuelInterface::update(int deltaTime)
 				if (newhovercard != mDuel->hands[mDuel->turn].cards[i]->UniqueId)
 				{
 					newhovercard = mDuel->hands[mDuel->turn].cards[i]->UniqueId;
+					flag = 1;
 				}
 				break;
 			}
 		}
-		for (int i = 0; i < mCardModels.size(); i++)
+		if (flag == 0)
 		{
-			if (mDuel->mCardList[i]->Zone == ZONE_BATTLE || mDuel->mCardList[i]->Zone == ZONE_MANA
-				|| mDuel->mCardList[i]->Zone == ZONE_HAND || mDuel->mCardList[i]->Zone == ZONE_SHIELD)
+			for (int i = 0; i < mCardModels.size(); i++)
 			{
-				if (mCardModels[i]->rayTrace(mousePos, projview, screendim))
+				if (mDuel->mCardList[i]->Zone == ZONE_BATTLE || mDuel->mCardList[i]->Zone == ZONE_MANA
+					|| mDuel->mCardList[i]->Zone == ZONE_HAND || mDuel->mCardList[i]->Zone == ZONE_SHIELD)
 				{
-					newhovercard = i;
+					if (mCardModels[i]->rayTrace(mousePos, projview, screendim))
+					{
+						newhovercard = i;
+						break;
+					}
 				}
 			}
 		}
+
 		if (mSelectedCardId != -1 && mDuel->mCardList[mSelectedCardId]->Zone == ZONE_HAND)
 		{
 			assert(mSelectedCardId < mDuel->mCardList.size());
