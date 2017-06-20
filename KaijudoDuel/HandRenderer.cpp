@@ -1,6 +1,6 @@
 #include "HandRenderer.h"
 
-HandRenderer::HandRenderer(int owner) : mCamera(NULL), mOwner(owner)
+HandRenderer::HandRenderer(int owner) : mCamera(NULL), mOwner(owner), mCastingCard(-1)
 {
 }
 
@@ -17,7 +17,24 @@ void HandRenderer::addCard(CardModel* c)
 
 void HandRenderer::updateCard(CardModel* c, int pos, int size, int hovercard, int istapped, int isflipped)
 {
-	if (mOwner == 0)
+	if (c->mUniqueId == mCastingCard)
+	{
+		Orientation o;
+		o.dir = mCamera->mUp;
+		o.up = -mCamera->mDirection;
+
+		if (hovercard == mCastingCard)
+		{
+			o.pos = glm::vec3(gHighlightX, gHighlightY, gHighlightZ);
+		}
+		else
+		{
+			o.pos = glm::vec3(gCastingCardX, gCastingCardY, gCastingCardZ);
+		}
+		o.calculateQuat();
+		c->setMovement(o, 1000);
+	}
+	else if (mOwner == 0)
 	{
 		glm::vec3 center(mCamera->mPosition + mCamera->mDirection*gHandStraightDistance - 
 			gHandDownDistance*mCamera->mUp + mCamera->mRight*gHandRightDistance);

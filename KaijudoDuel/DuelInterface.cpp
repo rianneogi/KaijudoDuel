@@ -368,7 +368,10 @@ void DuelInterface::update(int deltaTime)
 	mDuel->dispatchAllMessages();
 
 	for (int i = 0; i < 2; i++)
+	{
 		mHandRenderers[i]->mTurn = mDuel->mTurn;
+		mHandRenderers[i]->mCastingCard = mDuel->mCastingCard;
+	}
 
 	int newhovercard = -1;
 	Vector2i mousePos;

@@ -11,6 +11,9 @@ const float gHandHoverRightDistance = 1.5f;
 const float gHighlightX = 0;
 const float gHighlightY = 20;
 const float gHighlightZ = 0;
+const float gCastingCardX = 0;
+const float gCastingCardY = 15;
+const float gCastingCardZ = 0;
 
 class HandRenderer : public ZoneRenderer
 {
@@ -18,6 +21,7 @@ public:
 	Camera* mCamera;
 	int mOwner;
 	int mTurn;
+	int mCastingCard;
 
 	HandRenderer(int owner);
 	~HandRenderer();
