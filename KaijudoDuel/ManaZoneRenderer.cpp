@@ -26,7 +26,7 @@ void ManaZoneRenderer::updateCard(CardModel* c, int pos, int size, int hovercard
 
 	if (hovercard == c->mUniqueId)
 	{
-		o.pos += gHandHoverStraightDistance*glm::vec3(0, 1, 0);
+		o.pos = glm::vec3(gHighlightX, gHighlightY, gHighlightZ);
 		o.dir = glm::vec3(0, 0, 1);
 	}
 

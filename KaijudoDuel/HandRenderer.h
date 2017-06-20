@@ -8,6 +8,9 @@ const float gHandHoverStraightDistance = 4.f;
 const float gHandHoverDownDistance = 2.f;
 const float gHandRightDistance = 3.f;
 const float gHandHoverRightDistance = 1.5f;
+const float gHighlightX = 0;
+const float gHighlightY = 20;
+const float gHighlightZ = 0;
 
 class HandRenderer : public ZoneRenderer
 {

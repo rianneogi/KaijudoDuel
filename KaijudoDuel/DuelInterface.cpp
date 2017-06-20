@@ -30,9 +30,8 @@ DuelInterface::DuelInterface(Duel* duel)
 		mShieldZoneRenderers[i] = new ShieldZoneRenderer();
 		mBattleZoneRenderers[i] = new BattleZoneRenderer();
 
-
 		mDeckRenderers[i]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		mGraveyardRenderers[i]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (2 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		mGraveyardRenderers[i]->mPos = glm::vec3(-3 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
 		mHandRenderers[i]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (3 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
 		mManaZoneRenderers[i]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (2 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
 		mShieldZoneRenderers[i]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
@@ -59,6 +58,7 @@ DuelInterface::DuelInterface(Duel* duel)
 	mHoverCardId = -1;
 	mSelectedCardId = -1;
 	mHoverException = -1;
+	mHighlightCardId = -1;
 
 	setMyPlayer(0);
 
@@ -140,7 +140,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 	{
 		if (event.button.button == SDL_BUTTON_LEFT)
 		{
-			if (mDuel->isChoiceActive)
+			if (mDuel->mIsChoiceActive)
 			{
 				assert(mSelectedCardId == -1);
 				if (mHoverCardId != -1)
@@ -155,7 +155,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 				if (mHoverCardId != -1)
 				{
 					if ((mDuel->mCardList[mHoverCardId]->Zone == ZONE_HAND || mDuel->mCardList[mHoverCardId]->Zone == ZONE_BATTLE) //select card
-						&& mDuel->mCardList[mHoverCardId]->Owner == mDuel->turn && mDuel->attackphase == PHASE_NONE) 
+						&& mDuel->mCardList[mHoverCardId]->Owner == mDuel->mTurn && mDuel->mAttackphase == PHASE_NONE) 
 					{
 						assert(mHoverCardId < mDuel->mCardList.size());
 						mSelectedCardId = mHoverCardId;
@@ -170,7 +170,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 
 						mHoverException = mHoverCardId;
 					}
-					else if (mDuel->attackphase == PHASE_BLOCK)
+					else if (mDuel->mAttackphase == PHASE_BLOCK)
 					{
 						//for (size_t i = 0; i < mDuel->battlezones[!mDuel->turn].cards.size(); i++) //choose blocker
 						//{
@@ -183,7 +183,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 						//	}
 						//}
 
-						if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_BATTLE && mDuel->mCardList[mHoverCardId]->Owner == !mDuel->turn)
+						if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_BATTLE && mDuel->mCardList[mHoverCardId]->Owner == !mDuel->mTurn)
 						{
 							Message msg("creatureblock");
 							msg.addValue("blocker", mHoverCardId);
@@ -192,7 +192,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 							mHoverException = mHoverCardId;
 						}
 					}
-					else if (mDuel->attackphase == PHASE_TARGET)
+					else if (mDuel->mAttackphase == PHASE_TARGET)
 					{
 						//for (size_t i = 0; i < mDuel->shields[!mDuel->turn].cards.size(); i++) //choose shields
 						//{
@@ -205,7 +205,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 						//	}
 						//}
 
-						if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_SHIELD && mDuel->mCardList[mHoverCardId]->Owner == !mDuel->turn)
+						if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_SHIELD && mDuel->mCardList[mHoverCardId]->Owner == !mDuel->mTurn)
 						{
 							Message msg("targetshield");
 							msg.addValue("shield", mHoverCardId);
@@ -214,7 +214,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 							mHoverException = mHoverCardId;
 						}
 					}
-					else if (mDuel->attackphase == PHASE_TRIGGER)
+					else if (mDuel->mAttackphase == PHASE_TRIGGER)
 					{
 						//for (size_t i = 0; i < mDuel->hands[!mDuel->turn].cards.size(); i++) //use shield trigger
 						//{
@@ -226,7 +226,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 						//	}
 						//}
 
-						if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_HAND && mDuel->mCardList[mHoverCardId]->Owner == !mDuel->turn)
+						if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_HAND && mDuel->mCardList[mHoverCardId]->Owner == !mDuel->mTurn)
 						{
 							Message msg("targetshield");
 							msg.addValue("shield", mHoverCardId);
@@ -243,12 +243,12 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 				Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
 				if (mEndTurnModel.rayTrace(mousePos, projview, screendim)) //end turn
 				{
-					if (mDuel->attackphase == PHASE_BLOCK)
+					if (mDuel->mAttackphase == PHASE_BLOCK)
 					{
 						Message msg("blockskip");
 						mDuel->handleInterfaceInput(msg);
 					}
-					else if (mDuel->attackphase == PHASE_TRIGGER)
+					else if (mDuel->mAttackphase == PHASE_TRIGGER)
 					{
 						Message msg("triggerskip");
 						mDuel->handleInterfaceInput(msg);
@@ -269,7 +269,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 					mCamera.render(view, proj);
 					projview = proj*view;
 					Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
-					if (mBattleZoneRenderers[mDuel->turn]->rayTrace(mousePos, projview, screendim)) //play card
+					if (mBattleZoneRenderers[mDuel->mTurn]->rayTrace(mousePos, projview, screendim)) //play card
 					{
 						Message msg("cardplay");
 						msg.addValue("card", mSelectedCardId);
@@ -278,7 +278,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 
 						mHoverException = mSelectedCardId;
 					}
-					else if (mManaZoneRenderers[mDuel->turn]->rayTrace(mousePos, projview, screendim)) //put card in mana
+					else if (mManaZoneRenderers[mDuel->mTurn]->rayTrace(mousePos, projview, screendim)) //put card in mana
 					{
 						Message msg("cardmana");
 						msg.addValue("card", mSelectedCardId);
@@ -292,7 +292,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 				{
 					if (mHoverCardId != -1)
 					{
-						if (mDuel->mCardList[mHoverCardId]->Owner != mDuel->turn)
+						if (mDuel->mCardList[mHoverCardId]->Owner != mDuel->mTurn)
 						{
 							if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_BATTLE)
 							{
@@ -363,90 +363,12 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 	return 0;
 }
 
-//int DuelInterface::receivePacket(sf::Packet& packet, int callback)
-//{
-//	if (dueltype == DUELTYPE_MULTI)
-//	{
-//		sf::Uint32 ptype;
-//		packet >> ptype;
-//		if (ptype == PACKET_MSG)
-//		{
-//			Message msg;
-//			packet >> msg;
-//			cout << "received msg packet : " << msg.getType() << endl;
-//			duel.handleInterfaceInput(msg);
-//		}
-//		else if (ptype == PACKET_SETDECK)
-//		{
-//			cout << "setdeck packet recieved" << endl;
-//			sf::Uint32 size;
-//			packet >> size;
-//			cout << "size: " << endl;
-//			duel.decks[deckschosen].cards.empty();
-//			for (int i = 0; i < size; i++)
-//			{
-//				sf::Uint32 cid;
-//				packet >> cid;
-//				Card* c = new Card(duel.nextUniqueId, cid, deckschosen);
-//				duel.CardList.push_back(c);
-//				duel.decks[deckschosen].addCard(c);
-//				duel.nextUniqueId++;
-//				cout << "added card: " << cid << endl;
-//			}
-//			deckschosen++;
-//			if (deckschosen >= 2)
-//			{
-//				duelstate = DUELSTATE_DUEL;
-//				duel.startDuel();
-//			}
-//		}
-//		else if (ptype == PACKET_SETSEED)
-//		{
-//			sf::Uint32 x;
-//			packet >> x;
-//			//std::srand(x);
-//			duel.RandomGen.SetRandomSeed(x);
-//			cout << "set seed packet received : " << x << endl;
-//		}
-//		else if (ptype == PACKET_CHOICESELECT)
-//		{
-//			sf::Uint32 x;
-//			packet >> x;
-//			duel.resetChoice();
-//			cout << "choice select packet received : " << x << endl;
-//			return x;
-//		}
-//		else if (ptype == PACKET_ADDARROW)
-//		{
-//			arrows.push_back(Arrow());
-//			sf::Uint32 fx, fy, tx, ty;
-//			packet >> fx >> fy >> tx >> ty;
-//			arrows.at(arrows.size() - 1).setColor(ATTACKARROWCOLOR);
-//			arrows.at(arrows.size() - 1).setFrom(fx,fy);
-//			arrows.at(arrows.size() - 1).setTo(tx, ty);
-//			cout << "add arrow packet received" << endl;
-//		}
-//		else if (ptype == PACKET_CLEARARROWS)
-//		{
-//			arrows.clear();
-//			cout << "clear arrows packet received" << endl;
-//			mousearrow = -1;
-//		}
-//	}
-//	return RETURN_NOTHING;
-//}
-
-//void DuelInterface::parseMessages(unsigned int deltatime)
-//{
-//	mDuel->parseMessages(deltatime);
-//}
-
 void DuelInterface::update(int deltaTime)
 {
 	mDuel->dispatchAllMessages();
 
 	for (int i = 0; i < 2; i++)
-		mHandRenderers[i]->mTurn = mDuel->turn;
+		mHandRenderers[i]->mTurn = mDuel->mTurn;
 
 	int newhovercard = -1;
 	Vector2i mousePos;
@@ -458,13 +380,13 @@ void DuelInterface::update(int deltaTime)
 		projview = proj*view;
 		Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
 		int flag = 0;
-		for (int i = mDuel->hands[mDuel->turn].cards.size() - 1;i >= 0;i--)
+		for (int i = mDuel->mHands[mDuel->mTurn].cards.size() - 1;i >= 0;i--)
 		{
-			if (mCardModels[mDuel->hands[mDuel->turn].cards[i]->UniqueId]->rayTrace(mousePos, projview, screendim))
+			if (mCardModels[mDuel->mHands[mDuel->mTurn].cards[i]->UniqueId]->rayTrace(mousePos, projview, screendim))
 			{
-				if (newhovercard != mDuel->hands[mDuel->turn].cards[i]->UniqueId)
+				if (newhovercard != mDuel->mHands[mDuel->mTurn].cards[i]->UniqueId)
 				{
-					newhovercard = mDuel->hands[mDuel->turn].cards[i]->UniqueId;
+					newhovercard = mDuel->mHands[mDuel->mTurn].cards[i]->UniqueId;
 					flag = 1;
 				}
 				break;
@@ -503,6 +425,7 @@ void DuelInterface::update(int deltaTime)
 	}
 
 	//Set hover card
+
 	if (newhovercard == mHoverException && mHoverException != -1)
 	{
 		mHoverCardId = -1;
@@ -512,12 +435,22 @@ void DuelInterface::update(int deltaTime)
 	{
 		mHoverCardId = newhovercard;
 		printf("Hover: %d\n", mHoverCardId);
+		mHoverTimer.restart();
 		//mHandRenderers[mDuel->turn]->mHoverCard = mHoverCardId;
 		//mHandRenderers[0].update(mHoverCardId); //update hand
 	}
 	if (newhovercard != mHoverException)
 	{
 		mHoverException = -1;
+	}
+
+	if (mHoverCardId == -1)
+	{
+		mHighlightCardId = -1;
+	}
+	else if (mHoverTimer.getElaspedTime() >= 1000 || mDuel->mCardList[mHoverCardId]->Zone == ZONE_HAND)
+	{
+		mHighlightCardId = mHoverCardId;
 	}
 
 	//Card Movement
@@ -530,7 +463,7 @@ void DuelInterface::update(int deltaTime)
 				Card* c = mDuel->getZone(i, j)->cards[k];
 				if(c->UniqueId != mSelectedCardId)
 					getZoneRenderer(i, j)->updateCard(mCardModels[c->UniqueId], k, mDuel->getZone(i, j)->cards.size(), 
-						mHoverCardId, c->isTapped, c->isFlipped);
+						mHighlightCardId, c->isTapped, c->isFlipped);
 			}
 		}
 	}
@@ -613,9 +546,86 @@ void DuelInterface::setDecklist()
 void DuelInterface::setMyPlayer(int p)
 {
 	myPlayer = p;
-	mDuel->hands[0].mMyPlayer = p;
-	mDuel->hands[1].mMyPlayer = p;
+	mDuel->mHands[0].mMyPlayer = p;
+	mDuel->mHands[1].mMyPlayer = p;
 	//duel.hands[0].flipAllCards();
 	//duel.hands[1].flipAllCards();
 }
 
+//int DuelInterface::receivePacket(sf::Packet& packet, int callback)
+//{
+//	if (dueltype == DUELTYPE_MULTI)
+//	{
+//		sf::Uint32 ptype;
+//		packet >> ptype;
+//		if (ptype == PACKET_MSG)
+//		{
+//			Message msg;
+//			packet >> msg;
+//			cout << "received msg packet : " << msg.getType() << endl;
+//			duel.handleInterfaceInput(msg);
+//		}
+//		else if (ptype == PACKET_SETDECK)
+//		{
+//			cout << "setdeck packet recieved" << endl;
+//			sf::Uint32 size;
+//			packet >> size;
+//			cout << "size: " << endl;
+//			duel.decks[deckschosen].cards.empty();
+//			for (int i = 0; i < size; i++)
+//			{
+//				sf::Uint32 cid;
+//				packet >> cid;
+//				Card* c = new Card(duel.nextUniqueId, cid, deckschosen);
+//				duel.CardList.push_back(c);
+//				duel.decks[deckschosen].addCard(c);
+//				duel.nextUniqueId++;
+//				cout << "added card: " << cid << endl;
+//			}
+//			deckschosen++;
+//			if (deckschosen >= 2)
+//			{
+//				duelstate = DUELSTATE_DUEL;
+//				duel.startDuel();
+//			}
+//		}
+//		else if (ptype == PACKET_SETSEED)
+//		{
+//			sf::Uint32 x;
+//			packet >> x;
+//			//std::srand(x);
+//			duel.RandomGen.SetRandomSeed(x);
+//			cout << "set seed packet received : " << x << endl;
+//		}
+//		else if (ptype == PACKET_CHOICESELECT)
+//		{
+//			sf::Uint32 x;
+//			packet >> x;
+//			duel.resetChoice();
+//			cout << "choice select packet received : " << x << endl;
+//			return x;
+//		}
+//		else if (ptype == PACKET_ADDARROW)
+//		{
+//			arrows.push_back(Arrow());
+//			sf::Uint32 fx, fy, tx, ty;
+//			packet >> fx >> fy >> tx >> ty;
+//			arrows.at(arrows.size() - 1).setColor(ATTACKARROWCOLOR);
+//			arrows.at(arrows.size() - 1).setFrom(fx,fy);
+//			arrows.at(arrows.size() - 1).setTo(tx, ty);
+//			cout << "add arrow packet received" << endl;
+//		}
+//		else if (ptype == PACKET_CLEARARROWS)
+//		{
+//			arrows.clear();
+//			cout << "clear arrows packet received" << endl;
+//			mousearrow = -1;
+//		}
+//	}
+//	return RETURN_NOTHING;
+//}
+
+//void DuelInterface::parseMessages(unsigned int deltatime)
+//{
+//	mDuel->parseMessages(deltatime);
+//}

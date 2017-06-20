@@ -36,6 +36,8 @@ public:
 	int mHoverCardId;
 	int mSelectedCardId;
 	int mHoverException;
+	int mHighlightCardId;
+	Timer mHoverTimer;
 
 	Camera mCamera;
 	Model mTableModel;

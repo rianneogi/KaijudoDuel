@@ -17,51 +17,51 @@ struct MsgHistoryItem
 class Duel
 {
 public:
-	Deck decks[2];
-	Hand hands[2];
-	ManaZone manazones[2];
-	Graveyard graveyards[2];
-	ShieldZone shields[2];
-	BattleZone battlezones[2];
+	Deck mDecks[2];
+	Hand mHands[2];
+	ManaZone mManazones[2];
+	Graveyard mGraveyards[2];
+	ShieldZone mShields[2];
+	BattleZone mBattlezones[2];
 
 	std::vector<Card*> mCardList;
 
-	std::string decknames[2];
+	std::string mDeckNames[2];
 
-	bool isSimulation;
-	std::vector<MsgHistoryItem> MessageHistory;
-	std::vector<Message> MoveHistory;
-	int currentMoveCount;
+	bool mIsSimulation;
+	std::vector<MsgHistoryItem> mMessageHistory;
+	std::vector<Message> mMoveHistory;
+	int mCurrentMoveCount;
 
-	CRandom RandomGen;
+	CRandom mRandomGen;
 
-	int attacker;
-	int defender;
-	int defendertype;
-	int breakcount;
-	std::vector<int> shieldtargets;
-	int attackphase;
+	int mAttacker;
+	int mDefender;
+	int mDefenderType;
+	int mBreakCount;
+	std::vector<int> mShieldTargets;
+	int mAttackphase;
 
-	int castingcard;
-	int castingciv;
-	int castingcost;
-	int castingevobait;
-	bool castingcivtapped;
+	int mCastingCard;
+	int mCastingCiv;
+	int mCastingCost;
+	int mCastingEvobait;
+	bool mCastingCivTapped;
 
-	Choice* choice;
-	int choiceCard;
-	int choicePlayer;
-	bool isChoiceActive;
+	Choice* mChoice;
+	int mChoiceCard;
+	int mChoicePlayer;
+	bool mIsChoiceActive;
 
-	int winner;
+	int mWinner;
 
-	int nextUniqueId;
+	int mNextUniqueId;
 
-	MessageManager MsgMngr;
-	Message currentMessage;
+	MessageManager mMsgMngr;
+	Message mCurrentMessage;
 
-	int turn;
-	int manaUsed;
+	int mTurn;
+	int mManaUsed;
 
 	Duel();
 	~Duel();
