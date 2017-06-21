@@ -48,13 +48,20 @@ static int createChoice(lua_State* L)
 {
 	ActiveDuel->dispatchAllMessages(); //first resolve all pending messages
 	//lua_pushvalue(L, -1);
+	assert(L == LuaCards);
 	lua_pushvalue(L, 5);
 	int vref = luaL_ref(L, LUA_REGISTRYINDEX);
-	lua_pushvalue(L, 6);
-	int aref = luaL_ref(L, LUA_REGISTRYINDEX);
+	//lua_pushvalue(L, 6);
+	//int aref = luaL_ref(L, LUA_REGISTRYINDEX);
 	//cout << "ref: " << vref << " " << aref << endl;
-	ActiveDuel->addChoice(lua_tostring(L, 1), lua_tointeger(L, 2), lua_tointeger(L, 3), lua_tointeger(L, 4), vref, aref);
+	ActiveDuel->addChoice(lua_tostring(L, 1), lua_tointeger(L, 2), lua_tointeger(L, 3), lua_tointeger(L, 4), vref, -1);
 	ActiveDuel->checkChoiceValid();
+	printf("new choice\n");
+	if (ActiveDuel->mIsChoiceActive)
+		lua_pushinteger(L, ActiveDuel->waitForChoice());
+	else
+		lua_pushinteger(L, RETURN_NOVALID);
+	return 1;
 	//if (ActiveDuel->isChoiceActive) //if choice is still active
 	//{
 	//	int r = mainLoop(*Window, 1); //wait for selection made by user
@@ -67,7 +74,6 @@ static int createChoice(lua_State* L)
 	//}
 	//luaL_unref(L, LUA_REGISTRYINDEX, ref);
 	//return 1;
-	return 0;
 }
 
 static int createChoiceNoCheck(lua_State* L)

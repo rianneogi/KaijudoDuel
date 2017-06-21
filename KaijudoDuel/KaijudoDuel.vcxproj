@@ -214,6 +214,13 @@
     <ClInclude Include="ZoneRenderer.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\x64\Release\Lua\BaseSet.lua" />
+    <None Include="..\x64\Release\Lua\Common.lua" />
+    <None Include="..\x64\Release\Lua\EvoCrushinators.lua" />
+    <None Include="..\x64\Release\Lua\Promo.lua" />
+    <None Include="..\x64\Release\Lua\Rampage.lua" />
+    <None Include="..\x64\Release\Lua\Shadowclash.lua" />
+    <None Include="..\x64\Release\Lua\Survivors.lua" />
     <None Include="Resources\Shaders\mvp.glfs" />
     <None Include="Resources\Shaders\mvp.glvs" />
     <None Include="Resources\Shaders\zone.glfs" />

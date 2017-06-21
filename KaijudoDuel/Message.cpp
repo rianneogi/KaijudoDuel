@@ -3,7 +3,7 @@
 
 Message::Message()
 {
-	map = std::map<std::string,std::string>();
+	//map = std::map<std::string,std::string>();
 }
 
 Message::Message(std::string type)

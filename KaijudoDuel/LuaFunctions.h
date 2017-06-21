@@ -2,5 +2,5 @@
 
 #include "DuelInterface.h"
 
-extern Duel* ActiveDuel;
+//extern Duel* ActiveDuel;
 //extern sf::RenderWindow* Window;

@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <conio.h>
+#include <future>
 
 const int MAX_FPS = 60;
 
@@ -14,6 +15,7 @@ const float ZOOM_MAX = 20.f;
 SDL_Window* gWindow = NULL;
 SDL_GLContext gContext;
 
+std::future<void> gFuture;
 DuelInterface* gDuelInterface;
 
 bool initSDL()
@@ -145,10 +147,13 @@ bool initGame()
 	ActiveDuel = new Duel();
 	
 	//ActiveDuel = &(gDuelInterface->mDuel);
-	ActiveDuel->setDecks("Decks\\My Decks\\LFN Starter Deck.txt", "Decks\\My Decks\\FL Burning Light Base Set.txt");
+	ActiveDuel->setDecks("Decks\\My Decks\\L Diamond Domination.txt", "Decks\\My Decks\\WN Mana Crisis.txt");
 	ActiveDuel->startDuel();
 	ActiveDuel->dispatchAllMessages();
 	gDuelInterface = new DuelInterface(ActiveDuel);
+
+	gFuture = std::async(&Duel::loopInput, ActiveDuel);
+
 	return true;
 }
 
@@ -267,17 +272,23 @@ void mainLoop()
 			//	SCREEN_HEIGHT = event.size.height;
 			//	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 			//}
+			gMutex.lock();
 			handleEvent(e, deltaTime);
+			gMutex.unlock();
 			//break;
 		}
+		gMutex.lock();
 		update(deltaTime);
+		gMutex.unlock();
 		//gTimer.restart();
-
+		printf("render\n");
 		// clear the buffers
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		
 		// draw...
+		gMutex.lock();
 		render();
+		gMutex.unlock();
 
 		//glBindFramebuffer(GL_FRAMEBUFFER, gWorld->mShadowMap.mFBO);
 

@@ -40,6 +40,9 @@
     <Filter Include="Source Files\GUI\ZoneRenderers">
       <UniqueIdentifier>{c5c349e0-c285-4189-8974-8c1b2a43be43}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Lua">
+      <UniqueIdentifier>{090c9a30-ea54-41cc-a7b5-59ce191a47f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -282,6 +285,27 @@
     </None>
     <None Include="Resources\Shaders\zone.glvs">
       <Filter>Source Files\GUI\Shaders</Filter>
+    </None>
+    <None Include="..\x64\Release\Lua\BaseSet.lua">
+      <Filter>Source Files\Lua</Filter>
+    </None>
+    <None Include="..\x64\Release\Lua\Common.lua">
+      <Filter>Source Files\Lua</Filter>
+    </None>
+    <None Include="..\x64\Release\Lua\EvoCrushinators.lua">
+      <Filter>Source Files\Lua</Filter>
+    </None>
+    <None Include="..\x64\Release\Lua\Promo.lua">
+      <Filter>Source Files\Lua</Filter>
+    </None>
+    <None Include="..\x64\Release\Lua\Shadowclash.lua">
+      <Filter>Source Files\Lua</Filter>
+    </None>
+    <None Include="..\x64\Release\Lua\Rampage.lua">
+      <Filter>Source Files\Lua</Filter>
+    </None>
+    <None Include="..\x64\Release\Lua\Survivors.lua">
+      <Filter>Source Files\Lua</Filter>
     </None>
   </ItemGroup>
 </Project>

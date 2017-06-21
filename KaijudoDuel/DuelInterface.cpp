@@ -365,7 +365,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 
 void DuelInterface::update(int deltaTime)
 {
-	mDuel->dispatchAllMessages();
+	//mDuel->dispatchAllMessages();
 
 	for (int i = 0; i < 2; i++)
 	{

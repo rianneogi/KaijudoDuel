@@ -1,5 +1,7 @@
 #include "Duel.h"
 
+std::mutex gMutex;
+
 Duel::Duel()
 {
 	mTurn = 0;
@@ -973,13 +975,14 @@ int Duel::handleInterfaceInput(Message& msg)
 			int chcard = mChoiceCard;
 			resetChoice();
 			Choice* c = mChoice;
-			c->callaction(chcard, sid);
+			//c->callaction(chcard, sid);
 			if (c != NULL)
 			{
 				if (mChoice == c)
 					mChoice = NULL;
 				delete c;
 				c = NULL;
+				mMsgMngr.sendMessage(msg);
 			}
 		}
 	}
@@ -1002,6 +1005,58 @@ int Duel::handleInterfaceInput(Message& msg)
 		}
 	}*/
 	return 0;
+}
+
+void Duel::loopInput()
+{
+	for (int i = 0; ; i++)
+	{
+		if (i % 100000 == 0)
+		{
+			gMutex.lock();
+			//printf("dispatching\n");
+			dispatchAllMessages();
+			gMutex.unlock();
+		}
+	}
+}
+
+int Duel::waitForChoice()
+{
+	gMutex.unlock();
+	int choice = -1;
+	for (int i = 0;; i++)
+	{
+		if (i % 100000 == 0)
+		{
+			printf("mutex\n");
+			gMutex.lock();
+			if (mMsgMngr.hasMoreMessages())
+			{
+				Message msg = mMsgMngr.peekMessage();
+				mMsgMngr.dispatch();
+				if (!mIsSimulation)
+				{
+					printf("Dispatching Message:\n");
+					for (std::map<std::string, std::string>::iterator i = msg.map.begin(); i != msg.map.end(); i++)
+					{
+						printf("	%s %s\n", (i->first).c_str(), (i->second).c_str());
+					}
+					printf("\n");
+				}
+				dispatchMessage(msg);
+				if (msg.getType() == "choiceselect")
+				{
+					choice = msg.getInt("selection");
+					break;
+				}
+			}
+			gMutex.unlock();
+		}
+	}
+	//gMutex.lock();
+	printf("break\n");
+	return choice;
 }
 
 //void Duel::parseMessages(unsigned int deltatime)

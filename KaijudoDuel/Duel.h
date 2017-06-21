@@ -3,6 +3,7 @@
 #include "Choice.h"
 
 #include <fstream>
+#include <mutex>
 
 enum AttackPhase { PHASE_NONE, PHASE_BLOCK, PHASE_TARGET, PHASE_TRIGGER };
 enum CanAttack { CANATTACK_TAPPED, CANATTACK_UNTAPPED, CANATTACK_NO, CANATTACK_ALWAYS };
@@ -81,6 +82,8 @@ public:
 
 	//Interface Messages
 	int handleInterfaceInput(Message& msg);
+	void loopInput();
+	int waitForChoice();
 
 	//For AI
 	int getPlayerToMove();
@@ -137,3 +140,5 @@ public:
 };
 
 extern Duel* ActiveDuel;
+
+extern std::mutex gMutex;
