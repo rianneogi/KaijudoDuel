@@ -20,10 +20,21 @@ void DeckRenderer::updateCard(CardModel* c, int pos, int size, int hovercard, in
 	{
 		Orientation o;
 		o.pos = glm::vec3(-2, 20 + CONST_CARDTHICKNESS*(size-pos-1), -3 + mScrollPos + pos*0.4);
+		if (c->mUniqueId == hovercard)
+		{
+			o.pos.y += 1;
+		}
 		o.dir = glm::vec3(0, 0, 1);
 		o.up = glm::vec3(0, 1, 0);
 		o.calculateQuat();
-		c->setMovement(o, 1000);
+		if (c->mUniqueId == hovercard)
+		{
+			c->setHoverMovement(o, 1000);
+		}
+		else
+		{
+			c->setMovement(o, 1000);
+		}
 	}
 	else
 	{

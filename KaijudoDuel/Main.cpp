@@ -281,7 +281,7 @@ void mainLoop()
 		update(deltaTime);
 		gMutex.unlock();
 		//gTimer.restart();
-		printf("render\n");
+		
 		// clear the buffers
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		

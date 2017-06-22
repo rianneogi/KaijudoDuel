@@ -1029,7 +1029,7 @@ int Duel::waitForChoice()
 	{
 		if (i % 100000 == 0)
 		{
-			printf("mutex\n");
+			//printf("mutex\n");
 			gMutex.lock();
 			if (mMsgMngr.hasMoreMessages())
 			{
@@ -1055,7 +1055,7 @@ int Duel::waitForChoice()
 		}
 	}
 	//gMutex.lock();
-	printf("break\n");
+	//printf("break\n");
 	return choice;
 }
 

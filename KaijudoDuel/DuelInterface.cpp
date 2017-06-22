@@ -440,18 +440,58 @@ void DuelInterface::update(int deltaTime)
 		projview = proj*view;
 		Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
 		int flag = 0;
-		for (int i = mDuel->mHands[mDuel->mTurn].cards.size() - 1;i >= 0;i--)
+
+		for (int i = 0; i < 2; i++)
 		{
-			if (mCardModels[mDuel->mHands[mDuel->mTurn].cards[i]->UniqueId]->rayTrace(mousePos, projview, screendim))
+			if (flag == 0 && mGraveyardRenderers[i]->mIsOpen)
 			{
-				if (newhovercard != mDuel->mHands[mDuel->mTurn].cards[i]->UniqueId)
+				for (int j = 0; j < mDuel->mGraveyards[i].cards.size(); j++)
 				{
-					newhovercard = mDuel->mHands[mDuel->mTurn].cards[i]->UniqueId;
-					flag = 1;
+					if (mCardModels[mDuel->mGraveyards[i].cards[j]->UniqueId]->rayTrace(mousePos, projview, screendim))
+					{
+						if (newhovercard != mDuel->mGraveyards[i].cards[j]->UniqueId)
+						{
+							newhovercard = mDuel->mGraveyards[i].cards[j]->UniqueId;
+							flag = 1;
+						}
+						break;
+					}
 				}
-				break;
+			}
+
+			if (flag == 0 && mDeckRenderers[i]->mIsOpen)
+			{
+				for (int j = 0; j < mDuel->mDecks[i].cards.size(); j++)
+				{
+					if (mCardModels[mDuel->mDecks[i].cards[j]->UniqueId]->rayTrace(mousePos, projview, screendim))
+					{
+						if (newhovercard != mDuel->mDecks[i].cards[j]->UniqueId)
+						{
+							newhovercard = mDuel->mDecks[i].cards[j]->UniqueId;
+							flag = 1;
+						}
+						break;
+					}
+				}
 			}
 		}
+
+		if (flag == 0)
+		{
+			for (int i = mDuel->mHands[mDuel->mTurn].cards.size() - 1; i >= 0; i--)
+			{
+				if (mCardModels[mDuel->mHands[mDuel->mTurn].cards[i]->UniqueId]->rayTrace(mousePos, projview, screendim))
+				{
+					if (newhovercard != mDuel->mHands[mDuel->mTurn].cards[i]->UniqueId)
+					{
+						newhovercard = mDuel->mHands[mDuel->mTurn].cards[i]->UniqueId;
+						flag = 1;
+					}
+					break;
+				}
+			}
+		}
+
 		if (flag == 0)
 		{
 			for (int i = 0; i < mCardModels.size(); i++)
@@ -508,7 +548,8 @@ void DuelInterface::update(int deltaTime)
 	{
 		mHighlightCardId = -1;
 	}
-	else if (mHoverTimer.getElaspedTime() >= 1000 || mDuel->mCardList[mHoverCardId]->Zone == ZONE_HAND)
+	else if (mHoverTimer.getElaspedTime() >= 1000 || mDuel->mCardList[mHoverCardId]->Zone == ZONE_HAND
+		|| mDuel->mCardList[mHoverCardId]->Zone == ZONE_GRAVEYARD || mDuel->mCardList[mHoverCardId]->Zone == ZONE_DECK)
 	{
 		mHighlightCardId = mHoverCardId;
 	}
