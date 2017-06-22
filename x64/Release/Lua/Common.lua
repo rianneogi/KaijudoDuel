@@ -1,16 +1,3 @@
-Skip to content
-Features Business Explore Marketplace Pricing
-This repository
-Search
-Sign in or Sign up
- Watch 1  Star 2  Fork 0 rianneogi/DuelMasters
- Code  Issues 2  Pull requests 0  Projects 0 Insights 
-Tree: 542dd60a9f Find file Copy pathDuelMasters/Release/Lua/Common.lua
-542dd60  on Jul 1, 2015
-@rianneogi rianneogi added speed attackers
-1 contributor
-RawBlameHistory      
-656 lines (577 sloc)  15.5 KB
 TYPE_CREATURE = 0
 TYPE_SPELL = 1
 
@@ -667,5 +654,3 @@ Actions.moveTopCardsFromDeck = function(player,zone,count)
 	    moveCard(c,zone)
     end
 end
-Contact GitHub API Training Shop Blog About
-© 2017 GitHub, Inc. Terms Privacy Security Status Help
