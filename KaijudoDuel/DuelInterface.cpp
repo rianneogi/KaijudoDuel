@@ -260,6 +260,44 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 						printf("end turn pressed\n");
 					}
 				}
+				
+				for (int i = 0; i < 2; i++)
+				{
+					if (mGraveyardRenderers[i]->rayTrace(mousePos, projview, screendim))
+					{
+						if (mGraveyardRenderers[i]->mIsOpen)
+						{
+							mGraveyardRenderers[i]->mIsOpen = 0;
+						}
+						else
+						{
+							for (int j = 0; j < 2; j++)
+							{
+								mGraveyardRenderers[j]->mIsOpen = 0;
+								mDeckRenderers[j]->mIsOpen = 0;
+							}
+							mGraveyardRenderers[i]->mIsOpen = 1;
+							mGraveyardRenderers[i]->mScrollPos = 0;
+						}
+					}
+					if (mDeckRenderers[i]->rayTrace(mousePos, projview, screendim))
+					{
+						if (mDeckRenderers[i]->mIsOpen)
+						{
+							mDeckRenderers[i]->mIsOpen = 0;
+						}
+						else
+						{
+							for (int j = 0; j < 2; j++)
+							{
+								mGraveyardRenderers[j]->mIsOpen = 0;
+								mDeckRenderers[j]->mIsOpen = 0;
+							}
+							mDeckRenderers[i]->mIsOpen = 1;
+							mDeckRenderers[i]->mScrollPos = 0;
+						}
+					}
+				}
 			}
 			else
 			{
@@ -357,6 +395,25 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 		else if (event.button.button == SDL_BUTTON_RIGHT)
 		{
 			mSelectedCardId = -1;
+			for (int i = 0; i < 2; i++)
+			{
+				mGraveyardRenderers[i]->mIsOpen = 0;
+				mDeckRenderers[i]->mIsOpen = 0;
+			}
+		}
+	}
+	else if (event.type == SDL_MOUSEWHEEL)
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			if (mGraveyardRenderers[i]->mIsOpen)
+			{
+				mGraveyardRenderers[i]->mScrollPos += event.wheel.y;
+			}
+			if (mDeckRenderers[i]->mIsOpen)
+			{
+				mDeckRenderers[i]->mScrollPos += event.wheel.y;
+			}
 		}
 	}
 

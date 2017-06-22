@@ -5,6 +5,9 @@
 class GraveyardRenderer : public ZoneRenderer
 {
 public:
+	int mIsOpen;
+	int mScrollPos;
+
 	GraveyardRenderer();
 	~GraveyardRenderer();
 

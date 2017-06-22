@@ -5,6 +5,9 @@
 class DeckRenderer : public ZoneRenderer
 {
 public:
+	int mIsOpen;
+	int mScrollPos;
+
 	DeckRenderer();
 	~DeckRenderer();
 
