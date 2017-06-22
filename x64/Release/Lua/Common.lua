@@ -1,3 +1,16 @@
+Skip to content
+Features Business Explore Marketplace Pricing
+This repository
+Search
+Sign in or Sign up
+ Watch 1  Star 2  Fork 0 rianneogi/DuelMasters
+ Code  Issues 2  Pull requests 0  Projects 0 Insights 
+Tree: 542dd60a9f Find file Copy pathDuelMasters/Release/Lua/Common.lua
+542dd60  on Jul 1, 2015
+@rianneogi rianneogi added speed attackers
+1 contributor
+RawBlameHistory      
+656 lines (577 sloc)  15.5 KB
 TYPE_CREATURE = 0
 TYPE_SPELL = 1
 
@@ -31,7 +44,6 @@ RETURN_NOTHING = -4
 Abils = {}
 Checks = {}
 Actions = {}
-Functions = {}
 
 getOpponent = function(p)
 	if(p==1) then
@@ -253,31 +265,25 @@ Abils.drawOnSummon = function(id, count)
 end
 
 Abils.destroyYourManaOnSummon = function(id, count)
-    local function summon(id)
-        local f = {}
-        f[1] = Actions.destroyMana
-        for i=2,count do
-            f[i] = function(cid,sid)
-                f[1](cid,sid)
-                createChoice("Select mana to destroy",0,id,getCardOwner(id),Checks.InYourMana,f[i-1])
+    summon = function(id)
+        for i=1,count do
+            local ch = createChoice("Select mana to destroy",0,id,getCardOwner(id),Checks.InYourMana)
+            if(ch>=0) then
+                destroyMana(ch)
             end
         end
-        createChoice("Select mana to destroy",0,id,getCardOwner(id),Checks.InYourMana,f[i])
     end
     Abils.onSummon(id,summon)
 end
 
 Abils.destroyYourCreatureOnSummon = function(id, count)
-    local function summon(id)
-        local f = {}
-        f[1] = Actions.destroyCreature
-        for i=2,count do
-            f[i] = function(cid,sid)
-                f[1](cid,sid)
-                createChoice("Select creature to destroy",0,id,getCardOwner(id),Checks.InYourBattle,f[i-1])
+    summon = function(id)
+        for i=1,count do
+            local ch = createChoice("Select creature to destroy",0,id,getCardOwner(id),Checks.InYourBattle)
+            if(ch>=0) then
+                destroyCreature(ch)
             end
         end
-        createChoice("Select creature to destroy",0,id,getCardOwner(id),Checks.InYourBattle,f[i])
     end
     Abils.onSummon(id,summon)
 end
@@ -307,15 +313,12 @@ end
 
 Abils.destroyOppManaOnAttack = function(id,count)
     local func = function(id)
-        local f = {}
-        f[1] = Actions.destroyMana
-        for i=2,count do
-            f[i] = function(cid,sid)
-                f[1](cid,sid)
-                createChoice("Select mana to destroy",0,id,getCardOwner(id),Checks.InOppMana,f[i-1])
+        for i=1,count do
+            local ch = createChoice("Select a card in opponent's mana",0,id,getCardOwner(id),Checks.InOppMana)
+            if(ch>=0) then
+                destroyMana(ch)
             end
         end
-        createChoice("Select mana to destroy",0,id,getCardOwner(id),Checks.InOppMana,f[i])
     end
     Abils.onAttack(id,func)
 end
@@ -331,28 +334,23 @@ end
 
 Abils.returnCreatureFromGraveyardOnAttack = function(id,count)
     local func = function(id)
-        local f = {}
-        f[1] = Actions.moveToHand
-        for i=2,count do
-            f[i] = function(cid,sid)
-                f[1](cid,sid)
-                createChoice("Select mana to destroy",0,id,getCardOwner(id),Checks.InYourGraveyard,f[i-1])
+        for i=1,count do
+            local ch = createChoice("Select a creature in your graveyard",0,id,getCardOwner(id),Checks.CreatureInYourGraveyard)
+            if(ch>=0) then
+                moveCard(ch,ZONE_HAND)
             end
         end
-        createChoice("Select mana to destroy",0,id,getCardOwner(id),Checks.InYourGraveyard,f[i])
     end
     Abils.onAttack(id,func)
 end
 
 Abils.untapAtEOT = function(id,name)
-    local function action(id,ch)
-        if(ch==RETURN_BUTTON1) then
-            untapCard(id)
-        end
-    end
     if(getMessageType()=="pre endturn") then
 		if(getMessageInt("player")==getCardOwner(id) and getCardZone(id)==ZONE_BATTLE and isCardTapped(id)==1) then
-			createChoiceNoCheck("Untap this creature?",2,id,getCardOwner(id),Checks.False,action)
+			local ch = createChoiceNoCheck("Untap this creature?",2,id,getCardOwner(id),Checks.False)
+			if(ch==RETURN_BUTTON1) then
+                untapCard(id)
+            end
 		end
 	end
 end
@@ -593,74 +591,20 @@ Checks.False = function(cid,sid)
     return 0
 end
 
-function Actions.tapCard(cid,sid)
-    if(sid>=0) then
-        tapCard(sid)
-    end
-end
-
-function Actions.destroyCreature(cid,sid)
-    if(sid>=0) then
-        destroyCreature(sid)
-    end
-end
-
-function Actions.destroyMana(cid,sid)
-    if(sid>=0) then
-        destroyMana(sid)
-    end
-end
-
-function Actions.moveToBattle(cid,sid)
-    if(sid>=0) then
-        moveCard(sid,ZONE_BATTLE)
-    end
-end
-
-function Actions.moveToHand(cid,sid)
-    if(sid>=0) then
-        moveCard(sid,ZONE_HAND)
-    end
-end
-
-function Actions.moveToDeck(cid,sid)
-    if(sid>=0) then
-        moveCard(sid,ZONE_DECK)
-    end
-end
-
-function Actions.moveToMana(cid,sid)
-    if(sid>=0) then
-        moveCard(sid,ZONE_MANA)
-    end
-end
-
-function Actions.moveToShield(cid,sid)
-    if(sid>=0) then
-        moveCard(sid,ZONE_SHIELD)
-    end
-end
-
-function Actions.moveToGraveyard(cid,sid)
-    if(sid>=0) then
-        moveCard(sid,ZONE_GRAVEYARD)
-    end
-end
-
-Functions.SkipChoice = function(cid)
+Actions.SkipChoice = function(cid)
     setChoiceActive(0)
 end
 
-Functions.EndChoiceSpell = function(cid)
+Actions.EndChoiceSpell = function(cid)
     --setChoiceActive(0)
     --moveCard(cid,ZONE_GRAVEYARD)
 end
 
-Functions.EndSpell = function(id)
+Actions.EndSpell = function(id)
     --moveCard(id,ZONE_GRAVEYARD)
 end
 
-Functions.execute = function(id,check,func)
+Actions.execute = function(id,check,func)
     local x = getTotalCardCount()
     for i=0,(x-1) do
         if(check(id,i)==1) then
@@ -669,7 +613,7 @@ Functions.execute = function(id,check,func)
     end
 end
 
-Functions.executeForCreaturesInBattle = function(id,player,func)
+Actions.executeForCreaturesInBattle = function(id,player,func)
     local s = getZoneSize(player,ZONE_BATTLE)
     for i=0,(s-1) do
         local c = getCardAt(player,ZONE_BATTLE,i)
@@ -679,7 +623,7 @@ Functions.executeForCreaturesInBattle = function(id,player,func)
     end
 end
 
-Functions.count = function(id,check)
+Actions.count = function(id,check)
     local x = getTotalCardCount()
     local count = 0
     for i=0,(x-1) do
@@ -690,7 +634,7 @@ Functions.count = function(id,check)
     return count
 end
 
-Functions.countTappedCreaturesInBattle = function(player)
+Actions.countTappedCreaturesInBattle = function(player)
     local size = getZoneSize(player,ZONE_BATTLE)
     local count = 0
     for i=0,(size-1) do
@@ -702,7 +646,7 @@ Functions.countTappedCreaturesInBattle = function(player)
     return count
 end
 
-Functions.countCreaturesInBattle = function(player)
+Actions.countCreaturesInBattle = function(player)
     local size = getZoneSize(player,ZONE_BATTLE)
     local count = 0
     for i=0,(size-1) do
@@ -713,7 +657,7 @@ Functions.countCreaturesInBattle = function(player)
     return count
 end
 
-Functions.moveTopCardsFromDeck = function(player,zone,count)
+Actions.moveTopCardsFromDeck = function(player,zone,count)
 	local size = getZoneSize(player,ZONE_DECK)
     for i=1,count do
         if(i>size) then
@@ -723,3 +667,5 @@ Functions.moveTopCardsFromDeck = function(player,zone,count)
 	    moveCard(c,zone)
     end
 end
+Contact GitHub API Training Shop Blog About
+© 2017 GitHub, Inc. Terms Privacy Security Status Help
