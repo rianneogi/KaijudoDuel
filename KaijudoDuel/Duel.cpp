@@ -1050,7 +1050,7 @@ int Duel::waitForChoice()
 					choice = msg.getInt("selection");
 					break;
 				}
-			}
+			} 
 			gMutex.unlock();
 		}
 	}
