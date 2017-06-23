@@ -56,7 +56,7 @@ static int createChoice(lua_State* L)
 	//cout << "ref: " << vref << " " << aref << endl;
 	ActiveDuel->addChoice(lua_tostring(L, 1), lua_tointeger(L, 2), lua_tointeger(L, 3), lua_tointeger(L, 4), vref, -1);
 	ActiveDuel->checkChoiceValid();
-	printf("new choice\n");
+	
 	if (ActiveDuel->mIsChoiceActive)
 		lua_pushinteger(L, ActiveDuel->waitForChoice());
 	else
@@ -234,6 +234,7 @@ static int createModifier(lua_State* L)
 	msg.addValue("card", uid);
 	msg.addValue("funcref", ref);
 	ActiveDuel->mMsgMngr.sendMessage(msg);
+
 	return 0;
 }
 
@@ -243,6 +244,7 @@ static int destroyModifier(lua_State* L)
 	msg.addValue("card", lua_tointeger(L, 1));
 	msg.addValue("modifier", lua_tointeger(L, 2));
 	ActiveDuel->mMsgMngr.sendMessage(msg);
+	
 	return 0;
 }
 

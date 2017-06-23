@@ -131,7 +131,7 @@ int Card::handleMessage(Message& msg)
 	{
 		(*i)->handleMessage(UniqueId, cnt, msg);
 	}
-
+	
 	return 0;
 }
 

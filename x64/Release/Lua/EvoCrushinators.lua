@@ -392,7 +392,7 @@ Cards["Dark Titan Maginn"] = {
 
 	power = 4000,
 	breaker = 1,
-
+	
 	HandleMessage = function(id)
         Abils.discardOppCardOnAttack(id,1)
 	end
@@ -413,7 +413,7 @@ Cards["Diamond Cutter"] = {
             Abils.destroyModAtEOT(cid,mid)
         end
         local func = function(cid,sid)
-            createModifier(sid,mod)
+			createModifier(sid,mod)
         end
         Functions.executeForCreaturesInBattle(id,getCardOwner(id),func)
         Functions.EndSpell(id)

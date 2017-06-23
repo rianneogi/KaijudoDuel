@@ -1618,6 +1618,7 @@ void Duel::loadDeck(std::string s, int p)
 	if (!file.is_open())
 	{
 		//cout << "ERROR opening deck: " << s << endl;
+		printf("ERROR opening deck %s\n", s.c_str());
 	}
 
 	while (!file.eof())

@@ -147,7 +147,7 @@ bool initGame()
 	ActiveDuel = new Duel();
 	
 	//ActiveDuel = &(gDuelInterface->mDuel);
-	ActiveDuel->setDecks("Decks\\My Decks\\L Diamond Domination.txt", "Decks\\My Decks\\WN Mana Crisis.txt");
+	ActiveDuel->setDecks("Decks\\My Decks\\L Diamond Domination.txt", "Decks\\My Decks\\DW Crushination Evo.txt");
 	ActiveDuel->startDuel();
 	ActiveDuel->dispatchAllMessages();
 	gDuelInterface = new DuelInterface(ActiveDuel);

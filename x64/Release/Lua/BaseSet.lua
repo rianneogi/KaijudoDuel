@@ -189,8 +189,8 @@ Cards["Aura Blast"] = {
         local func = function(cid,sid)
             createModifier(sid,mod)
         end
-		Actions.executeForCreaturesInBattle(id,getCardOwner(id),func)
-        Actions.EndSpell(id)
+		Functions.executeForCreaturesInBattle(id,getCardOwner(id),func)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -321,7 +321,7 @@ Cards["Brain Serum"] = {
 
     OnCast = function(id)
         drawCards(getCardOwner(id),2)
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
     end
 }
 
@@ -360,7 +360,7 @@ Cards["Bronze-Arm Tribe"] = {
 
 	HandleMessage = function(id)
         local summon = function(id)
-            Actions.moveTopCardsFromDeck(getCardOwner(id),ZONE_MANA,1)
+            Functions.moveTopCardsFromDeck(getCardOwner(id),ZONE_MANA,1)
         end
         Abils.onSummon(id,summon)
 	end
@@ -401,7 +401,7 @@ Cards["Burning Power"] = {
 		if(c>=0) then
             createModifier(c,mod)
         end
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -445,7 +445,7 @@ Cards["Chaos Strike"] = {
 		if(c>=0) then
             createModifier(c,mod)
         end
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -511,8 +511,8 @@ Cards["Creeping Plague"] = {
         local func = function(cid,sid)
             createModifier(sid,mod1)
         end
-		Actions.executeForCreaturesInBattle(id,getCardOwner(id),func)
-        Actions.EndSpell(id)
+		Functions.executeForCreaturesInBattle(id,getCardOwner(id),func)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -536,7 +536,7 @@ Cards["Crimson Hammer"] = {
 	    if(ch>=0) then
             destroyCreature(ch)
         end
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -557,7 +557,7 @@ Cards["Crystal Memory"] = {
             moveCard(ch,ZONE_HAND)
             shuffleDeck(owner)
         end
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -612,7 +612,7 @@ Cards["Dark Reversal"] = {
         if(ch>=0) then
             moveCard(ch,ZONE_HAND)
         end
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
     end
 }
 
@@ -648,7 +648,7 @@ Cards["Death Smoke"] = {
 	    if(ch>=0) then
             destroyCreature(ch)
         end
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -725,7 +725,7 @@ Cards["Dimension Gate"] = {
             moveCard(ch,ZONE_HAND)
             shuffleDeck(owner)
         end
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -967,7 +967,7 @@ Cards["Ghost Touch"] = {
 
     OnCast = function(id)
         discardCardAtRandom(getOpponent(getCardOwner(id)))
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
     end
 }
 
@@ -1123,7 +1123,7 @@ Cards["Holy Awe"] = {
 		for i=0,size,1 do
 			tapCard(getCardAt(opp,ZONE_BATTLE,i))
 		end
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -1362,7 +1362,7 @@ Cards["Laser Wing"] = {
                  createModifier(ch2,mod)
             end
         end
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -1402,7 +1402,7 @@ Cards["Magma Gazer"] = {
 		if(ch>=0) then
             createModifier(ch,mod)
         end
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -1540,7 +1540,7 @@ Cards["Moonlight Flash"] = {
                 tapCard(ch2)
             end
         end
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -1557,7 +1557,7 @@ Cards["Natural Snare"] = {
         if(ch>=0) then
             moveCard(ch,ZONE_MANA)
         end
-	    Actions.EndSpell(id)
+	    Functions.EndSpell(id)
 	end
 }
 
@@ -1627,7 +1627,7 @@ Cards["Pangaea's Song"] = {
 	    if(ch>=0) then
             moveCard(ch,ZONE_MANA)
         end
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
     end
 }
 
@@ -1989,7 +1989,7 @@ Cards["Solar Ray"] = {
         if(ch>=0) then
             tapCard(ch)
         end
-	    Actions.EndSpell(id)
+	    Functions.EndSpell(id)
 	end
 }
 
@@ -2010,7 +2010,7 @@ Cards["Sonic Wing"] = {
 		if(ch>=0) then
             createModifier(ch,mod)
         end
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -2027,7 +2027,7 @@ Cards["Spiral Gate"] = {
 	    if(ch>=0) then
             moveCard(ch,ZONE_HAND)
         end
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -2224,7 +2224,7 @@ Cards["Teleportation"] = {
                 moveCard(ch2,ZONE_HAND)
             end
         end
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -2241,7 +2241,7 @@ Cards["Terror Pit"] = {
 	    if(ch>=0) then
             destroyCreature(ch)
         end
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -2264,7 +2264,7 @@ Cards["Thorny Mandra"] = {
             if(getMessageInt("card")==id) then
 			    createChoice("Thorny Mandra: Select card in graveyard",1,id)
 			    choicePushSelect(3,"Cards","Thorny Mandra","Select")
-                choicePushButton1(2,"Actions","SkipChoice")
+                choicePushButton1(2,"Functions","SkipChoice")
 			    choicePushValid(2,"Checks","InYourGraveyard")
             end
 		end
@@ -2329,7 +2329,7 @@ Cards["Tornado Flame"] = {
 	    if(ch>=0) then
             destroyCreature(ch)
         end
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -2410,7 +2410,7 @@ Cards["Ultimate Force"] = {
 		moveCard(c,ZONE_MANA)
         c = getCardAt(turn,ZONE_DECK,size-2)
         moveCard(c,ZONE_MANA)
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
     end
 }
 
@@ -2509,7 +2509,7 @@ Cards["Virtual Tripwire"] = {
 	    if(ch>=0) then
             tapCard(ch)
         end
-        Actions.EndSpell(id)
+        Functions.EndSpell(id)
 	end
 }
 
