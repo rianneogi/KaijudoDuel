@@ -50,10 +50,10 @@ bool ZoneRenderer::rayTrace(Vector2i mousePos, const glm::mat4& projview, const 
 	glm::mat4 finalmat = projview*glm::translate(glm::mat4(1.0), mPos);
 
 	std::vector<glm::vec4> newverts;
-	newverts.push_back(finalmat*glm::vec4(-mWidth, 0.f, -mHeight, 1));
-	newverts.push_back(finalmat*glm::vec4(mWidth, 0.f, -mHeight, 1));
+	newverts.push_back(finalmat*glm::vec4(0, 0.f, 0, 1));
+	newverts.push_back(finalmat*glm::vec4(mWidth, 0.f, 0, 1));
 	newverts.push_back(finalmat*glm::vec4(mWidth, 0.f, mHeight, 1));
-	newverts.push_back(finalmat*glm::vec4(-mWidth, 0.f, mHeight, 1));
+	newverts.push_back(finalmat*glm::vec4(0, 0.f, mHeight, 1));
 
 	for (int i = 0; i < 4; i++) //perspective divide
 	{

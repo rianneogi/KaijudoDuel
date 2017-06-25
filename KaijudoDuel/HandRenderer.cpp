@@ -11,7 +11,7 @@ HandRenderer::~HandRenderer()
 void HandRenderer::addCard(CardModel* c)
 {
 	mCardModels.push_back(c);
-	c->setPosition(glm::vec3(mPos.x + CONST_CARDSEPERATION*mCardModels.size(), mPos.y, mPos.z + (mPos.z + mHeight) / 2));
+	c->setPosition(glm::vec3(mPos.x + CONST_CARDSEPERATION_VERT*mCardModels.size(), mPos.y, mPos.z + (mPos.z + mHeight) / 2));
 	update(-1);
 }
 

@@ -30,26 +30,26 @@ DuelInterface::DuelInterface(Duel* duel)
 		mShieldZoneRenderers[i] = new ShieldZoneRenderer();
 		mBattleZoneRenderers[i] = new BattleZoneRenderer();
 
-		mDeckRenderers[i]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		mGraveyardRenderers[i]->mPos = glm::vec3(-3 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		mHandRenderers[i]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (3 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		mManaZoneRenderers[i]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (2 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		mShieldZoneRenderers[i]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
-		mBattleZoneRenderers[i]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION, CONST_CARDELEVATION, Factor[i] * (0 * CONST_CARDSEPERATION + Factor2[i] * CONST_CARDSEPERATION));
+		mDeckRenderers[i]->mPos = glm::vec3(-3 * CONST_CARDSEPERATION_HORI, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION_VERT + Factor2[i] * CONST_CARDSEPERATION_VERT));
+		mGraveyardRenderers[i]->mPos = glm::vec3(-4 * CONST_CARDSEPERATION_HORI, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION_VERT + Factor2[i] * CONST_CARDSEPERATION_VERT));
+		mHandRenderers[i]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION_HORI, CONST_CARDELEVATION, Factor[i] * (3 * CONST_CARDSEPERATION_VERT + Factor2[i] * CONST_CARDSEPERATION_VERT));
+		mManaZoneRenderers[i]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION_HORI, CONST_CARDELEVATION, Factor[i] * (2 * CONST_CARDSEPERATION_VERT + Factor2[i] * CONST_CARDSEPERATION_VERT));
+		mShieldZoneRenderers[i]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION_HORI, CONST_CARDELEVATION, Factor[i] * (1 * CONST_CARDSEPERATION_VERT + Factor2[i] * CONST_CARDSEPERATION_VERT));
+		mBattleZoneRenderers[i]->mPos = glm::vec3(-2 * CONST_CARDSEPERATION_HORI, CONST_CARDELEVATION, Factor[i] * (0 * CONST_CARDSEPERATION_VERT + Factor2[i] * CONST_CARDSEPERATION_VERT));
 
-		mDeckRenderers[i]->mHeight = CONST_CARDSEPERATION;
-		mGraveyardRenderers[i]->mHeight = CONST_CARDSEPERATION;
-		mHandRenderers[i]->mHeight = CONST_CARDSEPERATION;
-		mManaZoneRenderers[i]->mHeight = CONST_CARDSEPERATION;
-		mShieldZoneRenderers[i]->mHeight = CONST_CARDSEPERATION;
-		mBattleZoneRenderers[i]->mHeight = CONST_CARDSEPERATION;
+		mDeckRenderers[i]->mHeight = CONST_CARDSEPERATION_VERT;
+		mGraveyardRenderers[i]->mHeight = CONST_CARDSEPERATION_VERT;
+		mHandRenderers[i]->mHeight = CONST_CARDSEPERATION_VERT;
+		mManaZoneRenderers[i]->mHeight = CONST_CARDSEPERATION_VERT;
+		mShieldZoneRenderers[i]->mHeight = CONST_CARDSEPERATION_VERT;
+		mBattleZoneRenderers[i]->mHeight = CONST_CARDSEPERATION_VERT;
 
-		mDeckRenderers[i]->mWidth = CONST_CARDSEPERATION;
-		mGraveyardRenderers[i]->mWidth = CONST_CARDSEPERATION;
-		mHandRenderers[i]->mWidth = CONST_CARDSEPERATION;
-		mManaZoneRenderers[i]->mWidth = CONST_CARDSEPERATION * 5;
-		mShieldZoneRenderers[i]->mWidth = CONST_CARDSEPERATION * 5;
-		mBattleZoneRenderers[i]->mWidth = CONST_CARDSEPERATION * 5;
+		mDeckRenderers[i]->mWidth = CONST_CARDSEPERATION_HORI;
+		mGraveyardRenderers[i]->mWidth = CONST_CARDSEPERATION_HORI;
+		mHandRenderers[i]->mWidth = CONST_CARDSEPERATION_HORI;
+		mManaZoneRenderers[i]->mWidth = CONST_CARDSEPERATION_HORI * 5;
+		mShieldZoneRenderers[i]->mWidth = CONST_CARDSEPERATION_HORI * 5;
+		mBattleZoneRenderers[i]->mWidth = CONST_CARDSEPERATION_HORI * 5;
 	}
 
 	duelstate = DUELSTATE_MENU;
@@ -424,6 +424,24 @@ void DuelInterface::update(int deltaTime)
 {
 	//mDuel->dispatchAllMessages();
 
+	Vector2i mousePos;
+	SDL_GetMouseState(&mousePos.x, &mousePos.y);
+
+	for (int i = 0; i < 2; i++)
+	{
+		for (int j = 0; j < 6; j++)
+		{
+			glm::mat4 view, proj, projview;
+			mCamera.render(view, proj);
+			projview = proj*view;
+			Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
+			if (getZoneRenderer(i, j)->rayTrace(mousePos, projview, screendim))
+			{
+				printf("raytrace %d %d\n", i, j);
+			}
+		}
+	}
+
 	for (int i = 0; i < 2; i++)
 	{
 		mHandRenderers[i]->mTurn = mDuel->mTurn;
@@ -431,8 +449,7 @@ void DuelInterface::update(int deltaTime)
 	}
 
 	int newhovercard = -1;
-	Vector2i mousePos;
-	SDL_GetMouseState(&mousePos.x, &mousePos.y);
+	
 	if (mousePos.x >= 0 && mousePos.y >= 0)
 	{
 		glm::mat4 view, proj, projview;
