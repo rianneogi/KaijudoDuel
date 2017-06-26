@@ -147,7 +147,7 @@ bool initGame()
 	ActiveDuel = new Duel();
 	
 	//ActiveDuel = &(gDuelInterface->mDuel);
-	ActiveDuel->setDecks("Decks\\My Decks\\L Diamond Domination.txt", "Decks\\My Decks\\DW Crushination Evo.txt");
+	ActiveDuel->setDecks("Decks\\My Decks\\FL Light Humans.txt", "Decks\\My Decks\\FD Hellfire Evo.txt");
 	ActiveDuel->startDuel();
 	ActiveDuel->dispatchAllMessages();
 	gDuelInterface = new DuelInterface(ActiveDuel);

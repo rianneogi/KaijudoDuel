@@ -15,9 +15,9 @@ void HandRenderer::addCard(CardModel* c)
 	update(-1);
 }
 
-void HandRenderer::updateCard(CardModel* c, int pos, int size, int hovercard, int istapped, int isflipped)
+void HandRenderer::updateCard(CardModel* model, Card* card, int pos, int size, int hovercard)
 {
-	if (c->mUniqueId == mCastingCard)
+	if (card->UniqueId == mCastingCard)
 	{
 		Orientation o;
 		o.dir = mCamera->mUp;
@@ -32,7 +32,7 @@ void HandRenderer::updateCard(CardModel* c, int pos, int size, int hovercard, in
 			o.pos = glm::vec3(gCastingCardX, gCastingCardY, gCastingCardZ);
 		}
 		o.calculateQuat();
-		c->setMovement(o, 1000);
+		model->setMovement(o, 1000);
 	}
 	else if (mOwner == 0)
 	{
@@ -54,17 +54,17 @@ void HandRenderer::updateCard(CardModel* c, int pos, int size, int hovercard, in
 			o.up = mCamera->mDirection;
 			o.dir.x *= -1;
 		}
-		if (c->mUniqueId == hovercard && mTurn == mOwner)
+		if (card->UniqueId == hovercard && mTurn == mOwner)
 		{
 			o.pos = centerhover + offset;
 			o.calculateQuat();
-			c->setHoverMovement(o, 1000);
+			model->setHoverMovement(o, 1000);
 		}
 		else
 		{
 			o.pos = center + offset;
 			o.calculateQuat();
-			c->setMovement(o, 1000);
+			model->setMovement(o, 1000);
 		}
 	}
 	else
@@ -87,19 +87,19 @@ void HandRenderer::updateCard(CardModel* c, int pos, int size, int hovercard, in
 			o.up = mCamera->mDirection;
 			o.dir.x *= -1;
 		}
-		if (c->mUniqueId == hovercard && mTurn == mOwner)
+		if (card->UniqueId == hovercard && mTurn == mOwner)
 		{
 			o.dir = glm::vec3(0, 0, 1);
 			o.up = glm::vec3(0, 1, 0);
 			o.pos = centerhover + offset;
 			o.calculateQuat();
-			c->setHoverMovement(o, 1000);
+			model->setHoverMovement(o, 1000);
 		}
 		else
 		{
 			o.pos = center + offset;
 			o.calculateQuat();
-			c->setMovement(o, 1000);
+			model->setMovement(o, 1000);
 		}
 	}
 }

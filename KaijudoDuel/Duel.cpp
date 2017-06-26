@@ -864,10 +864,11 @@ int Duel::handleInterfaceInput(Message& msg)
 			}
 			else if (mDefenderType == DEFENDER_PLAYER)
 			{
-				//int def = msg.getInt("defender");
+				printf("defender: %d\n", mDefender);
 				if (mShields[mDefender].cards.size() == 0)
 				{
 					mWinner = getOpponent(mDefender);
+					printf("Winner: %d\n", mWinner);
 				}
 				else
 				{

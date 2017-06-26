@@ -14,26 +14,26 @@ void GraveyardRenderer::addCard(CardModel* c)
 	c->setPosition(glm::vec3(mPos.x + (mPos.x + mWidth) / 2, mPos.y + CONST_CARDTHICKNESS*mCardModels.size(), mPos.z + (mPos.z + mHeight) / 2));
 }
 
-void GraveyardRenderer::updateCard(CardModel* c, int pos, int size, int hovercard, int istapped, int isflipped)
+void GraveyardRenderer::updateCard(CardModel* model, Card* card, int pos, int size, int hovercard)
 {
 	if (mIsOpen)
 	{
 		Orientation o;
 		o.pos = glm::vec3(-2, 20 + CONST_CARDTHICKNESS*(size - pos - 1), -3 + mScrollPos + pos*0.4);
-		if (c->mUniqueId == hovercard)
+		if (card->UniqueId == hovercard)
 		{
 			o.pos.y += 1;
 		}
 		o.dir = glm::vec3(0, 0, 1);
 		o.up = glm::vec3(0, 1, 0);
 		o.calculateQuat();
-		if (c->mUniqueId == hovercard)
+		if (card->UniqueId == hovercard)
 		{
-			c->setHoverMovement(o, 1000);
+			model->setHoverMovement(o, 1000);
 		}
 		else
 		{
-			c->setMovement(o, 1000);
+			model->setMovement(o, 1000);
 		}
 	}
 	else
@@ -43,6 +43,6 @@ void GraveyardRenderer::updateCard(CardModel* c, int pos, int size, int hovercar
 		o.dir = glm::vec3(0, 0, 1);
 		o.up = glm::vec3(0, 1, 0);
 		o.calculateQuat();
-		c->setMovement(o, 1000);
+		model->setMovement(o, 1000);
 	}
 }

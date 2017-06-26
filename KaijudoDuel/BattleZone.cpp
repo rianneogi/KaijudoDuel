@@ -58,7 +58,7 @@ void BattleZone::evolveCard(Card* c, int evobait)
 	}
 	if (eb == NULL)
 	{
-		//cout << "ERROR: attempting to evolve on card not in battlezone, cid: " << evobait << endl;
+		printf("ERROR: attempting to evolve on card not in battlezone, cid: %d\n", evobait);
 		return;
 	}
 	//sf::FloatRect r = eb->sprite.getGlobalBounds();

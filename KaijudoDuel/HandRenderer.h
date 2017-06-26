@@ -27,7 +27,7 @@ public:
 	~HandRenderer();
 
 	void addCard(CardModel* c);
-	void updateCard(CardModel* c, int pos, int size, int hovercard, int istapped, int isflipped);
+	void updateCard(CardModel* model, Card* card, int pos, int size, int hovercard);
 	//void removeCard(CardModel* c);
 
 	void update(int hovercard);
