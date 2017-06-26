@@ -150,12 +150,13 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 					mDuel->handleInterfaceInput(m);
 				}
 			}
-			if (mSelectedCardId == -1)
+			else if (mSelectedCardId == -1)
 			{
 				if (mHoverCardId != -1)
 				{
 					if ((mDuel->mCardList[mHoverCardId]->Zone == ZONE_HAND || mDuel->mCardList[mHoverCardId]->Zone == ZONE_BATTLE) //select card
-						&& mDuel->mCardList[mHoverCardId]->Owner == mDuel->mTurn && mDuel->mAttackphase == PHASE_NONE) 
+						&& mDuel->mCardList[mHoverCardId]->Owner == mDuel->mTurn && mDuel->mAttackphase == PHASE_NONE 
+						&& !mDuel->mIsChoiceActive) 
 					{
 						assert(mHoverCardId < mDuel->mCardList.size());
 						mSelectedCardId = mHoverCardId;
@@ -599,9 +600,15 @@ void DuelInterface::update(int deltaTime)
 			for (size_t k = 0; k < mDuel->getZone(i, j)->cards.size(); k++)
 			{
 				Card* c = mDuel->getZone(i, j)->cards[k];
-				if(c->UniqueId != mSelectedCardId)
-					getZoneRenderer(i, j)->updateCard(mCardModels[c->UniqueId], c, k, mDuel->getZone(i, j)->cards.size(), 
-						mHighlightCardId);
+				if (c->UniqueId != mSelectedCardId)
+				{
+					getZoneRenderer(i, j)->updateCard(mCardModels[c->UniqueId], c, k, mDuel->getZone(i, j)->cards.size(), mHighlightCardId);
+					for (size_t m = 0; m < c->evostack.size(); m++)
+					{
+						getZoneRenderer(i, j)->updateCard(mCardModels[c->evostack[m]->UniqueId], c, k, 
+							mDuel->getZone(i, j)->cards.size(), mHighlightCardId);
+					}
+				}
 			}
 		}
 	}

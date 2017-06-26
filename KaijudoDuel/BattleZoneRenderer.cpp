@@ -18,14 +18,22 @@ void BattleZoneRenderer::updateCard(CardModel* model, Card* card, int pos, int s
 {
 	Orientation o;
 	o.pos = glm::vec3(mPos.x + mWidth - CONST_CARDSEPERATION_HORI*pos - CONST_CARDSEPERATION_HORI / 2, 
-		mPos.y + 3*CONST_CARDTHICKNESS*card->evostack.size(), mPos.z + mHeight / 2);
+		mPos.y + 3 * CONST_CARDTHICKNESS*card->evostack.size(), mPos.z + mHeight / 2);
+
+	for (size_t i = 0; i < card->evostack.size(); i++)
+	{
+		if (card->evostack[i]->UniqueId == model->mUniqueId)
+		{
+			o.pos.y -= 3 * CONST_CARDTHICKNESS*(i+1);
+		}
+	}
 	
 	if(card->isTapped)
 		o.dir = glm::vec3(-1, 0, 0);
 	else
 		o.dir = glm::vec3(0, 0, 1);
 
-	if (hovercard == card->UniqueId)
+	if (hovercard == card->UniqueId && card->UniqueId == model->mUniqueId)
 	{
 		o.pos = glm::vec3(gHighlightX, gHighlightY, gHighlightZ);
 		o.dir = glm::vec3(0, 0, 1);
