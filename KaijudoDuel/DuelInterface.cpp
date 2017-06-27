@@ -14,8 +14,8 @@ DuelInterface::DuelInterface(Duel* duel)
 
 	for (size_t i = 0; i < mDuel->mCardList.size(); i++)
 	{
-		assert(i == mDuel->mCardList[i]->UniqueId);
-		mCardModels.push_back(new CardModel(i, mDuel->mCardList[i]->CardId));
+		assert(i == mDuel->mCardList[i]->mUniqueId);
+		mCardModels.push_back(new CardModel(i, mDuel->mCardList[i]->mCardId));
 	}
 
 	int Factor[2] = { -1, 1 };
@@ -154,8 +154,8 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 			{
 				if (mHoverCardId != -1)
 				{
-					if ((mDuel->mCardList[mHoverCardId]->Zone == ZONE_HAND || mDuel->mCardList[mHoverCardId]->Zone == ZONE_BATTLE) //select card
-						&& mDuel->mCardList[mHoverCardId]->Owner == mDuel->mTurn && mDuel->mAttackphase == PHASE_NONE 
+					if ((mDuel->mCardList[mHoverCardId]->mZone == ZONE_HAND || mDuel->mCardList[mHoverCardId]->mZone == ZONE_BATTLE) //select card
+						&& mDuel->mCardList[mHoverCardId]->mOwner == mDuel->mTurn && mDuel->mAttackphase == PHASE_NONE 
 						&& !mDuel->mIsChoiceActive) 
 					{
 						assert(mHoverCardId < mDuel->mCardList.size());
@@ -163,7 +163,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 						printf("Select: %d\n", mSelectedCardId);
 						//mDuel.CardList[mHoverCardId]->move(target, 0);
 					}
-					else if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_MANA) //tap mana
+					else if (mDuel->mCardList[mHoverCardId]->mZone == ZONE_MANA) //tap mana
 					{
 						Message msg("manatap");
 						msg.addValue("card", mHoverCardId);
@@ -184,7 +184,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 						//	}
 						//}
 
-						if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_BATTLE && mDuel->mCardList[mHoverCardId]->Owner == !mDuel->mTurn)
+						if (mDuel->mCardList[mHoverCardId]->mZone == ZONE_BATTLE && mDuel->mCardList[mHoverCardId]->mOwner == !mDuel->mTurn)
 						{
 							Message msg("creatureblock");
 							msg.addValue("blocker", mHoverCardId);
@@ -206,7 +206,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 						//	}
 						//}
 
-						if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_SHIELD && mDuel->mCardList[mHoverCardId]->Owner == !mDuel->mTurn)
+						if (mDuel->mCardList[mHoverCardId]->mZone == ZONE_SHIELD && mDuel->mCardList[mHoverCardId]->mOwner == !mDuel->mTurn)
 						{
 							Message msg("targetshield");
 							msg.addValue("shield", mHoverCardId);
@@ -227,7 +227,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 						//	}
 						//}
 
-						if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_HAND && mDuel->mCardList[mHoverCardId]->Owner == !mDuel->mTurn)
+						if (mDuel->mCardList[mHoverCardId]->mZone == ZONE_HAND && mDuel->mCardList[mHoverCardId]->mOwner == !mDuel->mTurn)
 						{
 							Message msg("targetshield");
 							msg.addValue("shield", mHoverCardId);
@@ -302,7 +302,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 			}
 			else
 			{
-				if (mDuel->mCardList[mSelectedCardId]->Zone == ZONE_HAND)
+				if (mDuel->mCardList[mSelectedCardId]->mZone == ZONE_HAND)
 				{
 					glm::mat4 view, proj, projview;
 					mCamera.render(view, proj);
@@ -329,9 +329,9 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 					}
 					else if (is_evo)
 					{
-						for (int i = 0; i < mDuel->mBattlezones->cards.size(); i++)
+						for (int i = 0; i < mDuel->mBattlezones->mCards.size(); i++)
 						{
-							if (mHoverCardId == mDuel->mBattlezones->cards[i]->UniqueId)
+							if (mHoverCardId == mDuel->mBattlezones->mCards[i]->mUniqueId)
 							{
 								Message msg("cardplay");
 								msg.addValue("card", mSelectedCardId);
@@ -345,13 +345,13 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 					}
 					mSelectedCardId = -1;
 				}
-				else if (mDuel->mCardList[mSelectedCardId]->Zone == ZONE_BATTLE) 
+				else if (mDuel->mCardList[mSelectedCardId]->mZone == ZONE_BATTLE) 
 				{
 					if (mHoverCardId != -1)
 					{
-						if (mDuel->mCardList[mHoverCardId]->Owner != mDuel->mTurn)
+						if (mDuel->mCardList[mHoverCardId]->mOwner != mDuel->mTurn)
 						{
-							if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_BATTLE)
+							if (mDuel->mCardList[mHoverCardId]->mZone == ZONE_BATTLE)
 							{
 								Message msg("creatureattack");
 								msg.addValue("attacker", mSelectedCardId);
@@ -360,7 +360,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 								mDuel->handleInterfaceInput(msg);
 								mSelectedCardId = -1;
 							}
-							else if (mDuel->mCardList[mHoverCardId]->Zone == ZONE_SHIELD)
+							else if (mDuel->mCardList[mHoverCardId]->mZone == ZONE_SHIELD)
 							{
 								Message msg("creatureattack");
 								msg.addValue("attacker", mSelectedCardId);
@@ -481,13 +481,13 @@ void DuelInterface::update(int deltaTime)
 		{
 			if (flag == 0 && mGraveyardRenderers[i]->mIsOpen)
 			{
-				for (int j = 0; j < mDuel->mGraveyards[i].cards.size(); j++)
+				for (int j = 0; j < mDuel->mGraveyards[i].mCards.size(); j++)
 				{
-					if (mCardModels[mDuel->mGraveyards[i].cards[j]->UniqueId]->rayTrace(mousePos, projview, screendim))
+					if (mCardModels[mDuel->mGraveyards[i].mCards[j]->mUniqueId]->rayTrace(mousePos, projview, screendim))
 					{
-						if (newhovercard != mDuel->mGraveyards[i].cards[j]->UniqueId)
+						if (newhovercard != mDuel->mGraveyards[i].mCards[j]->mUniqueId)
 						{
-							newhovercard = mDuel->mGraveyards[i].cards[j]->UniqueId;
+							newhovercard = mDuel->mGraveyards[i].mCards[j]->mUniqueId;
 							flag = 1;
 						}
 						break;
@@ -497,13 +497,13 @@ void DuelInterface::update(int deltaTime)
 
 			if (flag == 0 && mDeckRenderers[i]->mIsOpen)
 			{
-				for (int j = 0; j < mDuel->mDecks[i].cards.size(); j++)
+				for (int j = 0; j < mDuel->mDecks[i].mCards.size(); j++)
 				{
-					if (mCardModels[mDuel->mDecks[i].cards[j]->UniqueId]->rayTrace(mousePos, projview, screendim))
+					if (mCardModels[mDuel->mDecks[i].mCards[j]->mUniqueId]->rayTrace(mousePos, projview, screendim))
 					{
-						if (newhovercard != mDuel->mDecks[i].cards[j]->UniqueId)
+						if (newhovercard != mDuel->mDecks[i].mCards[j]->mUniqueId)
 						{
-							newhovercard = mDuel->mDecks[i].cards[j]->UniqueId;
+							newhovercard = mDuel->mDecks[i].mCards[j]->mUniqueId;
 							flag = 1;
 						}
 						break;
@@ -514,14 +514,14 @@ void DuelInterface::update(int deltaTime)
 
 		if (flag == 0)
 		{
-			for (int i = mDuel->mHands[mDuel->mTurn].cards.size() - 1; i >= 0; i--)
+			for (int i = mDuel->mHands[mDuel->mTurn].mCards.size() - 1; i >= 0; i--)
 			{
-				if (mDuel->mHands[mDuel->mTurn].cards[i]->UniqueId !=mSelectedCardId 
-					&& mCardModels[mDuel->mHands[mDuel->mTurn].cards[i]->UniqueId]->rayTrace(mousePos, projview, screendim))
+				if (mDuel->mHands[mDuel->mTurn].mCards[i]->mUniqueId !=mSelectedCardId 
+					&& mCardModels[mDuel->mHands[mDuel->mTurn].mCards[i]->mUniqueId]->rayTrace(mousePos, projview, screendim))
 				{
-					if (newhovercard != mDuel->mHands[mDuel->mTurn].cards[i]->UniqueId)
+					if (newhovercard != mDuel->mHands[mDuel->mTurn].mCards[i]->mUniqueId)
 					{
-						newhovercard = mDuel->mHands[mDuel->mTurn].cards[i]->UniqueId;
+						newhovercard = mDuel->mHands[mDuel->mTurn].mCards[i]->mUniqueId;
 						flag = 1;
 					}
 					break;
@@ -533,9 +533,9 @@ void DuelInterface::update(int deltaTime)
 		{
 			for (int i = 0; i < mCardModels.size(); i++)
 			{
-				if ((mDuel->mCardList[i]->Zone == ZONE_BATTLE || mDuel->mCardList[i]->Zone == ZONE_MANA
-					|| mDuel->mCardList[i]->Zone == ZONE_HAND || mDuel->mCardList[i]->Zone == ZONE_SHIELD)
-					&& (i != mSelectedCardId || mDuel->mCardList[mSelectedCardId]->Zone != ZONE_HAND))
+				if ((mDuel->mCardList[i]->mZone == ZONE_BATTLE || mDuel->mCardList[i]->mZone == ZONE_MANA
+					|| mDuel->mCardList[i]->mZone == ZONE_HAND || mDuel->mCardList[i]->mZone == ZONE_SHIELD)
+					&& (i != mSelectedCardId || mDuel->mCardList[mSelectedCardId]->mZone != ZONE_HAND))
 				{
 					if (mCardModels[i]->rayTrace(mousePos, projview, screendim))
 					{
@@ -546,7 +546,7 @@ void DuelInterface::update(int deltaTime)
 			}
 		}
 
-		if (mSelectedCardId != -1 && mDuel->mCardList[mSelectedCardId]->Zone == ZONE_HAND)
+		if (mSelectedCardId != -1 && mDuel->mCardList[mSelectedCardId]->mZone == ZONE_HAND)
 		{
 			assert(mSelectedCardId < mDuel->mCardList.size());
 
@@ -586,8 +586,8 @@ void DuelInterface::update(int deltaTime)
 	{
 		mHighlightCardId = -1;
 	}
-	else if (mHoverTimer.getElaspedTime() >= 1000 || mDuel->mCardList[mHoverCardId]->Zone == ZONE_HAND
-		|| mDuel->mCardList[mHoverCardId]->Zone == ZONE_GRAVEYARD || mDuel->mCardList[mHoverCardId]->Zone == ZONE_DECK)
+	else if (mHoverTimer.getElaspedTime() >= 1000 || mDuel->mCardList[mHoverCardId]->mZone == ZONE_HAND
+		|| mDuel->mCardList[mHoverCardId]->mZone == ZONE_GRAVEYARD || mDuel->mCardList[mHoverCardId]->mZone == ZONE_DECK)
 	{
 		mHighlightCardId = mHoverCardId;
 	}
@@ -597,16 +597,16 @@ void DuelInterface::update(int deltaTime)
 	{
 		for (int j = 0; j < 6; j++)
 		{
-			for (size_t k = 0; k < mDuel->getZone(i, j)->cards.size(); k++)
+			for (size_t k = 0; k < mDuel->getZone(i, j)->mCards.size(); k++)
 			{
-				Card* c = mDuel->getZone(i, j)->cards[k];
-				if (c->UniqueId != mSelectedCardId)
+				Card* c = mDuel->getZone(i, j)->mCards[k];
+				if (c->mUniqueId != mSelectedCardId)
 				{
-					getZoneRenderer(i, j)->updateCard(mCardModels[c->UniqueId], c, k, mDuel->getZone(i, j)->cards.size(), mHighlightCardId);
-					for (size_t m = 0; m < c->evostack.size(); m++)
+					getZoneRenderer(i, j)->updateCard(mCardModels[c->mUniqueId], c, k, mDuel->getZone(i, j)->mCards.size(), mHighlightCardId);
+					for (size_t m = 0; m < c->mEvoStack.size(); m++)
 					{
-						getZoneRenderer(i, j)->updateCard(mCardModels[c->evostack[m]->UniqueId], c, k, 
-							mDuel->getZone(i, j)->cards.size(), mHighlightCardId);
+						getZoneRenderer(i, j)->updateCard(mCardModels[c->mEvoStack[m]->mUniqueId], c, k, 
+							mDuel->getZone(i, j)->mCards.size(), mHighlightCardId);
 					}
 				}
 			}

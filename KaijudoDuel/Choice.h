@@ -5,12 +5,12 @@
 class Choice
 {
 public:
-	std::string infotext;
-	int buttoncount;
-	int validref;
-	int actionref;
+	std::string mInfotext;
+	int mButtonCount;
+	int mValidRef;
+	int mActionRef;
 
-	bool isCopy;
+	bool mIsCopy;
 
 	Choice();
 	Choice(std::string info, int skip, int vr, int ar);

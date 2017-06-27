@@ -13,28 +13,28 @@ extern std::vector<std::string> gCardNames;
 class Card
 {
 public:
-	int UniqueId;
-	int CardId;
+	int mUniqueId;
+	int mCardId;
 
-	std::vector<Modifier*> modifiers;
-	std::vector<Card*> evostack;
+	std::vector<Modifier*> mModifiers;
+	std::vector<Card*> mEvoStack;
 
-	std::string Name;
-	std::string Race;
-	int Civilization;
-	int Type;
-	int ManaCost;
-	int Power;
-	int Breaker;
-	int Owner;
-	int Zone;
-	int isBlocker;
-	int isShieldTrigger;
-	bool isTapped;
-	bool isFlipped;
-	int summoningSickness;
+	std::string mName;
+	std::string mRace;
+	int mCivilization;
+	int mType;
+	int mManaCost;
+	int mPower;
+	int mBreaker;
+	int mOwner;
+	int mZone;
+	int mIsBlocker;
+	int mIsShieldTrigger;
+	bool mIsTapped;
+	bool mIsFlipped;
+	int mSummoningSickness;
 
-	bool isVisible[2];
+	bool mIsVisible[2];
 	//CardModel mModel;
 	
 	Card();

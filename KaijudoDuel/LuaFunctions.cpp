@@ -141,11 +141,11 @@ static int destroyCreature(lua_State* L)
 	msg.addValue("creature", cid);
 	msg.addValue("zoneto", ZONE_GRAVEYARD);
 	ActiveDuel->mMsgMngr.sendMessage(msg);
-	if (ActiveDuel->mCardList.at(cid)->Zone != ZONE_BATTLE)
+	if (ActiveDuel->mCardList.at(cid)->mZone != ZONE_BATTLE)
 	{
 		//cout << "WARNING: destroyCreature called on creature that is not in battle zone" << endl;
 	}
-	if (ActiveDuel->mCardList.at(cid)->Type != TYPE_CREATURE)
+	if (ActiveDuel->mCardList.at(cid)->mType != TYPE_CREATURE)
 	{
 		//cout << "WARNING: destroyCreature called on card that is not a creature" << endl;
 	}
@@ -160,7 +160,7 @@ static int discardCard(lua_State* L)
 	msg.addValue("card", cid);
 	msg.addValue("zoneto", ZONE_GRAVEYARD);
 	ActiveDuel->mMsgMngr.sendMessage(msg);
-	if (ActiveDuel->mCardList.at(cid)->Zone != ZONE_HAND)
+	if (ActiveDuel->mCardList.at(cid)->mZone != ZONE_HAND)
 	{
 		printf("WARNING: discardCard called on card that is not in hand\n");
 	}
@@ -174,7 +174,7 @@ static int destroyMana(lua_State* L)
 	msg.addValue("card", cid);
 	msg.addValue("zoneto", ZONE_GRAVEYARD);
 	ActiveDuel->mMsgMngr.sendMessage(msg);
-	if (ActiveDuel->mCardList.at(cid)->Zone != ZONE_MANA)
+	if (ActiveDuel->mCardList.at(cid)->mZone != ZONE_MANA)
 	{
 		printf("WARNING: destroyMana called on card that is not in mana zone\n");
 	}
@@ -294,7 +294,7 @@ static int creatureBreakShield(lua_State* L)
 	Message msg("creaturebreakshield");
 	msg.addValue("creature", lua_tointeger(L, 1));
 	msg.addValue("attacker", s);
-	msg.addValue("defender", ActiveDuel->mCardList.at(s)->Owner);
+	msg.addValue("defender", ActiveDuel->mCardList.at(s)->mOwner);
 	ActiveDuel->mMsgMngr.sendMessage(msg);
 	return 0;
 }
@@ -305,13 +305,13 @@ static int getCardAt(lua_State* L)
 	int z = lua_tointeger(L, 2);
 	int id = lua_tointeger(L, 3);
 	
-	if (id >= ActiveDuel->getZone(p, z)->cards.size())
+	if (id >= ActiveDuel->getZone(p, z)->mCards.size())
 	{
 		lua_pushinteger(L, -1);
 	}
 	else
 	{
-		lua_pushinteger(L, ActiveDuel->getZone(p, z)->cards.at(id)->UniqueId);
+		lua_pushinteger(L, ActiveDuel->getZone(p, z)->mCards.at(id)->mUniqueId);
 	}
 
 	return 1;
@@ -328,7 +328,7 @@ static int getZoneSize(lua_State* L)
 	int p = lua_tointeger(L, 1);
 	int z = lua_tointeger(L, 2);
 	
-	lua_pushinteger(L, ActiveDuel->getZone(p, z)->cards.size());
+	lua_pushinteger(L, ActiveDuel->getZone(p, z)->mCards.size());
 
 	return 1;
 }
@@ -341,25 +341,25 @@ static int getTurn(lua_State* L)
 
 static int getCardName(lua_State* L)
 {
-	lua_pushstring(L, ActiveDuel->mCardList.at(lua_tointeger(L, 1))->Name.c_str());
+	lua_pushstring(L, ActiveDuel->mCardList.at(lua_tointeger(L, 1))->mName.c_str());
 	return 1;
 }
 
 static int getCardZone(lua_State* L)
 {
-	lua_pushinteger(L, ActiveDuel->mCardList.at(lua_tointeger(L, 1))->Zone);
+	lua_pushinteger(L, ActiveDuel->mCardList.at(lua_tointeger(L, 1))->mZone);
 	return 1;
 }
 
 static int getCardCiv(lua_State* L)
 {
-	lua_pushinteger(L, ActiveDuel->mCardList.at(lua_tointeger(L, 1))->Civilization);
+	lua_pushinteger(L, ActiveDuel->mCardList.at(lua_tointeger(L, 1))->mCivilization);
 	return 1;
 }
 
 static int getCardType(lua_State* L)
 {
-	lua_pushinteger(L, ActiveDuel->mCardList.at(lua_tointeger(L, 1))->Type);
+	lua_pushinteger(L, ActiveDuel->mCardList.at(lua_tointeger(L, 1))->mType);
 	return 1;
 }
 
@@ -377,7 +377,7 @@ static int isCreatureOfRace(lua_State* L)
 
 static int getCardOwner(lua_State* L)
 {
-	lua_pushinteger(L, ActiveDuel->mCardList.at(lua_tointeger(L, 1))->Owner);
+	lua_pushinteger(L, ActiveDuel->mCardList.at(lua_tointeger(L, 1))->mOwner);
 	return 1;
 }
 
@@ -407,7 +407,7 @@ static int getCreatureIsEvolution(lua_State* L)
 
 static int isCardTapped(lua_State* L)
 {
-	lua_pushinteger(L, ActiveDuel->mCardList.at(lua_tointeger(L, 1))->isTapped);
+	lua_pushinteger(L, ActiveDuel->mCardList.at(lua_tointeger(L, 1))->mIsTapped);
 	return 1;
 }
 
@@ -425,13 +425,13 @@ static int getDefender(lua_State* L)
 
 static int getEvoStackSize(lua_State* L)
 {
-	lua_pushinteger(L, ActiveDuel->mCardList.at(lua_tointeger(L, 1))->evostack.size());
+	lua_pushinteger(L, ActiveDuel->mCardList.at(lua_tointeger(L, 1))->mEvoStack.size());
 	return 1;
 }
 
 static int getEvoStackAt(lua_State* L)
 {
-	lua_pushinteger(L, ActiveDuel->mCardList.at(lua_tointeger(L, 1))->evostack.at(lua_tointeger(L, 2))->UniqueId);
+	lua_pushinteger(L, ActiveDuel->mCardList.at(lua_tointeger(L, 1))->mEvoStack.at(lua_tointeger(L, 2))->mUniqueId);
 	return 1;
 }
 

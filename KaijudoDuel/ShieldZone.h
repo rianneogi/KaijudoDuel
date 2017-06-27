@@ -8,7 +8,7 @@ public:
 	ShieldZone();
 	~ShieldZone();
 
-	int slotsUsed;
+	int mSlotsUsed;
 
 	//void renderCards(int myPlayer);
 	//void handleEvent(sf::Event event);

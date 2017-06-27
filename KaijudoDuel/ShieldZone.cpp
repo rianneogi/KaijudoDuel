@@ -1,7 +1,7 @@
 #include "ShieldZone.h"
 
 
-ShieldZone::ShieldZone() : slotsUsed(0)
+ShieldZone::ShieldZone() : mSlotsUsed(0)
 {
 }
 
@@ -31,7 +31,7 @@ void ShieldZone::addCard(Card* c)
 	int i = 1;
 	for (i = 1;; i *= 2)
 	{
-		if (!(slotsUsed&i))
+		if (!(mSlotsUsed&i))
 			break;
 		cn++;
 		if (cn > 32)
@@ -44,17 +44,17 @@ void ShieldZone::addCard(Card* c)
 	//c->setPosition(glm::vec3(mPos.x + CONST_CARDSEPERATION*cards.size() + CONST_CARDSEPERATION/2, mPos.y, mPos.z + (mPos.z + mHeight) / 2));
 	c->flip();
 	c->untap();
-	cards.push_back(c);
-	slotsUsed |= i;
+	mCards.push_back(c);
+	mSlotsUsed |= i;
 }
 
 void ShieldZone::removeCard(Card* c)
 {
-	for (std::vector<Card*>::iterator i = cards.begin(); i != cards.end(); i++)
+	for (std::vector<Card*>::iterator i = mCards.begin(); i != mCards.end(); i++)
 	{
 		if (*i == c)
 		{
-			cards.erase(i);
+			mCards.erase(i);
 			break;
 		}
 	}

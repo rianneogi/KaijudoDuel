@@ -2,16 +2,16 @@
 
 std::vector<std::string> gCardNames;
 
-Card::Card() : UniqueId(-1), CardId(0), Owner(0)
+Card::Card() : mUniqueId(-1), mCardId(0), mOwner(0)
 {
-	isFlipped = false;
-	isTapped = false;
-	isVisible[0] = true;
-	isVisible[1] = true;
-	summoningSickness = 1;
+	mIsFlipped = false;
+	mIsTapped = false;
+	mIsVisible[0] = true;
+	mIsVisible[1] = true;
+	mSummoningSickness = 1;
 }
 
-Card::Card(int uid, int cid, int owner) : UniqueId(uid), CardId(cid), Owner(owner)
+Card::Card(int uid, int cid, int owner) : mUniqueId(uid), mCardId(cid), mOwner(owner)
 {
 	//if (uid == -1)
 	//	cout << "ERROR unit id = -1" << endl;
@@ -24,62 +24,62 @@ Card::Card(int uid, int cid, int owner) : UniqueId(uid), CardId(cid), Owner(owne
 	lua_getfield(LuaCards, -1, gCardNames.at(cid).c_str());
 
 	lua_getfield(LuaCards, -1, "name");
-	Name = lua_tostring(LuaCards, -1);
+	mName = lua_tostring(LuaCards, -1);
 	lua_pop(LuaCards, 1);
 
 	lua_getfield(LuaCards, -1, "type");
-	Type = lua_tointeger(LuaCards, -1);
+	mType = lua_tointeger(LuaCards, -1);
 	lua_pop(LuaCards, 1);
 
 	lua_getfield(LuaCards, -1, "shieldtrigger");
-	isShieldTrigger = lua_tointeger(LuaCards, -1);
+	mIsShieldTrigger = lua_tointeger(LuaCards, -1);
 	lua_pop(LuaCards, 1);
 
-	if (Type==TYPE_CREATURE)
+	if (mType==TYPE_CREATURE)
 	{
 		lua_getfield(LuaCards, -1, "race");
-		Race = lua_tostring(LuaCards, -1);
+		mRace = lua_tostring(LuaCards, -1);
 		lua_pop(LuaCards, 1);
 
 		lua_getfield(LuaCards, -1, "power");
-		Power = lua_tointeger(LuaCards, -1);
+		mPower = lua_tointeger(LuaCards, -1);
 		//displayPower = Power;
 		lua_pop(LuaCards, 1);
 
 		lua_getfield(LuaCards, -1, "breaker");
-		Breaker = lua_tointeger(LuaCards, -1);
+		mBreaker = lua_tointeger(LuaCards, -1);
 		lua_pop(LuaCards, 1);
 
 		lua_getfield(LuaCards, -1, "blocker");
-		isBlocker = lua_tointeger(LuaCards, -1);
+		mIsBlocker = lua_tointeger(LuaCards, -1);
 		lua_pop(LuaCards, 1);
 	}
 	else
 	{
-		Race = "";
-		Power = 0;
+		mRace = "";
+		mPower = 0;
 		//displayPower = 0;
-		Breaker = 0;
-		isBlocker = 0;
+		mBreaker = 0;
+		mIsBlocker = 0;
 	}
 
 	lua_getfield(LuaCards, -1, "civilization");
-	Civilization = lua_tointeger(LuaCards, -1);
+	mCivilization = lua_tointeger(LuaCards, -1);
 	lua_pop(LuaCards, 1);
 
 	lua_getfield(LuaCards, -1, "cost");
-	ManaCost = lua_tointeger(LuaCards, -1);
+	mManaCost = lua_tointeger(LuaCards, -1);
 	lua_pop(LuaCards, 1);
 
 	lua_pop(LuaCards, 1);
 	lua_pop(LuaCards, 1);
 
-	isTapped = false;
-	isFlipped = false;
-	isVisible[0] = true;
-	isVisible[1] = true;
-	Zone = ZONE_DECK;
-	summoningSickness = 1;
+	mIsTapped = false;
+	mIsFlipped = false;
+	mIsVisible[0] = true;
+	mIsVisible[1] = true;
+	mZone = ZONE_DECK;
+	mSummoningSickness = 1;
 
 	/*sprite = sf::Sprite(CardTextures.at(CardId));
 	sprite.setScale(CARD_SCALE, CARD_SCALE);
@@ -106,8 +106,8 @@ Card::~Card()
 
 void Card::copyFrom(Card* c)
 {
-	UniqueId = c->UniqueId;
-	CardId = c->CardId;
+	mUniqueId = c->mUniqueId;
+	mCardId = c->mCardId;
 
 }
 
@@ -118,18 +118,18 @@ void Card::copyFrom(Card* c)
 int Card::handleMessage(Message& msg)
 {
 	lua_getglobal(LuaCards, "Cards");
-	lua_getfield(LuaCards, -1, gCardNames.at(CardId).c_str());
+	lua_getfield(LuaCards, -1, gCardNames.at(mCardId).c_str());
 	lua_getfield(LuaCards, -1, "HandleMessage");
-	lua_pushinteger(LuaCards, UniqueId);
+	lua_pushinteger(LuaCards, mUniqueId);
 	lua_pcall(LuaCards, 1, 0, 0);
 	//sendMessageToBuffs(msg);
 	lua_pop(LuaCards, 1);
 	lua_pop(LuaCards, 1);
 
 	int cnt = 0;
-	for (std::vector<Modifier*>::iterator i = modifiers.begin(); i != modifiers.end(); i++, cnt++)
+	for (std::vector<Modifier*>::iterator i = mModifiers.begin(); i != mModifiers.end(); i++, cnt++)
 	{
-		(*i)->handleMessage(UniqueId, cnt, msg);
+		(*i)->handleMessage(mUniqueId, cnt, msg);
 	}
 	
 	return 0;
@@ -138,9 +138,9 @@ int Card::handleMessage(Message& msg)
 void Card::callOnCast()
 {
 	lua_getglobal(LuaCards, "Cards");
-	lua_getfield(LuaCards, -1, gCardNames.at(CardId).c_str());
+	lua_getfield(LuaCards, -1, gCardNames.at(mCardId).c_str());
 	lua_getfield(LuaCards, -1, "OnCast");
-	lua_pushinteger(LuaCards, UniqueId);
+	lua_pushinteger(LuaCards, mUniqueId);
 	lua_pcall(LuaCards, 1, 0, 0);
 	lua_pop(LuaCards, 1);
 	lua_pop(LuaCards, 1);
@@ -168,28 +168,28 @@ void Card::callOnCast()
 
 void Card::flip()
 {
-	isFlipped = true;
+	mIsFlipped = true;
 	//mModel.mOrientation.up = glm::vec3(0, -1, 0);
 	//sprite.setTexture(Textures.at(TEXTURE_CARDBACK));
 }
 
 void Card::unflip()
 {
-	isFlipped = false;
+	mIsFlipped = false;
 	//mModel.mOrientation.up = glm::vec3(0, 1, 0);
 	//sprite.setTexture(CardTextures.at(CardId));
 }
 
 void Card::tap()
 {
-	isTapped = true;
+	mIsTapped = true;
 	//mModel.mOrientation.dir = glm::vec3(1, 0, 0);
 	//sprite.setRotation(90);
 }
 
 void Card::untap()
 {
-	isTapped = false;
+	mIsTapped = false;
 	//mModel.mOrientation.dir = glm::vec3(0, 0, 1);
 	//sprite.setRotation(0);
 }

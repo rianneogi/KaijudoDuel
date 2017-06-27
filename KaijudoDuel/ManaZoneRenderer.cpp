@@ -19,12 +19,12 @@ void ManaZoneRenderer::updateCard(CardModel* model, Card* card, int pos, int siz
 	Orientation o;
 	o.pos = glm::vec3(mPos.x + mWidth - CONST_CARDSEPERATION_HORI*pos - CONST_CARDSEPERATION_HORI / 2, mPos.y, mPos.z + mHeight / 2);
 
-	if (card->isTapped)
+	if (card->mIsTapped)
 		o.dir = glm::vec3(1, 0, 0);
 	else
 		o.dir = glm::vec3(0, 0, -1);
 
-	if (hovercard == card->UniqueId)
+	if (hovercard == card->mUniqueId)
 	{
 		o.pos = glm::vec3(gHighlightX, gHighlightY, gHighlightZ);
 		o.dir = glm::vec3(0, 0, 1);
@@ -33,7 +33,7 @@ void ManaZoneRenderer::updateCard(CardModel* model, Card* card, int pos, int siz
 	o.up = glm::vec3(0, 1, 0);
 	o.calculateQuat();
 
-	if (hovercard == card->UniqueId)
+	if (hovercard == card->mUniqueId)
 	{
 		model->setHoverMovement(o, 1000);
 	}

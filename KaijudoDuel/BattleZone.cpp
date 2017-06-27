@@ -30,8 +30,8 @@ void BattleZone::addCard(Card* c)
 	//c->setPosition(glm::vec3(mPos.x + CONST_CARDSEPERATION*cards.size(), mPos.y, mPos.z + (mPos.z+mHeight)/2));
 	c->unflip();
 	c->untap();
-	c->summoningSickness = 1;
-	cards.push_back(c);
+	c->mSummoningSickness = 1;
+	mCards.push_back(c);
 }
 
 //void BattleZone::addCard(Card* c, int speedattacker)
@@ -47,9 +47,9 @@ void BattleZone::evolveCard(Card* c, int evobait)
 {
 	Card* eb = NULL;
 	int ebloc = 0;
-	for (std::vector<Card*>::iterator i = cards.begin(); i != cards.end(); i++)
+	for (std::vector<Card*>::iterator i = mCards.begin(); i != mCards.end(); i++)
 	{
-		if ((*i)->UniqueId == evobait)
+		if ((*i)->mUniqueId == evobait)
 		{
 			eb = *i;
 			break;
@@ -65,25 +65,25 @@ void BattleZone::evolveCard(Card* c, int evobait)
 	//c->move(r.left + r.width/2, r.top + r.height/2);
 	c->unflip();
 	c->untap();
-	c->summoningSickness = 0;
-	eb->Zone = ZONE_EVOLVED;
-	c->evostack.push_back(eb);
-	cards.at(ebloc) = c;
+	c->mSummoningSickness = 0;
+	eb->mZone = ZONE_EVOLVED;
+	c->mEvoStack.push_back(eb);
+	mCards.at(ebloc) = c;
 }
 
 void BattleZone::removeCard(Card* c)
 {
 	int x = 0;
-	for (std::vector<Card*>::iterator i = cards.begin(); i != cards.end(); i++)
+	for (std::vector<Card*>::iterator i = mCards.begin(); i != mCards.end(); i++)
 	{
 		if (*i == c)
 		{
-			cards.erase(i);
+			mCards.erase(i);
 			break;
 		}
 		x++;
 	}
-	for (int i = x; i < cards.size(); i++)
+	for (int i = x; i < mCards.size(); i++)
 	{
 		//cards.at(i)->setPosition(cards.at(i)->x - CARDSEPERATION, cards.at(i)->y);
 	}
@@ -95,9 +95,9 @@ void BattleZone::seperateEvolution(Card* c)
 	int flag = 0;
 	int eb = -1;
 
-	for (eb = 0; eb < cards.size(); eb++)
+	for (eb = 0; eb < mCards.size(); eb++)
 	{
-		if (cards.at(eb) == c)
+		if (mCards.at(eb) == c)
 		{
 			flag = 1;
 			eb;
@@ -111,12 +111,12 @@ void BattleZone::seperateEvolution(Card* c)
 		return;
 	}
 
-	for (std::vector<Card*>::iterator i = c->evostack.begin(); i != c->evostack.end(); i++)
+	for (std::vector<Card*>::iterator i = c->mEvoStack.begin(); i != c->mEvoStack.end(); i++)
 	{
-		(*i)->Zone = ZONE_BATTLE;
-		cards.insert(cards.begin()+eb, *i);
+		(*i)->mZone = ZONE_BATTLE;
+		mCards.insert(mCards.begin()+eb, *i);
 	}
-	c->evostack.clear();
+	c->mEvoStack.clear();
 }
 
 //void BattleZone::removeBait(Card* c)

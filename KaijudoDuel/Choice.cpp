@@ -1,19 +1,19 @@
 #include "Choice.h"
 
-Choice::Choice() : infotext(""), buttoncount(0)
+Choice::Choice() : mInfotext(""), mButtonCount(0)
 {
 }
 
-Choice::Choice(std::string info, int bcount, int vr, int ar) : infotext(info), buttoncount(bcount), validref(vr), actionref(ar), isCopy(false)
+Choice::Choice(std::string info, int bcount, int vr, int ar) : mInfotext(info), mButtonCount(bcount), mValidRef(vr), mActionRef(ar), mIsCopy(false)
 {
 }
 
 Choice::~Choice()
 {
-	if (!isCopy)
+	if (!mIsCopy)
 	{
-		luaL_unref(LuaCards, LUA_REGISTRYINDEX, validref);
-		luaL_unref(LuaCards, LUA_REGISTRYINDEX, actionref);
+		luaL_unref(LuaCards, LUA_REGISTRYINDEX, mValidRef);
+		luaL_unref(LuaCards, LUA_REGISTRYINDEX, mActionRef);
 		//cout << "unref " << validref << " " << actionref << endl;
 	}
 }
@@ -21,7 +21,7 @@ Choice::~Choice()
 int Choice::callvalid(int cid, int sid)
 {
 	int r = -1;
-	lua_rawgeti(LuaCards, LUA_REGISTRYINDEX, validref);
+	lua_rawgeti(LuaCards, LUA_REGISTRYINDEX, mValidRef);
 	lua_pushinteger(LuaCards, cid);
 	lua_pushinteger(LuaCards, sid);
 	lua_pcall(LuaCards, 2, 1, 0);
@@ -36,7 +36,7 @@ int Choice::callvalid(int cid, int sid)
 
 void Choice::callaction(int cid, int sid)
 {
-	lua_rawgeti(LuaCards, LUA_REGISTRYINDEX, actionref);
+	lua_rawgeti(LuaCards, LUA_REGISTRYINDEX, mActionRef);
 	lua_pushinteger(LuaCards, cid);
 	lua_pushinteger(LuaCards, sid);
 	lua_pcall(LuaCards, 2, 0, 0);
@@ -44,10 +44,10 @@ void Choice::callaction(int cid, int sid)
 
 void Choice::copyFrom(Choice* c)
 {
-	infotext = c->infotext;
-	buttoncount = c->buttoncount;
-	validref = c->validref;
-	actionref = c->actionref;
-	isCopy = true;
+	mInfotext = c->mInfotext;
+	mButtonCount = c->mButtonCount;
+	mValidRef = c->mValidRef;
+	mActionRef = c->mActionRef;
+	mIsCopy = true;
 }
 

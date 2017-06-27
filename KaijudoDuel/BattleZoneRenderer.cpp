@@ -18,22 +18,22 @@ void BattleZoneRenderer::updateCard(CardModel* model, Card* card, int pos, int s
 {
 	Orientation o;
 	o.pos = glm::vec3(mPos.x + mWidth - CONST_CARDSEPERATION_HORI*pos - CONST_CARDSEPERATION_HORI / 2, 
-		mPos.y + 3 * CONST_CARDTHICKNESS*card->evostack.size(), mPos.z + mHeight / 2);
+		mPos.y + 3 * CONST_CARDTHICKNESS*card->mEvoStack.size(), mPos.z + mHeight / 2);
 
-	for (size_t i = 0; i < card->evostack.size(); i++)
+	for (size_t i = 0; i < card->mEvoStack.size(); i++)
 	{
-		if (card->evostack[i]->UniqueId == model->mUniqueId)
+		if (card->mEvoStack[i]->mUniqueId == model->mUniqueId)
 		{
 			o.pos.y -= 3 * CONST_CARDTHICKNESS*(i+1);
 		}
 	}
 	
-	if(card->isTapped)
+	if(card->mIsTapped)
 		o.dir = glm::vec3(-1, 0, 0);
 	else
 		o.dir = glm::vec3(0, 0, 1);
 
-	if (hovercard == card->UniqueId && card->UniqueId == model->mUniqueId)
+	if (hovercard == card->mUniqueId && card->mUniqueId == model->mUniqueId)
 	{
 		o.pos = glm::vec3(gHighlightX, gHighlightY, gHighlightZ);
 		o.dir = glm::vec3(0, 0, 1);
@@ -42,7 +42,7 @@ void BattleZoneRenderer::updateCard(CardModel* model, Card* card, int pos, int s
 	o.up = glm::vec3(0, 1, 0);
 	o.calculateQuat();
 
-	if (hovercard == card->UniqueId)
+	if (hovercard == card->mUniqueId)
 	{
 		model->setHoverMovement(o, 1000);
 	}

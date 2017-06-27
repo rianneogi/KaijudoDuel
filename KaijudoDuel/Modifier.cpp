@@ -6,7 +6,7 @@ Modifier::Modifier()
 {
 }
 
-Modifier::Modifier(int ref) : funcref(ref)
+Modifier::Modifier(int ref) : mFuncRef(ref)
 {
 	//cout << "ref mod: " << funcref << endl;
 }
@@ -14,13 +14,13 @@ Modifier::Modifier(int ref) : funcref(ref)
 Modifier::~Modifier()
 {
 	//cout << "unref mod: " << funcref << endl;
-	luaL_unref(LuaCards, LUA_REGISTRYINDEX, funcref);
+	luaL_unref(LuaCards, LUA_REGISTRYINDEX, mFuncRef);
 }
 
 void Modifier::setfunc(int ref)
 {
 	//cout << "ref mod: " << funcref << endl;
-	funcref = ref;
+	mFuncRef = ref;
 }
 
 int Modifier::handleMessage(int cid, int mid, Message& msg)
@@ -43,7 +43,7 @@ int Modifier::handleMessage(int cid, int mid, Message& msg)
 	}
 	return 0;*/
 
-	lua_rawgeti(LuaCards, LUA_REGISTRYINDEX, funcref);
+	lua_rawgeti(LuaCards, LUA_REGISTRYINDEX, mFuncRef);
 	lua_pushinteger(LuaCards, cid);
 	lua_pushinteger(LuaCards, mid);
 	lua_pcall(LuaCards, 2, 0, 0);

@@ -20,14 +20,14 @@ void GraveyardRenderer::updateCard(CardModel* model, Card* card, int pos, int si
 	{
 		Orientation o;
 		o.pos = glm::vec3(-2, 20 + CONST_CARDTHICKNESS*(size - pos - 1), -3 + mScrollPos + pos*0.4);
-		if (card->UniqueId == hovercard)
+		if (card->mUniqueId == hovercard)
 		{
 			o.pos.y += 1;
 		}
 		o.dir = glm::vec3(0, 0, 1);
 		o.up = glm::vec3(0, 1, 0);
 		o.calculateQuat();
-		if (card->UniqueId == hovercard)
+		if (card->mUniqueId == hovercard)
 		{
 			model->setHoverMovement(o, 1000);
 		}

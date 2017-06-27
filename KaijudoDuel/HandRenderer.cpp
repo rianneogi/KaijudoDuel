@@ -17,7 +17,7 @@ void HandRenderer::addCard(CardModel* c)
 
 void HandRenderer::updateCard(CardModel* model, Card* card, int pos, int size, int hovercard)
 {
-	if (card->UniqueId == mCastingCard)
+	if (card->mUniqueId == mCastingCard)
 	{
 		Orientation o;
 		o.dir = mCamera->mUp;
@@ -54,7 +54,7 @@ void HandRenderer::updateCard(CardModel* model, Card* card, int pos, int size, i
 			o.up = mCamera->mDirection;
 			o.dir.x *= -1;
 		}
-		if (card->UniqueId == hovercard && mTurn == mOwner)
+		if (card->mUniqueId == hovercard && mTurn == mOwner)
 		{
 			o.pos = centerhover + offset;
 			o.calculateQuat();
@@ -87,7 +87,7 @@ void HandRenderer::updateCard(CardModel* model, Card* card, int pos, int size, i
 			o.up = mCamera->mDirection;
 			o.dir.x *= -1;
 		}
-		if (card->UniqueId == hovercard && mTurn == mOwner)
+		if (card->mUniqueId == hovercard && mTurn == mOwner)
 		{
 			o.dir = glm::vec3(0, 0, 1);
 			o.up = glm::vec3(0, 1, 0);

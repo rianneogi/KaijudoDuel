@@ -8,7 +8,7 @@ public:
 	Deck();
 	~Deck();
 
-	CRandom* RandomGen;
+	CRandom* mRandomGen;
 
 	Card* draw();
 	int getTopCard();

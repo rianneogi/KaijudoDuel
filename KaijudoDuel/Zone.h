@@ -11,8 +11,8 @@ const float CONST_CARDTHICKNESS = 0.0125f;
 class Zone
 {
 public:
-	int owner;
-	std::vector<Card*> cards;
+	int mOwner;
+	std::vector<Card*> mCards;
 	
 	/*glm::vec3 mPos;
 	float mWidth;

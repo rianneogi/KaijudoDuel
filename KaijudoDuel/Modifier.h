@@ -9,7 +9,7 @@ class Modifier
 {
 public:
 	//vector<string> func;
-	int funcref;
+	int mFuncRef;
 
 	Modifier();
 	Modifier(int ref);

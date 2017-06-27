@@ -18,11 +18,11 @@ Zone::~Zone()
 
 void Zone::removeCard(Card* c)
 {
-	for (std::vector<Card*>::iterator i = cards.begin(); i != cards.end(); i++)
+	for (std::vector<Card*>::iterator i = mCards.begin(); i != mCards.end(); i++)
 	{
 		if (*i == c)
 		{
-			cards.erase(i);
+			mCards.erase(i);
 			break;
 		}
 	}

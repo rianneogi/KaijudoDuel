@@ -12,14 +12,14 @@ Duel::Duel()
 	int Factor2[2] = { 1,0 };
 	for (int i = 0; i < 2; i++)
 	{
-		mDecks[i].RandomGen = &mRandomGen; //set random function for deck shuffling
+		mDecks[i].mRandomGen = &mRandomGen; //set random function for deck shuffling
 
-		mDecks[i].owner = i;
-		mBattlezones[i].owner = i;
-		mGraveyards[i].owner = i;
-		mHands[i].owner = i;
-		mManazones[i].owner = i;
-		mShields[i].owner = i;
+		mDecks[i].mOwner = i;
+		mBattlezones[i].mOwner = i;
+		mGraveyards[i].mOwner = i;
+		mHands[i].mOwner = i;
+		mManazones[i].mOwner = i;
+		mShields[i].mOwner = i;
 
 	//	decks[i].x = ZONE2X;
 	//	graveyards[i].x = ZONE2X;
@@ -143,13 +143,13 @@ void Duel::copyFrom(Duel* duel) //incomplete, not used
 	{
 		for (int z = 0; z < 6; z++)
 		{
-			for (std::vector<Card*>::iterator j = duel->getZone(i, z)->cards.begin(); j != duel->getZone(i, z)->cards.end(); j++)
+			for (std::vector<Card*>::iterator j = duel->getZone(i, z)->mCards.begin(); j != duel->getZone(i, z)->mCards.end(); j++)
 			{
 				for (std::vector<Card*>::iterator k = mCardList.begin(); k != mCardList.end(); k++)
 				{
-					if ((*k)->UniqueId == (*j)->UniqueId)
+					if ((*k)->mUniqueId == (*j)->mUniqueId)
 					{
-						getZone(i, z)->cards.push_back(*k);
+						getZone(i, z)->mCards.push_back(*k);
 						break;
 					}
 				}
@@ -170,8 +170,8 @@ int Duel::handleMessage(Message& msg)
 		int cid = msg.getInt("card");
 		int tozone = msg.getInt("to");
 		Card* c = mCardList.at(cid);
-		int owner = c->Owner;
-		getZone(owner, c->Zone)->removeCard(c);
+		int owner = c->mOwner;
+		getZone(owner, c->mZone)->removeCard(c);
 		if (tozone == ZONE_BATTLE && getIsEvolution(cid) == 1) //evolution creatures
 		{
 			int evobait = msg.getInt("evobait");
@@ -189,29 +189,29 @@ int Duel::handleMessage(Message& msg)
 		{
 			getZone(owner, tozone)->addCard(c);
 		}
-		c->Zone = tozone;
+		c->mZone = tozone;
 		if (tozone != ZONE_BATTLE)
 		{
-			for (int i = c->evostack.size()-1; i >= 0; i--) //move all cards in stack to the zone seperately
+			for (int i = c->mEvoStack.size()-1; i >= 0; i--) //move all cards in stack to the zone seperately
 			{
 				Message m("cardmove");
-				m.addValue("card", c->evostack.at(i)->UniqueId);
-				m.addValue("from", c->evostack.at(i)->Zone);
+				m.addValue("card", c->mEvoStack.at(i)->mUniqueId);
+				m.addValue("from", c->mEvoStack.at(i)->mZone);
 				m.addValue("to", tozone);
 				mMsgMngr.sendMessage(m);
-				c->evostack.pop_back();
+				c->mEvoStack.pop_back();
 			}
 		}
-		if (c->Zone == ZONE_BATTLE && c->Type == TYPE_SPELL)
+		if (c->mZone == ZONE_BATTLE && c->mType == TYPE_SPELL)
 		{
 			c->callOnCast(); //cast the spell
 			Message m("cardmove");
 			m.addValue("card", cid);
-			m.addValue("from", mCardList.at(cid)->Zone);
+			m.addValue("from", mCardList.at(cid)->mZone);
 			m.addValue("to", ZONE_GRAVEYARD);
 			mMsgMngr.sendMessage(m);
 		}
-		if (mDecks[owner].cards.size() == 0)
+		if (mDecks[owner].mCards.size() == 0)
 		{
 			//player loses game
 			mWinner = getOpponent(mTurn);
@@ -222,7 +222,7 @@ int Duel::handleMessage(Message& msg)
 		Message m("cardmove");
 		int cid = msg.getInt("creature");
 		m.addValue("card", cid);
-		m.addValue("from", mCardList.at(cid)->Zone);
+		m.addValue("from", mCardList.at(cid)->mZone);
 		m.addValue("to", msg.getInt("zoneto"));
 		mMsgMngr.sendMessage(m);
 	}
@@ -231,7 +231,7 @@ int Duel::handleMessage(Message& msg)
 		Message m("cardmove");
 		int cid = msg.getInt("card");
 		m.addValue("card", cid);
-		m.addValue("from", mCardList.at(cid)->Zone);
+		m.addValue("from", mCardList.at(cid)->mZone);
 		m.addValue("to", msg.getInt("zoneto"));
 		mMsgMngr.sendMessage(m);
 	}
@@ -240,7 +240,7 @@ int Duel::handleMessage(Message& msg)
 		Message m("cardmove");
 		int cid = msg.getInt("card");
 		m.addValue("card", cid);
-		m.addValue("from", mCardList.at(cid)->Zone);
+		m.addValue("from", mCardList.at(cid)->mZone);
 		m.addValue("to", msg.getInt("zoneto"));
 		mMsgMngr.sendMessage(m);
 	}
@@ -266,7 +266,7 @@ int Duel::handleMessage(Message& msg)
 		
 		Message m("cardmove");
 		m.addValue("card", cid);
-		m.addValue("from", mCardList.at(cid)->Zone);
+		m.addValue("from", mCardList.at(cid)->mZone);
 		m.addValue("to", ZONE_BATTLE);
 		m.addValue("evobait", eb);
 		mMsgMngr.sendMessage(m);
@@ -286,7 +286,7 @@ int Duel::handleMessage(Message& msg)
 		int cid = msg.getInt("card");
 		Message m("cardmove");
 		m.addValue("card", cid);
-		m.addValue("from", mCardList.at(cid)->Zone);
+		m.addValue("from", mCardList.at(cid)->mZone);
 		m.addValue("to", ZONE_MANA);
 		mMsgMngr.sendMessage(m);
 		//if (!isSimulation)
@@ -339,7 +339,7 @@ int Duel::handleMessage(Message& msg)
 		Message m("cardmove");
 		int cid = msg.getInt("shield");
 		m.addValue("card", cid);
-		m.addValue("from", mCardList.at(cid)->Zone);
+		m.addValue("from", mCardList.at(cid)->mZone);
 		m.addValue("to", ZONE_HAND);
 		mMsgMngr.sendMessage(m);
 		/*if (msg.getInt("cantrigger") == 1)
@@ -391,17 +391,17 @@ int Duel::handleMessage(Message& msg)
 	{
 		int plyr = msg.getInt("player");
 		std::vector<Card*>::iterator i;
-		for (i = mBattlezones[plyr].cards.begin(); i != mBattlezones[plyr].cards.end(); i++) //untap creatures
+		for (i = mBattlezones[plyr].mCards.begin(); i != mBattlezones[plyr].mCards.end(); i++) //untap creatures
 		{
 			Message m("carduntap");
-			m.addValue("card", (*i)->UniqueId);
+			m.addValue("card", (*i)->mUniqueId);
 			mMsgMngr.sendMessage(m);
-			(*i)->summoningSickness = 0;
+			(*i)->mSummoningSickness = 0;
 		}
-		for (i = mManazones[plyr].cards.begin(); i != mManazones[plyr].cards.end(); i++) //untap mana
+		for (i = mManazones[plyr].mCards.begin(); i != mManazones[plyr].mCards.end(); i++) //untap mana
 		{
 			Message m("carduntap");
-			m.addValue("card", (*i)->UniqueId);
+			m.addValue("card", (*i)->mUniqueId);
 			mMsgMngr.sendMessage(m);
 		}
 		//Message m("carddraw"); //draw card
@@ -414,14 +414,14 @@ int Duel::handleMessage(Message& msg)
 		int uid = msg.getInt("card");
 		int ref = msg.getInt("funcref");
 		Modifier* modifier = new Modifier(ref);
-		mCardList.at(uid)->modifiers.push_back(modifier);
+		mCardList.at(uid)->mModifiers.push_back(modifier);
 	}
 	else if (msg.getType() == "modifierdestroy")
 	{
 		int uid = msg.getInt("card");
 		int mid = msg.getInt("modifier");
-		Modifier* modifier = mCardList.at(uid)->modifiers.at(mid);
-		mCardList.at(uid)->modifiers.erase(mCardList.at(uid)->modifiers.begin() + mid);
+		Modifier* modifier = mCardList.at(uid)->mModifiers.at(mid);
+		mCardList.at(uid)->mModifiers.erase(mCardList.at(uid)->mModifiers.begin() + mid);
 		delete modifier;
 	}
 	else if (msg.getType() == "changeattackphase")
@@ -439,10 +439,10 @@ int Duel::handleMessage(Message& msg)
 	else if (msg.getType() == "carddiscardatrandom")
 	{
 		int plyr = msg.getInt("player");
-		if (mHands[plyr].cards.size() > 0)
+		if (mHands[plyr].mCards.size() > 0)
 		{
 			Message m("carddiscard");
-			m.addValue("card", mHands[plyr].cards.at(mRandomGen.Random(mHands[plyr].cards.size()))->UniqueId);
+			m.addValue("card", mHands[plyr].mCards.at(mRandomGen.Random(mHands[plyr].mCards.size()))->mUniqueId);
 			m.addValue("zoneto", ZONE_GRAVEYARD);
 			mMsgMngr.sendMessage(m);
 		}
@@ -450,7 +450,7 @@ int Duel::handleMessage(Message& msg)
 	else if (msg.getType() == "evolutionseperate")
 	{
 		int cid = msg.getInt("evolution");
-		mBattlezones[mCardList.at(cid)->Owner].seperateEvolution(mCardList.at(cid));
+		mBattlezones[mCardList.at(cid)->mOwner].seperateEvolution(mCardList.at(cid));
 	}
 	return 0;
 }
@@ -496,7 +496,7 @@ void Duel::undoMessage(Message& msg)
 		int fromzone = msg.getInt("from");
 		int tozone = msg.getInt("to");
 		Card* c = mCardList.at(cid);
-		int owner = c->Owner;
+		int owner = c->mOwner;
 		getZone(owner, fromzone)->addCard(c);
 		if (tozone == ZONE_BATTLE && getIsEvolution(cid) == 1) //evolution creatures
 		{
@@ -515,7 +515,7 @@ void Duel::undoMessage(Message& msg)
 		{
 			getZone(owner, tozone)->removeCard(c);
 		}
-		c->Zone = fromzone;
+		c->mZone = fromzone;
 		mWinner = -1;
 	}
 	else if (msg.getType() == "cardtap")
@@ -582,13 +582,13 @@ std::vector<Message> Duel::getPossibleMoves()
 	}
 	else if (mIsChoiceActive && player == mChoicePlayer)
 	{
-		if (mChoice->buttoncount > 0)
+		if (mChoice->mButtonCount > 0)
 		{
 			Message msg("choiceselect");
 			msg.addValue("selection", RETURN_BUTTON1);
 			moves.push_back(msg);
 		}
-		if (mChoice->buttoncount > 1)
+		if (mChoice->mButtonCount > 1)
 		{
 			Message msg("choiceselect");
 			msg.addValue("selection", RETURN_BUTTON2);
@@ -596,12 +596,12 @@ std::vector<Message> Duel::getPossibleMoves()
 		}
 		for (std::vector<Card*>::iterator i = mCardList.begin(); i != mCardList.end(); i++)
 		{
-			if ((*i)->Zone != ZONE_EVOLVED)
+			if ((*i)->mZone != ZONE_EVOLVED)
 			{
-				if (mChoice->callvalid(mChoiceCard, (*i)->UniqueId) == 1)
+				if (mChoice->callvalid(mChoiceCard, (*i)->mUniqueId) == 1)
 				{
 					Message msg("choiceselect");
-					msg.addValue("selection", (*i)->UniqueId);
+					msg.addValue("selection", (*i)->mUniqueId);
 					moves.push_back(msg);
 				}
 			}
@@ -609,11 +609,11 @@ std::vector<Message> Duel::getPossibleMoves()
 	}
 	else if (mAttackphase == PHASE_TRIGGER && player == getOpponent(mTurn)) //use shield triggers
 	{
-		for (std::vector<Card*>::iterator i = mHands[getOpponent(mTurn)].cards.begin(); i != mHands[getOpponent(mTurn)].cards.end(); i++)
+		for (std::vector<Card*>::iterator i = mHands[getOpponent(mTurn)].mCards.begin(); i != mHands[getOpponent(mTurn)].mCards.end(); i++)
 		{
 			for (std::vector<int>::iterator j = mShieldTargets.begin(); j != mShieldTargets.end(); j++)
 			{
-				if (*j == (*i)->UniqueId)
+				if (*j == (*i)->mUniqueId)
 				{
 					if (getIsShieldTrigger(*j) && canUseShieldTrigger(*j) && getCardCanCast(*j))
 					{
@@ -629,20 +629,20 @@ std::vector<Message> Duel::getPossibleMoves()
 	}
 	else if (mAttackphase == PHASE_TARGET && player == mTurn) //target shields
 	{
-		for (std::vector<Card*>::iterator i = mShields[getOpponent(mTurn)].cards.begin(); i != mShields[getOpponent(mTurn)].cards.end(); i++)
+		for (std::vector<Card*>::iterator i = mShields[getOpponent(mTurn)].mCards.begin(); i != mShields[getOpponent(mTurn)].mCards.end(); i++)
 		{
 			Message m("targetshield");
 			m.addValue("attacker", mAttacker);
-			m.addValue("shield", (*i)->UniqueId);
+			m.addValue("shield", (*i)->mUniqueId);
 			moves.push_back(m);
 		}
 	}
 	else if (mAttackphase == PHASE_BLOCK && player == getOpponent(mTurn)) //block
 	{
-		for (std::vector<Card*>::iterator i = mBattlezones[getOpponent(mTurn)].cards.begin(); i != mBattlezones[getOpponent(mTurn)].cards.end(); i++)
+		for (std::vector<Card*>::iterator i = mBattlezones[getOpponent(mTurn)].mCards.begin(); i != mBattlezones[getOpponent(mTurn)].mCards.end(); i++)
 		{
-			if (getCreatureCanBlock(mAttacker, (*i)->UniqueId) && (*i)->isTapped == false
-				&& ((*i)->UniqueId != mDefender || mDefenderType == DEFENDER_PLAYER))
+			if (getCreatureCanBlock(mAttacker, (*i)->mUniqueId) && (*i)->mIsTapped == false
+				&& ((*i)->mUniqueId != mDefender || mDefenderType == DEFENDER_PLAYER))
 			{
 				/*Message msg2("cardtap");
 				msg2.addValue("card", (*i)->UniqueId);
@@ -650,7 +650,7 @@ std::vector<Message> Duel::getPossibleMoves()
 
 				Message msg("creatureblock");
 				msg.addValue("attacker", mAttacker);
-				msg.addValue("blocker", (*i)->UniqueId);
+				msg.addValue("blocker", (*i)->mUniqueId);
 				moves.push_back(msg);
 			}
 		}
@@ -659,23 +659,23 @@ std::vector<Message> Duel::getPossibleMoves()
 	}
 	else if (mCastingCard != -1 && player == mTurn) //tap mana
 	{
-		for (std::vector<Card*>::iterator i = mManazones[mTurn].cards.begin(); i != mManazones[mTurn].cards.end(); i++)
+		for (std::vector<Card*>::iterator i = mManazones[mTurn].mCards.begin(); i != mManazones[mTurn].mCards.end(); i++)
 		{
-			if ((*i)->isTapped == false)
+			if ((*i)->mIsTapped == false)
 			{
 				if (mCastingCost == 1) //last card to be tapped
 				{
-					if (getCardCivilization((*i)->UniqueId) == mCastingCiv || mCastingCivTapped)
+					if (getCardCivilization((*i)->mUniqueId) == mCastingCiv || mCastingCivTapped)
 					{
 						Message m("manatap");
-						m.addValue("card", (*i)->UniqueId);
+						m.addValue("card", (*i)->mUniqueId);
 						moves.push_back(m);
 					}
 				}
 				else
 				{
 					Message m("manatap");
-					m.addValue("card", (*i)->UniqueId);
+					m.addValue("card", (*i)->mUniqueId);
 					moves.push_back(m);
 				}
 			}
@@ -684,20 +684,20 @@ std::vector<Message> Duel::getPossibleMoves()
 
 	if (player == mTurn && !mIsChoiceActive)
 	{
-		for (std::vector<Card*>::iterator i = mHands[mTurn].cards.begin(); i != mHands[mTurn].cards.end(); i++)
+		for (std::vector<Card*>::iterator i = mHands[mTurn].mCards.begin(); i != mHands[mTurn].mCards.end(); i++)
 		{
-			if (getCardCost((*i)->UniqueId) <= mManazones[mTurn].getUntappedMana()
-				&& isThereUntappedManaOfCiv(mTurn, getCardCivilization((*i)->UniqueId)) && getCardCanCast((*i)->UniqueId) == 1)
+			if (getCardCost((*i)->mUniqueId) <= mManazones[mTurn].getUntappedMana()
+				&& isThereUntappedManaOfCiv(mTurn, getCardCivilization((*i)->mUniqueId)) && getCardCanCast((*i)->mUniqueId) == 1)
 			{
-				if (getIsEvolution((*i)->UniqueId) == 1)
+				if (getIsEvolution((*i)->mUniqueId) == 1)
 				{
-					for (std::vector<Card*>::iterator j = mBattlezones[mTurn].cards.begin(); j != mBattlezones[mTurn].cards.end(); j++)
+					for (std::vector<Card*>::iterator j = mBattlezones[mTurn].mCards.begin(); j != mBattlezones[mTurn].mCards.end(); j++)
 					{
-						if (getCreatureCanEvolve((*i)->UniqueId, (*j)->UniqueId) == 1)
+						if (getCreatureCanEvolve((*i)->mUniqueId, (*j)->mUniqueId) == 1)
 						{
 							Message msg("cardplay");
-							msg.addValue("card", (*i)->UniqueId);
-							msg.addValue("evobait", (*j)->UniqueId);
+							msg.addValue("card", (*i)->mUniqueId);
+							msg.addValue("evobait", (*j)->mUniqueId);
 							moves.push_back(msg);
 						}
 					}
@@ -705,7 +705,7 @@ std::vector<Message> Duel::getPossibleMoves()
 				else
 				{
 					Message msg("cardplay");
-					msg.addValue("card", (*i)->UniqueId);
+					msg.addValue("card", (*i)->mUniqueId);
 					msg.addValue("evobait", -1);
 					moves.push_back(msg);
 				}
@@ -713,7 +713,7 @@ std::vector<Message> Duel::getPossibleMoves()
 			if (mManaUsed == 0)
 			{
 				Message msg("cardmana");
-				msg.addValue("card", (*i)->UniqueId);
+				msg.addValue("card", (*i)->mUniqueId);
 				moves.push_back(msg);
 			}
 		}
@@ -721,30 +721,30 @@ std::vector<Message> Duel::getPossibleMoves()
 
 	if (player == mTurn && !mIsChoiceActive)
 	{
-		for (std::vector<Card*>::iterator i = mBattlezones[mTurn].cards.begin(); i != mBattlezones[mTurn].cards.end(); i++)
+		for (std::vector<Card*>::iterator i = mBattlezones[mTurn].mCards.begin(); i != mBattlezones[mTurn].mCards.end(); i++)
 		{
-			int canattack = getCreatureCanAttackPlayers((*i)->UniqueId);
+			int canattack = getCreatureCanAttackPlayers((*i)->mUniqueId);
 			if ((canattack == CANATTACK_ALWAYS ||
-				((mCardList.at((*i)->UniqueId)->summoningSickness == 0 || getIsSpeedAttacker((*i)->UniqueId) == 1) && (canattack == CANATTACK_TAPPED || canattack == CANATTACK_UNTAPPED)))
-				&& mCardList.at((*i)->UniqueId)->isTapped == false)
+				((mCardList.at((*i)->mUniqueId)->mSummoningSickness == 0 || getIsSpeedAttacker((*i)->mUniqueId) == 1) && (canattack == CANATTACK_TAPPED || canattack == CANATTACK_UNTAPPED)))
+				&& mCardList.at((*i)->mUniqueId)->mIsTapped == false)
 			{
 				Message msg("creatureattack");
-				msg.addValue("attacker", (*i)->UniqueId);
+				msg.addValue("attacker", (*i)->mUniqueId);
 				msg.addValue("defender", getOpponent(mTurn));
 				msg.addValue("defendertype", DEFENDER_PLAYER);
 				moves.push_back(msg);
 			}
-			for (std::vector<Card*>::iterator j = mBattlezones[getOpponent(mTurn)].cards.begin(); j != mBattlezones[getOpponent(mTurn)].cards.end(); j++)
+			for (std::vector<Card*>::iterator j = mBattlezones[getOpponent(mTurn)].mCards.begin(); j != mBattlezones[getOpponent(mTurn)].mCards.end(); j++)
 			{
-				int canattack = getCreatureCanAttackCreature((*i)->UniqueId, (*j)->UniqueId);
-				if (((*j)->isTapped == true || canattack == CANATTACK_UNTAPPED)
+				int canattack = getCreatureCanAttackCreature((*i)->mUniqueId, (*j)->mUniqueId);
+				if (((*j)->mIsTapped == true || canattack == CANATTACK_UNTAPPED)
 					&& canattack <= CANATTACK_UNTAPPED
-					&& mCardList.at((*i)->UniqueId)->summoningSickness == 0
-					&& mCardList.at((*i)->UniqueId)->isTapped == false)
+					&& mCardList.at((*i)->mUniqueId)->mSummoningSickness == 0
+					&& mCardList.at((*i)->mUniqueId)->mIsTapped == false)
 				{
 					Message msg("creatureattack");
-					msg.addValue("attacker", (*i)->UniqueId);
-					msg.addValue("defender", (*j)->UniqueId);
+					msg.addValue("attacker", (*i)->mUniqueId);
+					msg.addValue("defender", (*j)->mUniqueId);
 					msg.addValue("defendertype", DEFENDER_CREATURE);
 					moves.push_back(msg);
 				}
@@ -802,8 +802,8 @@ int Duel::handleInterfaceInput(Message& msg)
 		{
 			int canattack = getCreatureCanAttackPlayers(attck);
 			if ((canattack == CANATTACK_ALWAYS || 
-				((mCardList.at(attck)->summoningSickness == 0 || getIsSpeedAttacker(attck) == 1) && (canattack == CANATTACK_TAPPED || canattack == CANATTACK_UNTAPPED)))
-				&& mCardList.at(attck)->isTapped == false)
+				((mCardList.at(attck)->mSummoningSickness == 0 || getIsSpeedAttacker(attck) == 1) && (canattack == CANATTACK_TAPPED || canattack == CANATTACK_UNTAPPED)))
+				&& mCardList.at(attck)->mIsTapped == false)
 			{
 				Message msg2("cardtap");
 				msg2.addValue("card", msg.getInt("attacker"));
@@ -814,10 +814,10 @@ int Duel::handleInterfaceInput(Message& msg)
 		else if (msg.getInt("defendertype") == DEFENDER_CREATURE)
 		{
 			int canattack = getCreatureCanAttackCreature(attck, defen);
-			if ((mCardList.at(defen)->isTapped == true || canattack == CANATTACK_UNTAPPED)
+			if ((mCardList.at(defen)->mIsTapped == true || canattack == CANATTACK_UNTAPPED)
 				&& canattack <= CANATTACK_UNTAPPED
-				&& mCardList.at(attck)->isTapped == false
-				&& mCardList.at(attck)->summoningSickness == 0)
+				&& mCardList.at(attck)->mIsTapped == false
+				&& mCardList.at(attck)->mSummoningSickness == 0)
 			{
 				Message msg2("cardtap");
 				msg2.addValue("card", msg.getInt("attacker"));
@@ -831,7 +831,7 @@ int Duel::handleInterfaceInput(Message& msg)
 		if (mAttackphase == PHASE_BLOCK)
 		{
 			int blocker = msg.getInt("blocker");
-			if (getCreatureCanBlock(mAttacker, blocker) && mCardList.at(blocker)->isTapped == false
+			if (getCreatureCanBlock(mAttacker, blocker) && mCardList.at(blocker)->mIsTapped == false
 				&& (blocker != mDefender || mDefenderType == DEFENDER_PLAYER))
 			{
 				Message msg2("cardtap");
@@ -865,7 +865,7 @@ int Duel::handleInterfaceInput(Message& msg)
 			else if (mDefenderType == DEFENDER_PLAYER)
 			{
 				printf("defender: %d\n", mDefender);
-				if (mShields[mDefender].cards.size() == 0)
+				if (mShields[mDefender].mCards.size() == 0)
 				{
 					mWinner = getOpponent(mDefender);
 					printf("Winner: %d\n", mWinner);
@@ -890,7 +890,7 @@ int Duel::handleInterfaceInput(Message& msg)
 			int shield = msg.getInt("shield");
 			mShieldTargets.push_back(shield);
 
-			if (mShieldTargets.size() >= mBreakCount || mShields[mCardList.at(shield)->Owner].cards.size() <= 1)
+			if (mShieldTargets.size() >= mBreakCount || mShields[mCardList.at(shield)->mOwner].mCards.size() <= 1)
 			{
 				Message m("changeattackphase");
 				m.addValue("phase", PHASE_TRIGGER);
@@ -937,7 +937,7 @@ int Duel::handleInterfaceInput(Message& msg)
 	else if (type == "manatap")
 	{
 		int card = msg.getInt("card");
-		if (mCardList.at(card)->isTapped == false && mCastingCard != -1)
+		if (mCardList.at(card)->mIsTapped == false && mCastingCard != -1)
 		{
 			if (mCastingCost == 1) //last card to be tapped
 			{
@@ -1166,7 +1166,7 @@ void Duel::checkChoiceValid()
 	int count = 0;
 	for (std::vector<Card*>::iterator i = mCardList.begin(); i != mCardList.end(); i++)
 	{
-		if (choiceCanBeSelected((*i)->UniqueId) == 1)
+		if (choiceCanBeSelected((*i)->mUniqueId) == 1)
 		{
 			count++;
 		}
@@ -1182,8 +1182,8 @@ void Duel::battle(int att, int def)
 {
 	Card* a = mCardList.at(att);
 	Card* d = mCardList.at(def);
-	int p1 = getCreaturePower(a->UniqueId);
-	int p2 = getCreaturePower(d->UniqueId);
+	int p1 = getCreaturePower(a->mUniqueId);
+	int p2 = getCreaturePower(d->mUniqueId);
 	if (p1 >= p2)
 	{
 		Message msg("creaturedestroy");
@@ -1204,7 +1204,7 @@ int Duel::getCreaturePower(int uid)
 {
 	Message oldmsg = mCurrentMessage;
 	mCurrentMessage = Message("get creaturepower");
-	mCurrentMessage.addValue("power", mCardList.at(uid)->Power);
+	mCurrentMessage.addValue("power", mCardList.at(uid)->mPower);
 	mCurrentMessage.addValue("creature", uid);
 
 	std::vector<Card*>::iterator i;
@@ -1221,7 +1221,7 @@ int Duel::getCreatureBreaker(int uid)
 {
 	Message oldmsg = mCurrentMessage;
 	mCurrentMessage = Message("get creaturebreaker");
-	mCurrentMessage.addValue("breaker", mCardList.at(uid)->Breaker);
+	mCurrentMessage.addValue("breaker", mCardList.at(uid)->mBreaker);
 	mCurrentMessage.addValue("creature", uid);
 
 	std::vector<Card*>::iterator i;
@@ -1273,7 +1273,7 @@ int Duel::getCreatureIsBlocker(int uid)
 {
 	Message oldmsg = mCurrentMessage;
 	mCurrentMessage = Message("get creatureisblocker");
-	mCurrentMessage.addValue("isblocker", mCardList.at(uid)->isBlocker);
+	mCurrentMessage.addValue("isblocker", mCardList.at(uid)->mIsBlocker);
 	mCurrentMessage.addValue("creature", uid);
 
 	std::vector<Card*>::iterator i;
@@ -1432,7 +1432,7 @@ int Duel::getCardCost(int uid)
 {
 	Message oldmsg = mCurrentMessage;
 	mCurrentMessage = Message("get cardcost");
-	mCurrentMessage.addValue("cost", mCardList.at(uid)->ManaCost);
+	mCurrentMessage.addValue("cost", mCardList.at(uid)->mManaCost);
 	mCurrentMessage.addValue("card", uid);
 
 	std::vector<Card*>::iterator i;
@@ -1449,7 +1449,7 @@ int Duel::getIsShieldTrigger(int uid)
 {
 	Message oldmsg = mCurrentMessage;
 	mCurrentMessage = Message("get cardshieldtrigger");
-	mCurrentMessage.addValue("shieldtrigger", mCardList.at(uid)->isShieldTrigger);
+	mCurrentMessage.addValue("shieldtrigger", mCardList.at(uid)->mIsShieldTrigger);
 	mCurrentMessage.addValue("card", uid);
 
 	std::vector<Card*>::iterator i;
@@ -1532,7 +1532,7 @@ int Duel::getCardCanCast(int uid)
 
 int Duel::getCardCivilization(int uid)
 {
-	return mCardList.at(uid)->Civilization;
+	return mCardList.at(uid)->mCivilization;
 }
 
 int Duel::isCreatureOfRace(int uid, std::string race)
@@ -1556,7 +1556,7 @@ int Duel::isCreatureOfRace(int uid, std::string race)
 
 std::string Duel::getCreatureRace(int uid)
 {
-	return mCardList.at(uid)->Race;
+	return mCardList.at(uid)->mRace;
 }
 
 int Duel::getCreatureCanEvolve(int evo, int bait)
@@ -1579,9 +1579,9 @@ int Duel::getCreatureCanEvolve(int evo, int bait)
 
 bool Duel::isThereUntappedManaOfCiv(int player,int civ)
 {
-	for (std::vector<Card*>::iterator i = mManazones[player].cards.begin(); i != mManazones[player].cards.end(); i++)
+	for (std::vector<Card*>::iterator i = mManazones[player].mCards.begin(); i != mManazones[player].mCards.end(); i++)
 	{
-		if ((*i)->isTapped == false && getCardCivilization((*i)->UniqueId) == civ)
+		if ((*i)->mIsTapped == false && getCardCivilization((*i)->mUniqueId) == civ)
 			return true;
 	}
 	return false;
@@ -1589,12 +1589,12 @@ bool Duel::isThereUntappedManaOfCiv(int player,int civ)
 
 void Duel::drawCards(int player, int count)
 {
-	count = count < mDecks[player].cards.size() ? count : mDecks[player].cards.size();
+	count = count < mDecks[player].mCards.size() ? count : mDecks[player].mCards.size();
 	for (int i = 0; i < count; i++)
 	{
 		Message msg("cardmove");
-		msg.addValue("card", mDecks[player].cards.at(mDecks[player].cards.size() - i - 1)->UniqueId);
-		msg.addValue("from", mDecks[player].cards.at(mDecks[player].cards.size() - i - 1)->Zone);
+		msg.addValue("card", mDecks[player].mCards.at(mDecks[player].mCards.size() - i - 1)->mUniqueId);
+		msg.addValue("from", mDecks[player].mCards.at(mDecks[player].mCards.size() - i - 1)->mZone);
 		msg.addValue("to", ZONE_HAND);
 		mMsgMngr.sendMessage(msg);
 	}
@@ -1613,7 +1613,7 @@ void Duel::setDecks(std::string p1, std::string p2)
 
 void Duel::loadDeck(std::string s, int p)
 {
-	mDecks[p].cards.empty();
+	mDecks[p].mCards.empty();
 	std::fstream file;
 	file.open(s, std::ios::in | std::ios::out);
 	std::string str;
@@ -1683,7 +1683,7 @@ void Duel::startDuel()
 	mManaUsed = 0;
 	for (int i = 0; i < 2; i++)
 	{
-		if (mDecks[i].cards.size() < 40)
+		if (mDecks[i].mCards.size() < 40)
 		{
 			printf("WARNING: Deck card count less than 40\n");
 		}
@@ -1693,7 +1693,7 @@ void Duel::startDuel()
 			/*Card* c = decks[i].draw();
 			shields[i].addCard(c);*/
 			Message msg("cardmove");
-			msg.addValue("card", mDecks[i].cards.at(mDecks[i].cards.size() - 1 - j)->UniqueId);
+			msg.addValue("card", mDecks[i].mCards.at(mDecks[i].mCards.size() - 1 - j)->mUniqueId);
 			msg.addValue("from", ZONE_DECK);
 			msg.addValue("to", ZONE_SHIELD);
 			mMsgMngr.sendMessage(msg);
@@ -1703,7 +1703,7 @@ void Duel::startDuel()
 			/*Card* c = decks[i].draw();
 			hands[i].addCard(c);*/
 			Message msg("cardmove");
-			msg.addValue("card", mDecks[i].cards.at(mDecks[i].cards.size() - 6 - j)->UniqueId);
+			msg.addValue("card", mDecks[i].mCards.at(mDecks[i].mCards.size() - 6 - j)->mUniqueId);
 			msg.addValue("from", ZONE_DECK);
 			msg.addValue("to", ZONE_HAND);
 			mMsgMngr.sendMessage(msg);
@@ -1742,14 +1742,14 @@ void Duel::clearCards()
 {
 	for (int i = 0; i < 2; i++)
 	{
-		mDecks[i].cards.clear();
-		mGraveyards[i].cards.clear();
-		mHands[i].cards.clear();
-		mManazones[i].cards.clear();
-		mShields[i].cards.clear();
-		mBattlezones[i].cards.clear();
+		mDecks[i].mCards.clear();
+		mGraveyards[i].mCards.clear();
+		mHands[i].mCards.clear();
+		mManazones[i].mCards.clear();
+		mShields[i].mCards.clear();
+		mBattlezones[i].mCards.clear();
 
-		mShields[i].slotsUsed = 0;
+		mShields[i].mSlotsUsed = 0;
 	}
 	mCardList.clear();
 	mNextUniqueId = 0;

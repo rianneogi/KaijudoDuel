@@ -10,15 +10,15 @@ Deck::~Deck()
 
 Card* Deck::draw()
 {
-	if (cards.size() == 0) return NULL;
-	Card* c = cards.at(cards.size()-1);
-	cards.pop_back();
+	if (mCards.size() == 0) return NULL;
+	Card* c = mCards.at(mCards.size()-1);
+	mCards.pop_back();
 	return c;
 }
 
 int Deck::getTopCard()
 {
-	return cards.at(cards.size() - 1)->UniqueId;
+	return mCards.at(mCards.size() - 1)->mUniqueId;
 }
 
 //void Deck::renderCards(int myPlayer)
@@ -43,17 +43,17 @@ void Deck::addCard(Card* c)
 	//c->setPosition(glm::vec3(mPos.x + (mPos.x + mWidth) / 2, mPos.y + CONST_CARDTHICKNESS*cards.size(), mPos.z + (mPos.z + mHeight) / 2));
 	c->flip();
 	c->untap();
-	cards.push_back(c);
+	mCards.push_back(c);
 }
 
 void Deck::shuffle()
 {
-	for (int i = 0; i < cards.size(); i++)
+	for (int i = 0; i < mCards.size(); i++)
 	{
-		int x = RandomGen->Random(cards.size());
-		Card* tmp = cards.at(x);
-		cards.at(x) = cards.at(i);
-		cards.at(i) = tmp;
+		int x = mRandomGen->Random(mCards.size());
+		Card* tmp = mCards.at(x);
+		mCards.at(x) = mCards.at(i);
+		mCards.at(i) = tmp;
 	}
 }
 
