@@ -160,6 +160,7 @@ bool initGame()
 void cleanup()
 {
 	cleanupCards();
+	FT_Done_FreeType(gFontLibrary);
 }
 
 void handleEvent(const SDL_Event& e, unsigned int deltaTime)

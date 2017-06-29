@@ -19,6 +19,7 @@
 #include <glm\gtx\quaternion.hpp>
 
 #include <vector>
+#include <map>
 
 //#include <gl\GL.h>
 //#include <gl\GLU.h>
