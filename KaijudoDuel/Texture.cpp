@@ -41,8 +41,9 @@ bool Texture::loadTextureFromPixels32(GLuint* pixels, GLuint width, GLuint heigh
 
 	//Generate texture
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-
+	debugOpengl("a");
 	glEnable(GL_TEXTURE_2D);
+	debugOpengl("b");
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	//Set texture parameters
@@ -84,7 +85,7 @@ bool Texture::loadFromFile(std::string path)
 
 	//Load image
 	ILboolean success = ilLoadImage(path.c_str());
-
+	
 	//Image loaded successfully
 	if (success == IL_TRUE)
 	{
