@@ -43,6 +43,8 @@ public:
 	Model mTableModel;
 	Model mEndTurnModel;
 
+	TextRenderer mTextRenderer;
+
 	int mousearrow;
 
 	int deckschosen;

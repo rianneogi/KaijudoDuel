@@ -331,6 +331,12 @@ void startGUI()
 		_getch();
 	}
 
+	if (!initTextRender())
+	{
+		printf("ERROR initializing text library\n");
+		_getch();
+	}
+
 	//Use Vsync
 	if (SDL_GL_SetSwapInterval(1) < 0)
 	{

@@ -48,9 +48,6 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CRandom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -156,11 +153,14 @@
     <ClCompile Include="ShieldZoneRenderer.cpp">
       <Filter>Source Files\GUI\ZoneRenderers</Filter>
     </ClCompile>
+    <ClCompile Include="TextRenderer.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CRandom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -272,6 +272,12 @@
     <ClInclude Include="GraveyardRenderer.h">
       <Filter>Header Files\GUI\ZoneRenderers</Filter>
     </ClInclude>
+    <ClInclude Include="TextRenderer.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\mvp.glfs">
@@ -306,6 +312,12 @@
     </None>
     <None Include="..\x64\Release\Lua\Survivors.lua">
       <Filter>Source Files\Lua</Filter>
+    </None>
+    <None Include="Resources\Shaders\text.glfs">
+      <Filter>Source Files\GUI\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\text.glvs">
+      <Filter>Source Files\GUI\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

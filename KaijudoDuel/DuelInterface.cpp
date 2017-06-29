@@ -82,6 +82,8 @@ DuelInterface::DuelInterface(Duel* duel)
 
 	mHandRenderers[0]->setCamera(&mCamera);
 	mHandRenderers[1]->setCamera(&mCamera);
+
+	mTextRenderer.load("Resources/OxygenMono.ttf", glm::vec4(1, 0, 0, 1), 36);
 }
 
 DuelInterface::~DuelInterface()
@@ -105,31 +107,25 @@ void DuelInterface::render()
 	glm::mat4 view, projection;
 	mCamera.render(view, projection);
 
-	Vector2i mousePos;
-	SDL_GetMouseState(&mousePos.x, &mousePos.y);
+	//Vector2i mousePos;
+	//SDL_GetMouseState(&mousePos.x, &mousePos.y);
 
-	gActiveShader = SHADER_BASIC;
-	gShaders[gActiveShader].bind();
-	gShaders[gActiveShader].setUniformMat4f(0, mTableModel.mModelMatrix);
-	gShaders[gActiveShader].setUniformMat4f(1, view);
-	gShaders[gActiveShader].setUniformMat4f(2, projection);
-	mTableModel.render();
-	gShaders[gActiveShader].setUniformMat4f(0, mEndTurnModel.mModelMatrix);
-	mEndTurnModel.render();
+	//gActiveShader = SHADER_BASIC;
+	//gShaders[gActiveShader].bind();
+	//gShaders[gActiveShader].setUniformMat4f(0, mTableModel.mModelMatrix);
+	//gShaders[gActiveShader].setUniformMat4f(1, view);
+	//gShaders[gActiveShader].setUniformMat4f(2, projection);
+	//mTableModel.render();
+	//gShaders[gActiveShader].setUniformMat4f(0, mEndTurnModel.mModelMatrix);
+	//mEndTurnModel.render();
 
-	//render cards
-	for (size_t i = 0; i < mCardModels.size(); i++)
-	{
-		mCardModels[i]->render(true);
-	}
+	////render cards
+	//for (size_t i = 0; i < mCardModels.size(); i++)
+	//{
+	//	mCardModels[i]->render(true);
+	//}
 
-	/*for (int i = 0; i < 2; i++)
-	{
-		for (int j = 0; j < 6; j++)
-		{
-			getZoneRenderer(i,j)->renderCards(myPlayer);
-		}
-	}*/
+	mTextRenderer.renderText("ABCBCBdhdj", 0.5, 0.5, 2.0/SCREEN_WIDTH, 2.0/SCREEN_HEIGHT);
 }
 
 int DuelInterface::handleEvent(const SDL_Event& event, int callback)

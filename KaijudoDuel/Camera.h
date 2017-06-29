@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Model.h"
+#include "TextRenderer.h"
 
 typedef std::vector<glm::vec4> Frustum;
 
