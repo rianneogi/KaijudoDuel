@@ -106,7 +106,7 @@ void DuelInterface::render()
 {
 	glm::mat4 view, projection;
 	mCamera.render(view, projection);
-
+	glDisable(GL_CULL_FACE);
 	//Vector2i mousePos;
 	//SDL_GetMouseState(&mousePos.x, &mousePos.y);
 

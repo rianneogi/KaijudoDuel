@@ -114,140 +114,145 @@ bool TextRenderer::load(std::string path, glm::vec4 color, int size)
 	return true;
 }
 
-//void TextRenderer::renderText(const char *text, float x, float y, float sx, float sy)
-//{
-//	glActiveTexture(GL_TEXTURE0);
-//	glGenTextures(1, &mTextureID);
-//	glBindTexture(GL_TEXTURE_2D, mTextureID);
-//	
-//	//glUniform1i(uniform_tex, 0);
-//
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-//
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//
-//	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-//
-//	glEnableVertexAttribArray(0);
-//	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-//	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
-//
-//	const char *p;
-//	gTextShader.bind();
-//	gTextShader.setUniformVec4f(0, mColor);
-//	gTextShader.setUniformInt(1, 0);
-//
-//
-//	//glActiveTexture(GL_TEXTURE0);
-//	//glBindTexture(GL_TEXTURE_2D, mTextureID);
-//
-//	//glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-//
-//	for (p = text; *p; p++) 
-//	{
-//		if (FT_Load_Char(mFace, *p, FT_LOAD_RENDER))
-//		{
-//			printf("ERROR: loading character %c\n", *p);
-//			continue;
-//		}
-//
-//		/*printf("char %c\n", *p);
-//		printf("ptr %d\n", mFace->glyph->bitmap.buffer);
-//		for (int i = 0; i < mFace->glyph->bitmap.width*mFace->glyph->bitmap.rows; i++)
-//		{
-//			printf("%d ", mFace->glyph->bitmap.buffer[i]);
-//			if (i&mFace->glyph->bitmap.width == 0)
-//				printf("\n");
-//		}*/
-//
-//		glTexImage2D(
-//			GL_TEXTURE_2D,
-//			0,
-//			GL_RED,
-//			mFace->glyph->bitmap.width,
-//			mFace->glyph->bitmap.rows,
-//			0,
-//			GL_RED,
-//			GL_UNSIGNED_BYTE,
-//			mFace->glyph->bitmap.buffer
-//		);
-//
-//		float x2 = x + mFace->glyph->bitmap_left * sx;
-//		float y2 = -y - mFace->glyph->bitmap_top * sy;
-//		float w = mFace->glyph->bitmap.width * sx;
-//		float h = mFace->glyph->bitmap.rows * sy;
-//
-//		GLfloat box[4][4] = {
-//			{ x2,     -y2    , 0, 0 },
-//			{ x2 + w, -y2    , 1, 0 },
-//			{ x2,     -y2 - h, 0, 1 },
-//			{ x2 + w, -y2 - h, 1, 1 },
-//		};
-//
-//		glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
-//		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-//
-//		x += (mFace->glyph->advance.x / 64) * sx;
-//		y += (mFace->glyph->advance.y / 64) * sy;
-//	}
-//
-//	glDisableVertexAttribArray(0);
-//	glDeleteTextures(1, &mTextureID);
-//
-//	GLenum err = GL_NO_ERROR;
-//	while ((err = glGetError()) != GL_NO_ERROR)
-//	{
-//		printf("TEXT DRAW ERROR: %d", err);
-//	}
-//}
-
 void TextRenderer::renderText(std::string text, float x, float y, float sx, float sy)
 {
-	// Activate corresponding render state	
-	gTextShader.bind();
-	//glUniform3f(glGetUniformLocation(s.Program, "textColor"), color.x, color.y, color.z);
-	gTextShader.setUniformVec4f(0, mColor);
 	glActiveTexture(GL_TEXTURE0);
-	glBindVertexArray(mVAO);
+	glGenTextures(1, &mTextureID);
+	glBindTexture(GL_TEXTURE_2D, mTextureID);
+	
+	//glUniform1i(uniform_tex, 0);
 
-	// Iterate through all characters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
+
+	gTextShader.bind();
+	gTextShader.setUniformVec4f(0, mColor);
+	//gTextShader.setUniformInt(1, 0);
+
+
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, mTextureID);
+
+	//glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+
 	std::string::const_iterator c;
 	for (c = text.begin(); c != text.end(); c++)
 	{
-		Character ch = mCharacters[*c];
+		if (FT_Load_Char(mFace, *c, FT_LOAD_RENDER))
+		{
+			printf("ERROR: loading character %c\n", *c);
+			continue;
+		}
 
-		GLfloat xpos = x + ch.Bearing.x * sx;
-		GLfloat ypos = y - (ch.Size.y - ch.Bearing.y) * sy;
+		/*printf("char %c\n", *p);
+		printf("ptr %d\n", mFace->glyph->bitmap.buffer);
+		for (int i = 0; i < mFace->glyph->bitmap.width*mFace->glyph->bitmap.rows; i++)
+		{
+			printf("%d ", mFace->glyph->bitmap.buffer[i]);
+			if (i&mFace->glyph->bitmap.width == 0)
+				printf("\n");
+		}*/
 
-		GLfloat w = ch.Size.x * sx;
-		GLfloat h = ch.Size.y * sy;
-		
-		// Update VBO for each character
-		GLfloat vertices[6][4] = {
-			{ xpos,     ypos + h,   0.0, 0.0 },
-			{ xpos,     ypos,       0.0, 1.0 },
-			{ xpos + w, ypos,       1.0, 1.0 },
+		glTexImage2D(
+			GL_TEXTURE_2D,
+			0,
+			GL_RED,
+			mFace->glyph->bitmap.width,
+			mFace->glyph->bitmap.rows,
+			0,
+			GL_RED,
+			GL_UNSIGNED_BYTE,
+			mFace->glyph->bitmap.buffer
+		);
 
-			{ xpos,     ypos + h,   0.0, 0.0 },
-			{ xpos + w, ypos,       1.0, 1.0 },
-			{ xpos + w, ypos + h,   1.0, 0.0 }
+		float x2 = x + mFace->glyph->bitmap_left * sx;
+		float y2 = -y - mFace->glyph->bitmap_top * sy;
+		float w = mFace->glyph->bitmap.width * sx;
+		float h = mFace->glyph->bitmap.rows * sy;
+
+		GLfloat box[4][4] = {
+			{ x2,     -y2    , 0, 0 },
+			{ x2 + w, -y2    , 1, 0 },
+			{ x2,     -y2 - h, 0, 1 },
+			{ x2 + w, -y2 - h, 1, 1 },
 		};
-		// Render glyph texture over quad
-		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
-		// Update content of VBO memory
-		glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		// Render quad
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		// Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-		x += (ch.Advance >> 6) * sx; // Bitshift by 6 to get value in pixels (2^6 = 64)
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof box, box, GL_DYNAMIC_DRAW);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		/*GLenum err = GL_NO_ERROR;
+		while ((err = glGetError()) != GL_NO_ERROR)
+		{
+			printf("TEXT DRAW ERROR: %d", err);
+		}*/
+		
+		x += (mFace->glyph->advance.x / 64) * sx;
+		y += (mFace->glyph->advance.y / 64) * sy;
 	}
-	glBindVertexArray(0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glDisableVertexAttribArray(0);
+	glDeleteTextures(1, &mTextureID);
+
+	GLenum err = GL_NO_ERROR;
+	while ((err = glGetError()) != GL_NO_ERROR)
+	{
+		printf("TEXT DRAW ERROR: %d", err);
+	}
 }
+
+//void TextRenderer::renderText(std::string text, float x, float y, float sx, float sy)
+//{
+//	// Activate corresponding render state	
+//	gTextShader.bind();
+//	//glUniform3f(glGetUniformLocation(s.Program, "textColor"), color.x, color.y, color.z);
+//	gTextShader.setUniformVec4f(0, mColor);
+//	glActiveTexture(GL_TEXTURE0);
+//	glBindVertexArray(mVAO);
+//
+//	// Iterate through all characters
+//	std::string::const_iterator c;
+//	for (c = text.begin(); c != text.end(); c++)
+//	{
+//		Character ch = mCharacters[*c];
+//
+//		GLfloat xpos = x + ch.Bearing.x * sx;
+//		GLfloat ypos = y - (ch.Size.y - ch.Bearing.y) * sy;
+//
+//		GLfloat w = ch.Size.x * sx;
+//		GLfloat h = ch.Size.y * sy;
+//		
+//		// Update VBO for each character
+//		GLfloat vertices[6][4] = {
+//			{ xpos,     ypos + h,   0.0, 0.0 },
+//			{ xpos,     ypos,       0.0, 1.0 },
+//			{ xpos + w, ypos,       1.0, 1.0 },
+//
+//			{ xpos,     ypos + h,   0.0, 0.0 },
+//			{ xpos + w, ypos,       1.0, 1.0 },
+//			{ xpos + w, ypos + h,   1.0, 0.0 }
+//		};
+//		// Render glyph texture over quad
+//		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+//		// Update content of VBO memory
+//		glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+//		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+//		glBindBuffer(GL_ARRAY_BUFFER, 0);
+//		// Render quad
+//		glDrawArrays(GL_TRIANGLES, 0, 6);
+//		// Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+//		x += (ch.Advance >> 6) * sx; // Bitshift by 6 to get value in pixels (2^6 = 64)
+//	}
+//	glBindVertexArray(0);
+//	glBindTexture(GL_TEXTURE_2D, 0);
+//}
 
 bool initTextRender()
 {

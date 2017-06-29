@@ -40,21 +40,13 @@ bool initSDL()
 		_getch();
 	}
 
-	gWindow = SDL_CreateWindow("Kaijudo Duel", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT,
-		SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-	if (gWindow == NULL)
-	{
-		printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
-		_getch();
-	}
-
 	//SDL_WarpMouseInWindow(gWindow, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	//SDL_SetRelativeMouseMode(SDL_TRUE);
 
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-
+	
 	///*SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
 	//SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 5);
 	//SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
@@ -66,12 +58,21 @@ bool initSDL()
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 2);
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
+	gWindow = SDL_CreateWindow("Kaijudo Duel", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT,
+		SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+	if (gWindow == NULL)
+	{
+		printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
+		_getch();
+	}
+
 	gContext = SDL_GL_CreateContext(gWindow);
 	if (gContext == NULL)
 	{
 		printf("OpenGL context could not be created! SDL Error: %s\n", SDL_GetError());
 		_getch();
 	}
+
 	SDL_GL_MakeCurrent(gWindow, gContext);
 	glEnable(GL_MULTISAMPLE);
 
@@ -81,22 +82,28 @@ bool initSDL()
 bool initGL()
 {
 	//Initialize GLEW
-	//glewExperimental = GL_TRUE;
+	glewExperimental = GL_TRUE;
 	GLenum glewError = glewInit();
 	if (glewError != GLEW_OK)
 	{
 		printf("Error initializing GLEW! %s\n", glewGetErrorString(glewError));
 		return false;
 	}
-
+	GLenum error1 = glGetError();
+	if (error1 != GL_NO_ERROR)
+	{
+		printf("xxxxError initializing OpenGL! %s\n", gluErrorString(error1));
+		_getch();
+		return false;
+	}
 	//Make sure OpenGL 3.1 is supported
 	if (!GLEW_VERSION_3_1)
 	{
-		printf("OpenGL 3.1 not supported!\n");
+		printf("OpenGL 3.2 not supported!\n");
 		//return false;
 	}
 
-	if (!GLEW_ARB_vertex_program)
+	/*if (!GLEW_ARB_vertex_program)
 	{
 		printf("ARB not supported\n");
 		_getch();
@@ -106,7 +113,7 @@ bool initGL()
 	{
 		printf("framebuffer objects not supported\n");
 		_getch();
-	}
+	}*/
 
 	//Set the viewport
 	glViewport(0.f, 0.f, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -138,6 +145,12 @@ bool initGL()
 		_getch();
 		return false;
 	}
+
+	int versionMajor;
+	int versionMinor;
+	glGetIntegerv(GL_MAJOR_VERSION, &versionMajor);
+	glGetIntegerv(GL_MINOR_VERSION, &versionMinor);
+	printf("VERS %d %d\n", versionMajor, versionMinor);
 
 	return true;
 }

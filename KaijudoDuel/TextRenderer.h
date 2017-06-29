@@ -18,7 +18,7 @@ public:
 	std::map<GLchar, Character> mCharacters;
 
 	FT_Face mFace;
-	//GLuint mTextureID;
+	GLuint mTextureID;
 	GLuint mVAO;
 	GLuint mVBO;
 	int mSize;
