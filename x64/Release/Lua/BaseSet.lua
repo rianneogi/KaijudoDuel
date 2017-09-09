@@ -561,6 +561,20 @@ Cards["Crystal Memory"] = {
 	end
 }
 
+Cards["Cyber Brain"] = {
+	name = "Cyber Brain",
+	set = "Base Set",
+	type = TYPE_SPELL,
+	civilization = CIV_WATER,
+	cost = 4,
+	shieldtrigger = 1,
+
+    OnCast = function(id)
+        drawCards(getCardOwner(id),3)
+		Functions.EndSpell(id)
+	end
+}
+
 Cards["Dark Clown"] = {
 	name = "Dark Clown",
 	set = "Base Set",
@@ -2260,15 +2274,15 @@ Cards["Thorny Mandra"] = {
 	breaker = 1,
 
 	HandleMessage = function(id)
-		if(getMessageType()=="post cardmove") then
-            if(getMessageInt("card")==id) then
-			    createChoice("Thorny Mandra: Select card in graveyard",1,id)
-			    choicePushSelect(3,"Cards","Thorny Mandra","Select")
-                choicePushButton1(2,"Functions","SkipChoice")
-			    choicePushValid(2,"Checks","InYourGraveyard")
-            end
-		end
-        summon = function(id)
+		--if(getMessageType()=="post cardmove") then
+        --    if(getMessageInt("card")==id) then
+		--	    createChoice("Thorny Mandra: Select card in graveyard",1,id)
+		--	    choicePushSelect(3,"Cards","Thorny Mandra","Select")
+        --        choicePushButton1(2,"Functions","SkipChoice")
+		--	    choicePushValid(2,"Checks","InYourGraveyard")
+        --    end
+		--end
+        local summon = function(id)
             local ch = createChoice("Select card in graveyard",1,id,getCardOwner(id),Checks.InYourGraveyard)
             if(ch>=0) then
                 moveCard(ch,ZONE_MANA)

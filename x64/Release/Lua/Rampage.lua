@@ -588,11 +588,10 @@ Cards["Gamil, Knight of Hatred"] = {
                     return 0
                 end
             end
-            for i=1,count do
-                local ch = createChoice("Select a darkness creature in your graveyard",0,id,getCardOwner(id),valid)
-                if(ch>=0) then
-                    moveCard(ch,ZONE_HAND)
-                end
+            
+            local ch = createChoice("Select a darkness creature in your graveyard",0,id,getCardOwner(id),valid)
+            if(ch>=0) then
+                moveCard(ch,ZONE_HAND)
             end
         end
         Abils.onAttack(id,func)
@@ -840,7 +839,7 @@ Cards["Legendary Bynor"] = {
                 if(getCardCiv(cid)==CIV_WATER and cid~=id) then
                     Abils.cantBeBlocked(cid)
                 end
-        end
+			end
         end
 	end
 }
@@ -870,7 +869,7 @@ Cards["Lena, Vizier of Brilliance"] = {
 	end
 }
 
-Cards["Liquid Scope"] = {
+Cards["Liquid Scope"] = { --check
 	name = "Liquid Scope",
 	set = "Rampage of the Super Warriors",
 	type = TYPE_SPELL,

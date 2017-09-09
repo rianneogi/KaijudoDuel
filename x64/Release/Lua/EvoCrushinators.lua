@@ -36,7 +36,11 @@ Cards["Aqua Bouncer"] = {
 
 	HandleMessage = function(id)
         local func = function(id)
-            createChoice("Select creature in battle zone",1,id,getCardOwner(id),Checks.InBattle,Actions.moveToHand)
+            --createChoice("Select creature in battle zone",1,id,getCardOwner(id),Checks.InBattle,Actions.moveToHand)
+			local ch = createChoice("Destroy a card in your mana zone",0,id,getCardOwner(id),Checks.InBattle)
+			if(ch>=0) then
+				moveCard(ch, ZONE_HAND)
+			end
         end
 		Abils.onSummon(id,func)
 	end
@@ -1126,7 +1130,7 @@ Cards["Rainbow Stone"] = {
 	end
 }
 
-Cards["Recon Operation"] = {
+Cards["Recon Operation"] = { --check if works
 	name = "Recon Operation",
 	set = "Evo-Crushinators of Doom",
 	type = TYPE_SPELL,

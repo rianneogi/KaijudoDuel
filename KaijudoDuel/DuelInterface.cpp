@@ -146,6 +146,8 @@ void DuelInterface::render()
 	{
 		mTextRenderer.renderText("Tap "+std::to_string(mDuel->mCastingCost)+" mana...", 0.5, 0.5, 2.0 / SCREEN_WIDTH, 2.0 / SCREEN_HEIGHT);
 	}
+
+	mTextRenderer.renderText("End Turn", 0.45, 0.0, 2.0 / SCREEN_WIDTH, 2.0 / SCREEN_HEIGHT);
 }
 
 int DuelInterface::handleEvent(const SDL_Event& event, int callback)

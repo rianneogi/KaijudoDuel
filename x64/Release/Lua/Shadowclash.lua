@@ -128,6 +128,28 @@ Cards["Aqua Jolter"] = {
 	end
 }
 
+Cards["Aquan"] = { --todo
+	name = "Aquan",
+	set = "Shadowclash of Blinding Night",
+	type = TYPE_CREATURE,
+	civilization = CIV_WATER,
+	race = "Liquid People",
+	cost = 3,
+
+	shieldtrigger = 1,
+	blocker = 0,
+
+	power = 2000,
+	breaker = 1,
+
+	HandleMessage = function(id)
+		local func = function(id)
+			
+		end
+		Abils.onSummon(id, func)
+	end
+}
+
 Cards["Astral Warper"] = {
 	name = "Astral Warper",
 	set = "Shadowclash of Blinding Night",
@@ -507,7 +529,7 @@ Cards["Galklife Dragon"] = {
 	end
 }
 
-Cards["Gigabolver"] = {
+Cards["Gigabolver"] = { --check
 	name = "Gigabolver",
 	set = "Shadowclash of Blinding Night",
 	type = TYPE_CREATURE,
