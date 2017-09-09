@@ -2,6 +2,7 @@
 
 float gZoomDistance = 25.f;
 const float gCameraSpeed = 0.0001f;
+const int HOVER_CARD_TIME = 500;
 
 DuelInterface::DuelInterface()
 {
@@ -72,7 +73,7 @@ DuelInterface::DuelInterface(Duel* duel)
 	mTableModel.setMesh(&gMeshs[MESH_TABLE]);
 	mTableModel.setTexture(&gTableTexture);
 	mTableModel.setPosition(glm::vec3(0, 0, 0));
-	mTableModel.mModelMatrix = glm::scale(mTableModel.mModelMatrix, glm::vec3(5, 5, 5));
+	mTableModel.mModelMatrix = glm::scale(mTableModel.mModelMatrix, glm::vec3(8, 8, 8));
 
 	mEndTurnModel.setMesh(&gMeshs[MESH_ENDTURN]);
 	mEndTurnModel.setTexture(&gTableTexture);
@@ -83,7 +84,7 @@ DuelInterface::DuelInterface(Duel* duel)
 	mHandRenderers[0]->setCamera(&mCamera);
 	mHandRenderers[1]->setCamera(&mCamera);
 
-	mTextRenderer.load("Resources/OxygenMono.ttf", glm::vec4(1, 0, 0, 1), 36);
+	mTextRenderer.load("Resources/OxygenMono.ttf", glm::vec4(1, 1, 1, 1), 18);
 }
 
 DuelInterface::~DuelInterface()
@@ -125,7 +126,26 @@ void DuelInterface::render()
 		mCardModels[i]->render(true);
 	}
 
-	mTextRenderer.renderText("ABCBCBdhdj", 0.5, 0.5, 2.0/SCREEN_WIDTH, 2.0/SCREEN_HEIGHT);
+	if (mDuel->mChoice != NULL)
+	{
+		mTextRenderer.renderText(mDuel->mChoice->mInfotext, 0.5, 0.5, 2.0 / SCREEN_WIDTH, 2.0 / SCREEN_HEIGHT);
+	}
+	else if (mDuel->mAttackphase == PHASE_BLOCK)
+	{
+		mTextRenderer.renderText("Choose Blockers...", 0.5, 0.5, 2.0 / SCREEN_WIDTH, 2.0 / SCREEN_HEIGHT);
+	}
+	else if (mDuel->mAttackphase == PHASE_TARGET)
+	{
+		mTextRenderer.renderText("Choose Targets...", 0.5, 0.5, 2.0 / SCREEN_WIDTH, 2.0 / SCREEN_HEIGHT);
+	}
+	else if (mDuel->mAttackphase == PHASE_TRIGGER)
+	{
+		mTextRenderer.renderText("Choose Shield Triggers...", 0.5, 0.5, 2.0 / SCREEN_WIDTH, 2.0 / SCREEN_HEIGHT);
+	}
+	else if (mDuel->mCastingCard != -1)
+	{
+		mTextRenderer.renderText("Tap "+std::to_string(mDuel->mCastingCost)+" mana...", 0.5, 0.5, 2.0 / SCREEN_WIDTH, 2.0 / SCREEN_HEIGHT);
+	}
 }
 
 int DuelInterface::handleEvent(const SDL_Event& event, int callback)
@@ -582,7 +602,7 @@ void DuelInterface::update(int deltaTime)
 	{
 		mHighlightCardId = -1;
 	}
-	else if (mHoverTimer.getElaspedTime() >= 1000 || mDuel->mCardList[mHoverCardId]->mZone == ZONE_HAND
+	else if (mHoverTimer.getElaspedTime() >= HOVER_CARD_TIME || mDuel->mCardList[mHoverCardId]->mZone == ZONE_HAND
 		|| mDuel->mCardList[mHoverCardId]->mZone == ZONE_GRAVEYARD || mDuel->mCardList[mHoverCardId]->mZone == ZONE_DECK)
 	{
 		mHighlightCardId = mHoverCardId;
