@@ -1538,6 +1538,7 @@ int Duel::getCardCivilization(int uid)
 int Duel::isCreatureOfRace(int uid, std::string race)
 {
 	std::string r = getCreatureRace(uid);
+	printf("race %s %s\n", r.c_str(), race.c_str());
 	int f = r.find(race);
 	if (f != std::string::npos)
 	{

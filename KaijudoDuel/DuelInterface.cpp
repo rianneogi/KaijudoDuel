@@ -357,9 +357,9 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 					}
 					else if (is_evo)
 					{
-						for (int i = 0; i < mDuel->mBattlezones->mCards.size(); i++)
+						for (int i = 0; i < mDuel->mBattlezones[mDuel->mTurn].mCards.size(); i++)
 						{
-							if (mHoverCardId == mDuel->mBattlezones->mCards[i]->mUniqueId)
+							if (mHoverCardId == mDuel->mBattlezones[mDuel->mTurn].mCards[i]->mUniqueId)
 							{
 								Message msg("cardplay");
 								msg.addValue("card", mSelectedCardId);
