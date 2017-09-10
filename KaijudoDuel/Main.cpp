@@ -160,7 +160,7 @@ bool initGame()
 	ActiveDuel = new Duel();
 	
 	//ActiveDuel = &(gDuelInterface->mDuel);
-	ActiveDuel->setDecks("Decks\\My Decks\\FL Light Humans.txt", "Decks\\My Decks\\FD Hellfire Evo.txt");
+	ActiveDuel->setDecks("Decks\\My Decks\\4 - L Alcadeias.txt", "Decks\\My Decks\\4 - D Ballom.txt");
 	ActiveDuel->startDuel();
 	ActiveDuel->dispatchAllMessages();
 	gDuelInterface = new DuelInterface(ActiveDuel);

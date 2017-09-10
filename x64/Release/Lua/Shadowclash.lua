@@ -600,7 +600,7 @@ Cards["Gregorian Worm"] = {
 	end
 }
 
-Cards["Gulan Rias, Speed Guardian"] = {
+Cards["Gulan Rias, Speed Guardian"] = { --check
 	name = "Gulan Rias, Speed Guardian",
 	set = "Shadowclash of Blinding Night",
 	type = TYPE_CREATURE,
@@ -616,7 +616,7 @@ Cards["Gulan Rias, Speed Guardian"] = {
 
 	HandleMessage = function(id)
         if(getMessageType()=="get creaturecanblock") then
-		    if(getMessageInt("attacker")==id and getCardCiv(getMessageInt("defender"))==CIV_DARKNESS) then
+		    if(getMessageInt("attacker")==id and getCardCiv(getMessageInt("blocker"))==CIV_DARKNESS) then
 			    setMessageInt("canblock",0)
 		    end
 	    end

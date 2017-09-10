@@ -81,6 +81,12 @@ DuelInterface::DuelInterface(Duel* duel)
 	mEndTurnModel.setPosition(glm::vec3(-8.f, 1.0, 0.0));
 	mEndTurnModel.setModelMatrix(glm::rotate(mEndTurnModel.mModelMatrix, float(M_PI), glm::vec3(0, 1, 0)));
 
+	mButton2Model.setMesh(&gMeshs[MESH_ENDTURN]);
+	mButton2Model.setTexture(&gTableTexture);
+	mButton2Model.mModelMatrix = glm::scale(mTableModel.mModelMatrix, glm::vec3(0.25f, 0.25f, 0.25f));
+	mButton2Model.setPosition(glm::vec3(-8.f, 1.0, -1.0));
+	mButton2Model.setModelMatrix(glm::rotate(mEndTurnModel.mModelMatrix, float(M_PI), glm::vec3(0, 1, 0)));
+
 	mHandRenderers[0]->setCamera(&mCamera);
 	mHandRenderers[1]->setCamera(&mCamera);
 
@@ -158,7 +164,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 	{
 		if (event.button.button == SDL_BUTTON_LEFT)
 		{
-			if (mDuel->mIsChoiceActive)
+			if (mDuel->mIsChoiceActive) //select card for choice
 			{
 				assert(mSelectedCardId == -1);
 				if (mHoverCardId != -1)
@@ -262,22 +268,11 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 				Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
 				if (mEndTurnModel.rayTrace(mousePos, projview, screendim)) //end turn
 				{
-					if (mDuel->mAttackphase == PHASE_BLOCK)
-					{
-						Message msg("blockskip");
-						mDuel->handleInterfaceInput(msg);
-					}
-					else if (mDuel->mAttackphase == PHASE_TRIGGER)
-					{
-						Message msg("triggerskip");
-						mDuel->handleInterfaceInput(msg);
-					}
-					else
-					{
-						Message msg("endturn");
-						mDuel->handleInterfaceInput(msg);
-						printf("end turn pressed\n");
-					}
+					endturn();
+				}
+				if (mButton2Model.rayTrace(mousePos, projview, screendim))
+				{
+					button2();
 				}
 				
 				for (int i = 0; i < 2; i++)
@@ -453,8 +448,51 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 			}
 		}
 	}
+	else if (event.type == SDL_KEYDOWN)
+	{
+		if (event.key.keysym.sym == SDLK_SPACE)
+		{
+			endturn();
+		}
+	}
 
 	return 0;
+}
+
+void DuelInterface::endturn()
+{
+	if (mDuel->mAttackphase == PHASE_BLOCK)
+	{
+		Message msg("blockskip");
+		mDuel->handleInterfaceInput(msg);
+	}
+	else if (mDuel->mAttackphase == PHASE_TRIGGER)
+	{
+		Message msg("triggerskip");
+		mDuel->handleInterfaceInput(msg);
+	}
+	else if (mDuel->mIsChoiceActive && mDuel->mChoice->mButtonCount >= 1)
+	{
+		Message m("choiceselect");
+		m.addValue("selection", -1);
+		mDuel->handleInterfaceInput(m);
+	}
+	else
+	{
+		Message msg("endturn");
+		mDuel->handleInterfaceInput(msg);
+		printf("end turn pressed\n");
+	}
+}
+
+void DuelInterface::button2()
+{
+	if (mDuel->mIsChoiceActive && mDuel->mChoice->mButtonCount >= 2)
+	{
+		Message m("choiceselect");
+		m.addValue("selection", -2);
+		mDuel->handleInterfaceInput(m);
+	}
 }
 
 void DuelInterface::update(int deltaTime)

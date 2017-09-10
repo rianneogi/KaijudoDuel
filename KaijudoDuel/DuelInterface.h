@@ -42,6 +42,7 @@ public:
 	Camera mCamera;
 	Model mTableModel;
 	Model mEndTurnModel;
+	Model mButton2Model;
 
 	TextRenderer mTextRenderer;
 
@@ -59,6 +60,8 @@ public:
 	void update(int deltaTime);
 	void render();
     int handleEvent(const SDL_Event& event, int callback);
+	void endturn();
+	void button2();
 	//int receivePacket(sf::Packet& packet, int callback);
 
 	ZoneRenderer* getZoneRenderer(int player, int zone);
