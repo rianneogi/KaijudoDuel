@@ -600,7 +600,7 @@ Cards["Gregorian Worm"] = {
 	end
 }
 
-Cards["Gulan Rias, Speed Guardian"] = { --check
+Cards["Gulan Rias, Speed Guardian"] = {
 	name = "Gulan Rias, Speed Guardian",
 	set = "Shadowclash of Blinding Night",
 	type = TYPE_CREATURE,
