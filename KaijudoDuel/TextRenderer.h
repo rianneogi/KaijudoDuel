@@ -30,6 +30,7 @@ public:
 
 	bool load(std::string path, glm::vec4 color, int size);
 	void renderText(std::string text, float x, float y, float sx, float sy);
+	void renderTextMVP(std::string text, float x, float y, float sx, float sy, const glm::mat4& M, const glm::mat4& V, const glm::mat4& P);
 	void setSize(int size);
 	void setColor(glm::vec4 color);
 };

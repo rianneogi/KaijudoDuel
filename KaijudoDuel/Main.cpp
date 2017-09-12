@@ -1,4 +1,4 @@
-#include "DuelInterface.h"
+#include "DeckBuilderUI.h"
 
 #include <iostream>
 #include <conio.h>
@@ -160,7 +160,7 @@ bool initGame()
 	ActiveDuel = new Duel();
 	
 	//ActiveDuel = &(gDuelInterface->mDuel);
-	ActiveDuel->setDecks("Decks\\My Decks\\4 - D Ballom.txt", "Decks\\My Decks\\4 - L Alcadeias.txt");
+	ActiveDuel->setDecks("Decks\\My Decks\\3 - WN 1st place GenCon 2004.txt", "Decks\\My Decks\\3 - WN 3rd place GenCon 2004.txt");
 	ActiveDuel->startDuel();
 	ActiveDuel->dispatchAllMessages();
 	gDuelInterface = new DuelInterface(ActiveDuel);

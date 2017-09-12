@@ -159,6 +159,9 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="DeckBuilderUI.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CRandom.h">
@@ -278,6 +281,9 @@
     <ClInclude Include="Timer.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="DeckBuilderUI.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\mvp.glfs">
@@ -317,6 +323,18 @@
       <Filter>Source Files\GUI\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\text.glvs">
+      <Filter>Source Files\GUI\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\text_mvp.glfs">
+      <Filter>Source Files\GUI\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\text_mvp.glvs">
+      <Filter>Source Files\GUI\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\phong.glvs">
+      <Filter>Source Files\GUI\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\phong.glfs">
       <Filter>Source Files\GUI\Shaders</Filter>
     </None>
   </ItemGroup>

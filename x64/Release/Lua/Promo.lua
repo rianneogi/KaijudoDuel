@@ -118,7 +118,7 @@ Cards["Loth Rix, the Iridescent"] = {
 	blocker = 0,
 
 	power = 4000,
-	breaker = 2,
+	breaker = 1,
 
 	HandleMessage = function(id)
         Abils.Evolution(id,"Guardian")
@@ -141,7 +141,7 @@ Cards["Neve, the Leveler"] = {
 	blocker = 0,
 
 	power = 4000,
-	breaker = 2,
+	breaker = 1,
 
 	HandleMessage = function(id)
 	    local func = function(id)
@@ -260,7 +260,7 @@ Cards["Velyrika Dragon"] = {
             end
             local owner = getCardOwner(id)
             openDeck(owner)
-	        local ch = createChoice("Choose a creature in your deck",0,id,owner,func2)
+	        local ch = createChoice("Choose an Armored Dragon in your deck",0,id,owner,func2)
             closeDeck(owner)
 	        if(ch>=0) then
                 moveCard(ch,ZONE_HAND)

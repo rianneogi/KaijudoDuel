@@ -8,7 +8,7 @@ std::vector<Texture*> gCardTextures;
 
 bool loadTextures()
 {
-	if (!gTableTexture.loadFromFile("Resources/Textures/woodsample.jpg"))
+	if (!gTableTexture.loadFromFile("Resources/Textures/silver.jpg"))
 	{
 		printf("ERROR: Could not load table texture\n");
 		return false;
@@ -54,6 +54,22 @@ bool loadShaders()
 	gShaders[SHADER_BASIC].addUniform("M");
 	gShaders[SHADER_BASIC].addUniform("V");
 	gShaders[SHADER_BASIC].addUniform("P");
+
+	if (!gShaders[SHADER_PHONG].loadProgram("Resources/Shaders/phong"))
+	{
+		printf("ERROR: Could not load shader\n");
+		return false;
+	}
+	gShaders[SHADER_PHONG].setMaxUniforms(8);
+	gShaders[SHADER_PHONG].addUniform("gModelMat");
+	gShaders[SHADER_PHONG].addUniform("gViewMat");
+	gShaders[SHADER_PHONG].addUniform("gProjectionMat");
+	gShaders[SHADER_PHONG].addUniform("gEyePos");
+	//gShaders[SHADER_PHONG].addUniform("gLightCount");
+	gShaders[SHADER_PHONG].addUniform("LightPos");
+	gShaders[SHADER_PHONG].addUniform("LightColor");
+	gShaders[SHADER_PHONG].addUniform("LightIntensity");
+
 
 	/*if (!gShaders[SHADER_BASIC].loadProgram("Resources/Shaders/zone"))
 	{

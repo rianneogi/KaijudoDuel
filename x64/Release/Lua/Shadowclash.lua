@@ -622,7 +622,7 @@ Cards["Gulan Rias, Speed Guardian"] = {
 	    end
         if(getMessageType()=="get creaturecanattackcreature") then
 		    if(getMessageInt("defender")==id and getCardCiv(getMessageInt("attacker"))==CIV_DARKNESS) then
-			    setMessageInt("canblock",CANATTACK_NO)
+			    setMessageInt("canattack",CANATTACK_NO)
 		    end
 	    end
 	end

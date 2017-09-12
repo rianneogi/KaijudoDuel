@@ -144,6 +144,7 @@
     <ClCompile Include="Choice.cpp" />
     <ClCompile Include="CRandom.cpp" />
     <ClCompile Include="Deck.cpp" />
+    <ClCompile Include="DeckBuilderUI.cpp" />
     <ClCompile Include="DeckRenderer.cpp" />
     <ClCompile Include="Duel.cpp" />
     <ClCompile Include="DuelInterface.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="Choice.h" />
     <ClInclude Include="CRandom.h" />
     <ClInclude Include="Deck.h" />
+    <ClInclude Include="DeckBuilderUI.h" />
     <ClInclude Include="DeckRenderer.h" />
     <ClInclude Include="Duel.h" />
     <ClInclude Include="DuelInterface.h" />
@@ -225,8 +227,12 @@
     <None Include="..\x64\Release\Lua\Survivors.lua" />
     <None Include="Resources\Shaders\mvp.glfs" />
     <None Include="Resources\Shaders\mvp.glvs" />
+    <None Include="Resources\Shaders\phong.glfs" />
+    <None Include="Resources\Shaders\phong.glvs" />
     <None Include="Resources\Shaders\text.glfs" />
     <None Include="Resources\Shaders\text.glvs" />
+    <None Include="Resources\Shaders\text_mvp.glfs" />
+    <None Include="Resources\Shaders\text_mvp.glvs" />
     <None Include="Resources\Shaders\zone.glfs" />
     <None Include="Resources\Shaders\zone.glvs" />
   </ItemGroup>

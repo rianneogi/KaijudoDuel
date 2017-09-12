@@ -2,6 +2,7 @@
 
 FT_Library gFontLibrary;
 ShaderProgram gTextShader;
+ShaderProgram gTextMVPShader;
 
 TextRenderer::TextRenderer()
 {
@@ -253,6 +254,55 @@ void TextRenderer::renderText(std::string text, float x, float y, float sx, floa
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void TextRenderer::renderTextMVP(std::string text, float x, float y, float sx, float sy, const glm::mat4& M, const glm::mat4& V, const glm::mat4& P)
+{
+	// Activate corresponding render state	
+	gTextMVPShader.bind();
+	//glUniform3f(glGetUniformLocation(s.Program, "textColor"), color.x, color.y, color.z);
+	gTextMVPShader.setUniformVec4f(3, mColor);
+	gTextMVPShader.setUniformMat4f(0, M);
+	gTextMVPShader.setUniformMat4f(1, V);
+	gTextMVPShader.setUniformMat4f(2, P);
+	glActiveTexture(GL_TEXTURE0);
+	glBindVertexArray(mVAO);
+
+	// Iterate through all characters
+	std::string::const_iterator c;
+	for (c = text.begin(); c != text.end(); c++)
+	{
+		Character ch = mCharacters[*c];
+
+		GLfloat xpos = x + ch.Bearing.x * sx;
+		GLfloat ypos = y - (ch.Size.y - ch.Bearing.y) * sy;
+
+		GLfloat w = ch.Size.x * sx;
+		GLfloat h = ch.Size.y * sy;
+
+		// Update VBO for each character
+		GLfloat vertices[6][4] = {
+			{ xpos,     ypos + h,   0.0, 0.0 },
+			{ xpos,     ypos,       0.0, 1.0 },
+			{ xpos + w, ypos,       1.0, 1.0 },
+
+			{ xpos,     ypos + h,   0.0, 0.0 },
+			{ xpos + w, ypos,       1.0, 1.0 },
+			{ xpos + w, ypos + h,   1.0, 0.0 }
+		};
+		// Render glyph texture over quad
+		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+		// Update content of VBO memory
+		glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		// Render quad
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		// Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+		x += (ch.Advance >> 6) * sx; // Bitshift by 6 to get value in pixels (2^6 = 64)
+	}
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 bool initTextRender()
 {
 	if (FT_Init_FreeType(&gFontLibrary)) 
@@ -268,6 +318,18 @@ bool initTextRender()
 	}
 	gTextShader.setMaxUniforms(1);
 	gTextShader.addUniform("text_color");
+	//gTextShader.addUniform("texture");
+
+	if (!gTextMVPShader.loadProgram("Resources/Shaders/text_mvp"))
+	{
+		printf("ERROR: Could not load text shader\n");
+		return false;
+	}
+	gTextMVPShader.setMaxUniforms(4);
+	gTextMVPShader.addUniform("M");
+	gTextMVPShader.addUniform("V");
+	gTextMVPShader.addUniform("P");
+	gTextMVPShader.addUniform("text_color");
 	//gTextShader.addUniform("texture");
 	
 	return true;

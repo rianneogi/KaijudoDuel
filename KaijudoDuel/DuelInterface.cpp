@@ -117,11 +117,16 @@ void DuelInterface::render()
 	//Vector2i mousePos;
 	//SDL_GetMouseState(&mousePos.x, &mousePos.y);
 
-	gActiveShader = SHADER_BASIC;
+	gActiveShader = SHADER_PHONG;
 	gShaders[gActiveShader].bind();
 	gShaders[gActiveShader].setUniformMat4f(0, mTableModel.mModelMatrix);
 	gShaders[gActiveShader].setUniformMat4f(1, view);
 	gShaders[gActiveShader].setUniformMat4f(2, projection);
+	gShaders[gActiveShader].setUniformVec3f(3, mCamera.mPosition);
+	//gShaders[gActiveShader].setUniformInt(4, 1);
+	gShaders[gActiveShader].setUniformVec4f(4, glm::vec4(mCamera.mPosition, 1.0));
+	gShaders[gActiveShader].setUniformVec3f(5, glm::vec3(1,1,1));
+	gShaders[gActiveShader].setUniformInt(6, 75);
 	mTableModel.render();
 	gShaders[gActiveShader].setUniformMat4f(0, mEndTurnModel.mModelMatrix);
 	mEndTurnModel.render();
@@ -133,6 +138,8 @@ void DuelInterface::render()
 	{
 		mCardModels[i]->render(true);
 	}
+
+	mTextRenderer.renderTextMVP("End Turn", 0.0, 0.0, 20.0 / SCREEN_WIDTH, 20.0 / SCREEN_HEIGHT, mEndTurnModel.mModelMatrix, view, projection);
 
 	if (mDuel->mChoice != NULL)
 	{
@@ -154,8 +161,6 @@ void DuelInterface::render()
 	{
 		mTextRenderer.renderText("Tap "+std::to_string(mDuel->mCastingCost)+" mana...", 0.5, 0.5, 2.0 / SCREEN_WIDTH, 2.0 / SCREEN_HEIGHT);
 	}
-
-	mTextRenderer.renderText("End Turn", 0.45, 0.0, 2.0 / SCREEN_WIDTH, 2.0 / SCREEN_HEIGHT);
 }
 
 int DuelInterface::handleEvent(const SDL_Event& event, int callback)
