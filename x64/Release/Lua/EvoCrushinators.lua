@@ -1147,7 +1147,8 @@ Cards["Recon Operation"] = { --check if works
             local ch = createChoice("Choose an opponent's shield",1,id,owner,Checks.InOppShields)
             if(ch>=0) then
                 cardsflipped[i] = ch
-                unflipCard(ch,owner)
+                unflipCard(ch)
+				setCardVisibility(ch, owner, 1)
                 count = count+1
             end
             if(ch==RETURN_BUTTON1 or ch==RETURN_NOVALID) then
@@ -1157,7 +1158,8 @@ Cards["Recon Operation"] = { --check if works
         if(count>0) then
             local ch = createChoiceNoCheck("Look at cards",1,id,owner,Checks.False)
             for k,v in pairs(cardsflipped) do 
-                flipCard(v,owner) 
+                flipCard(v) 
+				setCardVisibility(ch, owner, 0)
             end
         end
 	end

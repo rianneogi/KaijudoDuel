@@ -31,6 +31,8 @@ void BattleZone::addCard(Card* c)
 	c->unflip();
 	c->untap();
 	c->mSummoningSickness = 1;
+	c->mIsVisible[0] = true;
+	c->mIsVisible[1] = true;
 	mCards.push_back(c);
 }
 
@@ -65,6 +67,8 @@ void BattleZone::evolveCard(Card* c, int evobait)
 	//c->move(r.left + r.width/2, r.top + r.height/2);
 	c->unflip();
 	c->untap();
+	c->mIsVisible[0] = true;
+	c->mIsVisible[1] = true;
 	c->mSummoningSickness = 0;
 	eb->mZone = ZONE_EVOLVED;
 	c->mEvoStack.push_back(eb);

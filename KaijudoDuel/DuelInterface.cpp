@@ -141,9 +141,10 @@ void DuelInterface::render()
 
 	mTextRenderer.renderTextMVP("End Turn", 0.0, 0.0, 20.0 / SCREEN_WIDTH, 20.0 / SCREEN_HEIGHT, mEndTurnModel.mModelMatrix, view, projection);
 
-	if (mDuel->mChoice != NULL)
+	if (mDuel->mIsChoiceActive)
 	{
-		mTextRenderer.renderText(mDuel->mChoice->mInfotext, 0.5, 0.5, 2.0 / SCREEN_WIDTH, 2.0 / SCREEN_HEIGHT);
+		assert(mDuel->mChoice != NULL);
+		mTextRenderer.renderText(mDuel->mCardList[mDuel->mChoiceCard]->mName + ": " + mDuel->mChoice->mInfotext, 0.5, 0.5, 2.0 / SCREEN_WIDTH, 2.0 / SCREEN_HEIGHT);
 	}
 	else if (mDuel->mAttackphase == PHASE_BLOCK)
 	{

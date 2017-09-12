@@ -59,6 +59,7 @@ public:
 	void unflip();
 	void tap();
 	void untap();
+	void setVisibility(int player, int visibility);
 
 	//void flipForPlayer(int p);
 	//void unflipForPlayer(int p);

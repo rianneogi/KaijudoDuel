@@ -194,6 +194,11 @@ void Card::untap()
 	//sprite.setRotation(0);
 }
 
+void Card::setVisibility(int player, int visibility)
+{
+	mIsVisible[player] = visibility;
+}
+
 //sf::FloatRect Card::getBounds()
 //{
 //	return sprite.getGlobalBounds();

@@ -44,6 +44,8 @@ void ShieldZone::addCard(Card* c)
 	//c->setPosition(glm::vec3(mPos.x + CONST_CARDSEPERATION*cards.size() + CONST_CARDSEPERATION/2, mPos.y, mPos.z + (mPos.z + mHeight) / 2));
 	c->flip();
 	c->untap();
+	c->mIsVisible[0] = false;
+	c->mIsVisible[1] = false;
 	mCards.push_back(c);
 	mSlotsUsed |= i;
 }

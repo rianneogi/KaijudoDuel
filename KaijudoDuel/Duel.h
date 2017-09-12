@@ -110,8 +110,9 @@ public:
 	void battle(int att, int def);
 	Card* getCard(int player, int zone, int id);
 
-	void flipCardForPlayer(int cid, int p);
-	void unflipCardForPlayer(int cid, int p);
+	void flipCard(int cid);
+	void unflipCard(int cid);
+	void setCardVisibility(int cid, int player, int visibility);
 
 	void drawCards(int player, int count);
 

@@ -30,6 +30,8 @@ void ManaZone::addCard(Card* c)
 	//c->setPosition(glm::vec3(mPos.x + CONST_CARDSEPERATION*cards.size(), mPos.y, mPos.z + (mPos.z + mHeight) / 2));
 	c->unflip();
 	c->untap();
+	c->mIsVisible[0] = true;
+	c->mIsVisible[1] = true;
 	mCards.push_back(c);
 }
 

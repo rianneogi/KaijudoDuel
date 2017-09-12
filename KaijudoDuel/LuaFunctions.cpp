@@ -273,15 +273,21 @@ static int closeDeck(lua_State* L)
 	return 0;
 }
 
-static int flipCard (lua_State* L)
+static int flipCard(lua_State* L)
 {
-	ActiveDuel->flipCardForPlayer(lua_tointeger(L, 1), lua_tointeger(L, 2));
+	ActiveDuel->flipCard(lua_tointeger(L, 1));
 	return 0;
 }
 
 static int unflipCard(lua_State* L)
 {
-	ActiveDuel->unflipCardForPlayer(lua_tointeger(L, 1), lua_tointeger(L, 2));
+	ActiveDuel->unflipCard(lua_tointeger(L, 1));
+	return 0;
+}
+
+static int setCardVisibility(lua_State* L)
+{
+	ActiveDuel->setCardVisibility(lua_tointeger(L, 1), lua_tointeger(L, 2), lua_tointeger(L, 3));
 	return 0;
 }
 
@@ -473,6 +479,7 @@ void registerLua(lua_State* L)
 	lua_register(L, "closeDeck", closeDeck);
 	lua_register(L, "flipCard", flipCard);
 	lua_register(L, "unflipCard", unflipCard);
+	lua_register(L, "setCardVisibility", setCardVisibility);
 	lua_register(L, "seperateEvolution", seperateEvolution);
 	lua_register(L, "creatureBreakShield", creatureBreakShield);
 

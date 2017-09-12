@@ -31,5 +31,7 @@ void Graveyard::addCard(Card* c)
 	//c->setPosition(glm::vec3(mPos.x + (mPos.x + mWidth) / 2, mPos.y + CONST_CARDTHICKNESS*cards.size(), mPos.z + (mPos.z + mHeight) / 2));
 	c->unflip();
 	c->untap();
+	c->mIsVisible[0] = true;
+	c->mIsVisible[1] = true;
 	mCards.push_back(c);
 }

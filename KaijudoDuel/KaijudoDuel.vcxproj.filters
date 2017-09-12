@@ -337,5 +337,8 @@
     <None Include="Resources\Shaders\phong.glfs">
       <Filter>Source Files\GUI\Shaders</Filter>
     </None>
+    <None Include="Lua\Cards.lua">
+      <Filter>Source Files\Lua</Filter>
+    </None>
   </ItemGroup>
 </Project>

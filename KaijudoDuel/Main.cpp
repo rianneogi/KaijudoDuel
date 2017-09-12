@@ -160,7 +160,7 @@ bool initGame()
 	ActiveDuel = new Duel();
 	
 	//ActiveDuel = &(gDuelInterface->mDuel);
-	ActiveDuel->setDecks("Decks\\My Decks\\3 - WN 1st place GenCon 2004.txt", "Decks\\My Decks\\3 - WN 3rd place GenCon 2004.txt");
+	ActiveDuel->setDecks("Decks\\My Decks\\5 - LWD Survivors Release.txt", "Decks\\My Decks\\5 - LWD Survivors Release.txt");
 	ActiveDuel->startDuel();
 	ActiveDuel->dispatchAllMessages();
 	gDuelInterface = new DuelInterface(ActiveDuel);

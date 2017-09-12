@@ -723,7 +723,7 @@ Cards["King Tsunami"] = {
 	end
 }
 
-Cards["Kip Chippotto"] = {
+Cards["Kip Chippotto"] = { --test
 	name = "Kip Chippotto",
 	set = "Survivors of the Megapocalypse",
 	type = TYPE_CREATURE,
@@ -738,7 +738,15 @@ Cards["Kip Chippotto"] = {
 	breaker = 1,
 
 	HandleMessage = function(id)
-        --todo
+        if(getMessageType()=="pre creaturedestroy") then
+			if(IsCreatureOfRace(getMessageInt("creature"), "Armored Dragon")==1) then
+				local ch = createChoiceNoCheck("Destroy this creature instead?", 2, id, getCardOwner(id), Checks.False)
+				if(ch==RETURN_BUTTON1) then
+					setMessageInt("msgContinue", 0)
+					destroyCreature(id)
+				end
+			end
+		end
 	end
 }
 
@@ -863,7 +871,7 @@ Cards["Lurking Eel"] = {
 	end
 }
 
-Cards["Miracle Quest"] = {
+Cards["Miracle Quest"] = { --test
 	name = "Miracle Quest",
 	set = "Survivors of the Megapocalypse",
 	type = TYPE_SPELL,
@@ -873,7 +881,21 @@ Cards["Miracle Quest"] = {
 	shieldtrigger = 0,
 
 	OnCast = function(id)
-        --todo
+		local mod = function(cid,mid)
+			if(getMessageType()=="post creaturebreakshield") then
+				if(getMessageInt("creature")==cid) then
+					drawCards(2, getCardOwner(cid))
+				end
+			end
+			Abils.destroyModAtEOT(cid,mid)
+		end
+
+		local func = function(cid, sid)
+			createModifier(sid, mod)
+		end
+
+		Functions.executeForCreaturesInBattle(id, getCardOwner(id), func)
+		Functions.EndSpell(id)
 	end
 }
 
@@ -1150,7 +1172,7 @@ Cards["Skullsweeper Q"] = {
 	end
 }
 
-Cards["Slime Veil"] = {
+Cards["Slime Veil"] = { --test
 	name = "Slime Veil",
 	set = "Survivors of the Megapocalypse",
 	type = TYPE_SPELL,
@@ -1160,7 +1182,17 @@ Cards["Slime Veil"] = {
 	shieldtrigger = 0,
 
 	OnCast = function(id)
-        --todo
+        local mod = function(cid,mid)
+			Abils.attacksEachTurn(cid)
+			Abils.destroyModAtPlayerEOT(cid, mid, getOpponent(getCardOwner(id)))
+		end
+
+		local func = function(cid, sid)
+			createModifier(sid, mod)
+		end
+
+		Functions.executeForCreaturesInBattle(id, getOpponent(getCardOwner(id)), func)
+		Functions.EndSpell(id)
 	end
 }
 

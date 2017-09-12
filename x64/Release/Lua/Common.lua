@@ -348,6 +348,14 @@ Abils.destroyModAtEOT = function(cid,mid)
 	end
 end
 
+Abils.destroyModAtPlayerEOT = function(cid,mid,player)
+    if(getMessageType()=="pre endturn") then
+		if(getMessageInt("player")==player) then
+			destroyModifier(cid,mid)
+		end
+	end
+end
+
 Abils.destroyModAtSOT = function(cid,mid)
     if(getMessageType()=="pre startturn") then
 		destroyModifier(cid,mid)

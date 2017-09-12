@@ -1538,7 +1538,7 @@ int Duel::getCardCivilization(int uid)
 int Duel::isCreatureOfRace(int uid, std::string race)
 {
 	std::string r = getCreatureRace(uid);
-	printf("race %s %s\n", r.c_str(), race.c_str());
+	//printf("race %s %s\n", r.c_str(), race.c_str());
 	int f = r.find(race);
 	if (f != std::string::npos)
 	{
@@ -1640,7 +1640,7 @@ void Duel::loadDeck(std::string s, int p)
 				std::string name = str.substr(i + 1);
 				for (int j = 0; j < count; j++)
 				{
-					//printf("added %s\n", name.c_str());
+					printf("added %s\n", name.c_str());
 					Card* c = new Card(mNextUniqueId, getCardIdFromName(name), p);
 					mCardList.push_back(c);
 					mDecks[p].addCard(c);
@@ -1798,14 +1798,19 @@ Zone* Duel::getZone(int player, int zone)
 	return NULL;
 }
 
-void Duel::flipCardForPlayer(int cid, int p)
+void Duel::flipCard(int cid)
 {
-	//CardList.at(cid)->flipForPlayer(p);
+	mCardList.at(cid)->flip();
 }
 
-void Duel::unflipCardForPlayer(int cid, int p)
+void Duel::unflipCard(int cid)
 {
-	//CardList.at(cid)->unflipForPlayer(p);
+	mCardList.at(cid)->unflip();
+}
+
+void Duel::setCardVisibility(int cid, int player, int visibility)
+{
+	mCardList[cid]->setVisibility(player, visibility);
 }
 
 void Duel::destroyCard(Card* c)
