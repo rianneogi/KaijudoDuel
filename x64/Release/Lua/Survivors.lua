@@ -1258,6 +1258,7 @@ Cards["Solidskin Fish"] = {
                 moveCard(ZONE_HAND)
             end
         end
+		Abils.onSummon(id,func)
 	end
 }
 
