@@ -606,8 +606,8 @@ Cards["Glory Snow"] = {
 
 	OnCast = function(id)
         local owner = getCardOwner(id)
-        local c1 = getZoneSize(owner)
-        local c2 = getZoneSize(getOpponent(owner))
+        local c1 = getZoneSize(owner, ZONE_MANA)
+        local c2 = getZoneSize(getOpponent(owner), ZONE_MANA)
         if(c2>c1) then
             Functions.moveTopCardsFromDeck(owner,ZONE_MANA,2)
         end

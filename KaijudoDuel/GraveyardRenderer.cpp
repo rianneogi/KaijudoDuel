@@ -19,7 +19,7 @@ void GraveyardRenderer::updateCard(CardModel* model, Card* card, int pos, int si
 	if (mIsOpen)
 	{
 		Orientation o;
-		o.pos = glm::vec3(-2, 20 + CONST_CARDTHICKNESS*(size - pos - 1), -3 + mScrollPos + pos*0.4);
+		o.pos = glm::vec3(-2, 20 + CONST_CARDTHICKNESS*pos, -3 + mScrollPos + (size-pos-1)*0.4);
 		if (card->mUniqueId == hovercard)
 		{
 			o.pos.y += 1;

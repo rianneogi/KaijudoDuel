@@ -560,7 +560,7 @@ void DuelInterface::update(int deltaTime)
 		{
 			if (flag == 0 && mGraveyardRenderers[i]->mIsOpen)
 			{
-				for (int j = 0; j < mDuel->mGraveyards[i].mCards.size(); j++)
+				for (int j = mDuel->mGraveyards[i].mCards.size()-1; j >= 0; j--)
 				{
 					if (mCardModels[mDuel->mGraveyards[i].mCards[j]->mUniqueId]->rayTrace(mousePos, projview, screendim))
 					{

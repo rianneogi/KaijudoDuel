@@ -39,7 +39,7 @@ void DeckRenderer::updateCard(CardModel* model, Card* card, int pos, int size, i
 	else
 	{
 		Orientation o;
-		o.pos = glm::vec3(mPos.x + mWidth / 2, mPos.y + CONST_CARDTHICKNESS*pos, mPos.z + mHeight / 2);
+		o.pos = glm::vec3(mPos.x + mWidth / 2, mPos.y + CONST_CARDTHICKNESS*1.5*pos, mPos.z + mHeight / 2);
 		o.dir = glm::vec3(0, 0, 1);
 		o.up = glm::vec3(0, -1, 0);
 		o.calculateQuat();
