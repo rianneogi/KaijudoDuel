@@ -29,7 +29,7 @@ Message MessageManager::dispatch()
 
 bool MessageManager::hasMoreMessages()
 {
-	if(messages.size()>0)
-		return true;
-	return false;
+	if (messages.empty())
+		return false;
+	return true;
 }

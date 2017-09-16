@@ -96,12 +96,13 @@ bool initGL()
 		_getch();
 		return false;
 	}*/
+
 	//Make sure OpenGL 3.1 is supported
-	if (!GLEW_VERSION_3_1)
-	{
-		printf("OpenGL 3.1 not supported!\n");
-		//return false;
-	}
+	//if (!GLEW_VERSION_3_1)
+	//{
+		//printf("OpenGL 3.1 not supported!\n");
+		////return false;
+	//}
 
 	/*if (!GLEW_ARB_vertex_program)
 	{
@@ -160,7 +161,7 @@ bool initGame()
 	ActiveDuel = new Duel();
 	
 	//ActiveDuel = &(gDuelInterface->mDuel);
-	ActiveDuel->setDecks("Decks\\My Decks\\5 - LWD Survivors Release.txt", "Decks\\My Decks\\5 - LWD Survivors Release.txt");
+	ActiveDuel->setDecks("Decks\\My Decks\\4 - FD A bomb rush.txt", "Decks\\My Decks\\3 - D Jack Viper Recycling Plant 2.txt");
 	ActiveDuel->startDuel();
 	ActiveDuel->dispatchAllMessages();
 	gDuelInterface = new DuelInterface(ActiveDuel);

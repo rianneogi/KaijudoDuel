@@ -21,5 +21,5 @@ public:
 	~CardData();
 };
 
-extern std::vector<CardData> CardDatabase;
+extern std::vector<CardData> gCardDatabase;
 

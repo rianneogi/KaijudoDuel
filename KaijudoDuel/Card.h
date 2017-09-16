@@ -2,13 +2,15 @@
 
 #include "CardData.h"
 #include "SoundManager.h"
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
 
 enum ZoneType { ZONE_HAND, ZONE_DECK, ZONE_BATTLE, ZONE_MANA, ZONE_SHIELD, ZONE_GRAVEYARD, ZONE_EVOLVED };
 enum Civilization { CIV_LIGHT, CIV_NATURE, CIV_WATER, CIV_FIRE, CIV_DARKNESS };
 enum CardType { TYPE_CREATURE, TYPE_SPELL };
 enum DefenderType { DEFENDER_CREATURE, DEFENDER_PLAYER };
 
-extern std::vector<std::string> gCardNames;
+//extern std::vector<std::string> gCardNames;
 
 class Card
 {

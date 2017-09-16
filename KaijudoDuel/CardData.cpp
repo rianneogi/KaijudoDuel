@@ -1,6 +1,6 @@
 #include "CardData.h"
 
-std::vector<CardData> CardDatabase;
+std::vector<CardData> gCardDatabase;
 
 CardData::CardData()
 {

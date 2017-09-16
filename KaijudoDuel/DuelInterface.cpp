@@ -13,6 +13,9 @@ DuelInterface::DuelInterface(Duel* duel)
 {
 	mDuel = duel;
 
+	mBot = new Bot();
+	mBot->mDuel = duel;
+
 	for (size_t i = 0; i < mDuel->mCardList.size(); i++)
 	{
 		assert(i == mDuel->mCardList[i]->mUniqueId);
@@ -54,7 +57,7 @@ DuelInterface::DuelInterface(Duel* duel)
 	}
 
 	duelstate = DUELSTATE_MENU;
-	dueltype = DUELTYPE_SINGLE;
+	mDuelType = DUELTYPE_SINGLE;
 
 	mHoverCardId = -1;
 	mSelectedCardId = -1;
@@ -521,6 +524,14 @@ void DuelInterface::button2()
 void DuelInterface::update(int deltaTime)
 {
 	//mDuel->dispatchAllMessages();
+
+	if (mDuel->getPlayerToMove() == 1 && mDuelType == DUELTYPE_AI)
+	{
+		if (mDuel->mMsgMngr.hasMoreMessages() == false)
+		{
+			mDuel->handleInterfaceInput(mBot->getBestMove());
+		}
+	}
 
 	Vector2i mousePos;
 	SDL_GetMouseState(&mousePos.x, &mousePos.y);

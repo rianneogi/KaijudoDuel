@@ -1,7 +1,7 @@
 #pragma once
 
 #include "LoadResources.h"
-#include "Duel.h"
+#include "Bot.h"
 
 class CardModel
 {

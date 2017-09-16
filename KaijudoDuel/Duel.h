@@ -8,6 +8,7 @@
 enum AttackPhase { PHASE_NONE, PHASE_BLOCK, PHASE_TARGET, PHASE_TRIGGER };
 enum CanAttack { CANATTACK_TAPPED, CANATTACK_UNTAPPED, CANATTACK_NO, CANATTACK_ALWAYS };
 enum ReturnValue { RETURN_BUTTON1 = -1, RETURN_BUTTON2 = -2, RETURN_NOVALID = -3, RETURN_NOTHING = -4, RETURN_QUIT = -5 };
+enum PlayerType { PLAYER_HUMAN, PLAYER_AI };
 
 struct MsgHistoryItem
 {
@@ -64,6 +65,8 @@ public:
 	int mTurn;
 	int mManaUsed;
 
+	int mPlayerType[2];
+
 	Duel();
 	~Duel();
 
@@ -91,6 +94,7 @@ public:
 	void undoLastMove();
 	void undoMessage(Message& msg);
 
+	//Other
 	void addChoice(std::string info, int skip, int card, int player, int validref, int actionref);
 	void checkChoiceValid();
 	int choiceCanBeSelected(int sid);

@@ -256,9 +256,9 @@ int loadCardTexture(const std::string& name, const std::string& set)
 
 bool initCardModels()
 {
-	for (size_t i = 0; i < CardDatabase.size(); i++)
+	for (size_t i = 0; i < gCardDatabase.size(); i++)
 	{
-		loadCardTexture(CardDatabase[i].Name, CardDatabase[i].Set);
+		loadCardTexture(gCardDatabase[i].Name, gCardDatabase[i].Set);
 	}
 	return true;
 }

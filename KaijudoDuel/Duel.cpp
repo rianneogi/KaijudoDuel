@@ -8,6 +8,9 @@ Duel::Duel()
 	mManaUsed = 0;
 	mNextUniqueId = 0;
 
+	mPlayerType[0] = PLAYER_HUMAN;
+	mPlayerType[1] = PLAYER_AI;
+
 	int Factor[2] = { -1, 1 };
 	int Factor2[2] = { 1,0 };
 	for (int i = 0; i < 2; i++)

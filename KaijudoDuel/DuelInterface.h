@@ -14,6 +14,7 @@ class DuelInterface //: public GameWindow
 {
 public:
 	Duel* mDuel;
+	Bot* mBot;
 
 	std::vector<CardModel*> mCardModels;
 	//ZoneRenderer* mZoneRenderers[2][6];
@@ -24,7 +25,7 @@ public:
 	DeckRenderer* mDeckRenderers[2];
 	HandRenderer* mHandRenderers[2];
 
-	int dueltype;
+	int mDuelType;
 	int duelstate;
 
 	int myPlayer;
