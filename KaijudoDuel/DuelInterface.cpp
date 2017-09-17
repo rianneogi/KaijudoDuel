@@ -146,15 +146,18 @@ void DuelInterface::render()
 	{
 		for (size_t j = 0; j < mDuel->mBattlezones[i].mCards.size(); j++)
 		{
-			int cid = mDuel->mBattlezones[i].mCards[j]->mUniqueId;
-			glm::vec4 color(1, 1, 1, 1);
-			int power = mDuel->getCreaturePower(cid);
-			//printf("power %s %d %d\n", power, gCardDatabase[cid].Power);
-			if (power > gCardDatabase[mDuel->mBattlezones[i].mCards[j]->mCardId].Power)
+			if (mDuel->mBattlezones[i].mCards[j]->mType == TYPE_CREATURE)
 			{
-				color = glm::vec4(0.2, 1, 0.2, 1);
+				int cid = mDuel->mBattlezones[i].mCards[j]->mUniqueId;
+				glm::vec4 color(1, 1, 1, 1);
+				int power = mDuel->getCreaturePower(cid);
+				//printf("power %s %d %d\n", power, gCardDatabase[cid].Power);
+				if (power > gCardDatabase[mDuel->mBattlezones[i].mCards[j]->mCardId].Power)
+				{
+					color = glm::vec4(0.2, 1, 0.2, 1);
+				}
+				mCardModels[cid]->renderAttachedText(std::to_string(power), color, mTextRenderer, view, projection);
 			}
-			mCardModels[cid]->renderAttachedText(std::to_string(power), color, mTextRenderer, view, projection);
 		}
 	}
 	

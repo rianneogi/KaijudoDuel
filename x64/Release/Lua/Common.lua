@@ -135,11 +135,33 @@ Abils.Survivor = function(id,func)
     end
 end
 
-Abils.Stealth = function(id,civ) --todo
+Abils.Stealth = function(id,civ) --test
 	if(getMessageType()=="get creaturecanblock") then
 		if(getMessageInt("attacker")==id) then
-			
-			setMessageInt("canblock",0)
+			local s = getZoneSize(getOpponent(getCardOwner(id)),ZONE_MANA)
+			local flag = 0
+			for i=0,(s-1) do
+				if(getCardCiv(getCardAt(player,zone,i))==civ) then
+					flag = 1
+					break
+				end
+			end
+			if(flag==1) then
+				setMessageInt("canblock",0)
+			end
+		end
+	end
+end
+
+Abils.TapAbility = function(id, func)
+	if(getMessageType()=="get creaturehastapability") then
+		if(getMessageInt("creature")==id) then
+			setMessageInt("hastapability",1)
+		end
+	end
+	if(getMessageType()=="post creatureusetapability") then
+		if(getMessageInt("creature")==id) then
+			func(id)
 		end
 	end
 end

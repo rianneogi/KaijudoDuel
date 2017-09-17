@@ -355,6 +355,16 @@ int Duel::handleMessage(Message& msg)
 	{
 		battle(msg.getInt("attacker"), msg.getInt("defender"));
 	}
+	else if (msg.getType() == "creatureusetapability")
+	{
+		int cid = msg.getInt("creature");
+
+		Message m("cardtap");
+		m.addValue("card", cid);
+		mMsgMngr.sendMessage(m);
+
+		mMsgMngr.sendMessage(msg);
+	}
 	//else if (msg.getType() == "creatureevolve")
 	//{
 	//	int eb = msg.getInt("evobait");
@@ -992,6 +1002,14 @@ int Duel::handleInterfaceInput(Message& msg)
 			}
 		}
 	}
+	else if (type == "creatureusetapability")
+	{
+		int cid = msg.getInt("creature");
+		if (getCreatureHasTapAbility(cid) == 1)
+		{
+			mMsgMngr.sendMessage(msg);
+		}
+	}
 	/*else if (type == "choicebutton1")
 	{
 		if (choice.buttoncount >= 1 && isChoiceActive)
@@ -1577,6 +1595,23 @@ int Duel::getCreatureCanEvolve(int evo, int bait)
 		(*i)->handleMessage(mCurrentMessage);
 	}
 	int c = mCurrentMessage.getInt("canevolve");
+	mCurrentMessage = oldmsg;
+	return c;
+}
+
+int Duel::getCreatureHasTapAbility(int uid)
+{
+	Message oldmsg = mCurrentMessage;
+	mCurrentMessage = Message("get creaturehastapability");
+	mCurrentMessage.addValue("hastapability", 1);
+	mCurrentMessage.addValue("creature", uid);
+
+	std::vector<Card*>::iterator i;
+	for (i = mCardList.begin(); i != mCardList.end(); i++)
+	{
+		(*i)->handleMessage(mCurrentMessage);
+	}
+	int c = mCurrentMessage.getInt("hastapability");
 	mCurrentMessage = oldmsg;
 	return c;
 }

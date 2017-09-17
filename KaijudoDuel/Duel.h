@@ -142,6 +142,7 @@ public:
 	int isCreatureOfRace(int uid, std::string race); //finds if the word race exists in the creature's race
 	std::string getCreatureRace(int uid); //returns the full race string of the creature
 	int getCreatureCanEvolve(int evo, int bait);
+	int getCreatureHasTapAbility(int uid);
 };
 
 extern Duel* ActiveDuel;

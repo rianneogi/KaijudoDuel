@@ -456,7 +456,7 @@ Cards["Energy Stream"] = {
 	shieldtrigger = 0,
 
 	OnCast = function(id)
-		drawCards(getCardOwner(id), 3)
+		drawCards(getCardOwner(id), 2)
 		Functions.EndSpell(id)
 	end
 }
@@ -561,7 +561,7 @@ Cards["Promephius Q"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
 	end
 }
 
@@ -570,7 +570,18 @@ Cards["Raptor Fish"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id) --test
+		local summon = function(id)
+			local func = function(cid,sid)
+				moveCard(sid,ZONE_DECK)
+			end
+			local owner = getCardOwner(id)
+			local c = getZoneSize(owner, ZONE_HAND)
+			Functions.executeForCardsInZone(owner,ZONE_HAND,func)
+			shuffleDeck(owner)
+			drawCards(owner, c)
+		end
+		Abils.onSummon(id,summon)
 	end
 }
 
@@ -596,7 +607,28 @@ Cards["Ripple Lotus Q"] = {
 Cards["Shock Hurricane"] = {
 	shieldtrigger = 0,
 
-	OnCast = function(id) --todo
+	OnCast = function(id) --test
+		local count = 0
+		while (true) do
+			local ch = createChoice("Choose a creature in your battlezone", 1, id, getCardOwner(id), Checks.InYourBattle)
+			if(ch>=0) then
+				moveCard(ch,ZONE_HAND)
+				count = count+1
+			end
+			if(ch<0) then
+				break
+			end
+		end
+
+		for i=1,count do
+			local ch = createChoice("Choose a creature in your opponent's battlezone", 1, id, getCardOwner(id), Checks.InOppBattle)
+			if(ch>=0) then
+				moveCard(ch,ZONE_HAND)
+			end
+			if(ch<0) then
+				break
+			end
+		end
 	end
 }
 
@@ -610,9 +642,14 @@ Cards["Sopian"] = {
 }
 
 Cards["Spiral Gate"] = {
-	shieldtrigger = 0,
+	shieldtrigger = 1,
 
-	OnCast = function(id) --todo
+	OnCast = function(id)
+        local ch = createChoice("Choose a creature",0,id,getCardOwner(id),Checks.InBattle)
+	    if(ch>=0) then
+            moveCard(ch,ZONE_HAND)
+        end
+        Functions.EndSpell(id)
 	end
 }
 
@@ -621,16 +658,25 @@ Cards["Steam Star"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
 	end
 }
 
 Cards["Thrash Crawler"] = {
 	shieldtrigger = 0,
-	blocker = 0,
+	blocker = 1,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		Abils.cantAttack(id)
+
+		local func = function(id)
+			local ch = createChoice("Choose a card in your mana zone", 0, id, getCardOwner(id), Checks.InYourMana)
+			if(ch>=0) then
+				moveCard(ch, ZONE_HAND)
+			end
+		end
+		Abils.onSummon(id,func)
 	end
 }
 
@@ -649,7 +695,13 @@ Cards["Bazooka Mutant"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id) --test
+		Abils.cantAttackPlayers(id)
+		if(getMessageType()=="get creaturecanattackcreature") then
+			if(getMessageInt("attacker")==id and getCreatureIsBlocker(getMessageInt("defender"))==0) then
+				setMessageInt("canattack",CANATTACK_NO)
+			end
+		end
 	end
 }
 
@@ -799,8 +851,16 @@ Cards["Schuka, Duke of Amnesia"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
-		
+	HandleMessage = function(id)
+		local summon = function(id)
+			local func = function(cid,sid)
+				moveCard(sid,ZONE_GRAVEYARD)
+			end
+			local owner = getCardOwner(id)
+			Functions.executeForCardsInZone(owner, ZONE_HAND, func)
+			Functions.executeForCardsInZone(getOpponent(owner), ZONE_HAND, func)
+		end
+		Abils.onDestroy(id,summon)
 	end
 }
 
