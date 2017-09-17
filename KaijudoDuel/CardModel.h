@@ -3,6 +3,9 @@
 #include "LoadResources.h"
 #include "Bot.h"
 
+extern int SCREEN_WIDTH;
+extern int SCREEN_HEIGHT;
+
 class CardModel
 {
 public:
@@ -38,6 +41,7 @@ public:
 	//void hover(Orientation target, int time);
 
 	void render(bool visible);
+	void renderAttachedText(const std::string& str, glm::vec4 color, TextRenderer& renderer, const glm::mat4& V, const glm::mat4& P);
 	void setPosition(const glm::vec3& pos);
 	void setDirection(const glm::vec3& dir);
 	void setUp(const glm::vec3& up);

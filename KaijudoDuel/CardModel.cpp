@@ -114,6 +114,15 @@ void CardModel::render(bool visible)
 	mBackModel.render();
 }
 
+void CardModel::renderAttachedText(const std::string& str, glm::vec4 color, TextRenderer& renderer, const glm::mat4& V, const glm::mat4& P)
+{
+	glm::mat4 pos = glm::translate(glm::mat4(1.0f), mRender.pos);
+	glm::mat4 frontrot = glm::toMat4(glm::rotate(mRender.quat, float(M_PI), glm::vec3(0, 1, 0)));
+
+	renderer.setColor(color);
+	renderer.renderTextMVP(str, -0.5, -1.5, 30.0 / SCREEN_WIDTH, 30.0 / SCREEN_HEIGHT, pos*frontrot, V, P);
+}
+
 void CardModel::update(int deltaTime)
 {
 	/*if (!mMovement.isFinished())

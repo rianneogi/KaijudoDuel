@@ -120,16 +120,16 @@ void DuelInterface::render()
 	//Vector2i mousePos;
 	//SDL_GetMouseState(&mousePos.x, &mousePos.y);
 
-	gActiveShader = SHADER_PHONG;
+	gActiveShader = SHADER_BASIC;
 	gShaders[gActiveShader].bind();
 	gShaders[gActiveShader].setUniformMat4f(0, mTableModel.mModelMatrix);
 	gShaders[gActiveShader].setUniformMat4f(1, view);
 	gShaders[gActiveShader].setUniformMat4f(2, projection);
-	gShaders[gActiveShader].setUniformVec3f(3, mCamera.mPosition);
+	//gShaders[gActiveShader].setUniformVec3f(3, mCamera.mPosition);
 	//gShaders[gActiveShader].setUniformInt(4, 1);
-	gShaders[gActiveShader].setUniformVec4f(4, glm::vec4(mCamera.mPosition, 1.0));
-	gShaders[gActiveShader].setUniformVec3f(5, glm::vec3(1,1,1));
-	gShaders[gActiveShader].setUniformInt(6, 75);
+	//gShaders[gActiveShader].setUniformVec4f(4, glm::vec4(mCamera.mPosition, 1.0));
+	//gShaders[gActiveShader].setUniformVec3f(5, glm::vec3(1,1,1));
+	//gShaders[gActiveShader].setUniformInt(6, 75);
 	mTableModel.render();
 	gShaders[gActiveShader].setUniformMat4f(0, mEndTurnModel.mModelMatrix);
 	mEndTurnModel.render();
@@ -142,6 +142,23 @@ void DuelInterface::render()
 		mCardModels[i]->render(true);
 	}
 
+	for (int i = 0; i < 2; i++)
+	{
+		for (size_t j = 0; j < mDuel->mBattlezones[i].mCards.size(); j++)
+		{
+			int cid = mDuel->mBattlezones[i].mCards[j]->mUniqueId;
+			glm::vec4 color(1, 1, 1, 1);
+			int power = mDuel->getCreaturePower(cid);
+			//printf("power %s %d %d\n", power, gCardDatabase[cid].Power);
+			if (power > gCardDatabase[mDuel->mBattlezones[i].mCards[j]->mCardId].Power)
+			{
+				color = glm::vec4(0.2, 1, 0.2, 1);
+			}
+			mCardModels[cid]->renderAttachedText(std::to_string(power), color, mTextRenderer, view, projection);
+		}
+	}
+	
+	mTextRenderer.setColor(glm::vec4(1, 1, 1, 1));
 	mTextRenderer.renderTextMVP("End Turn", 0.0, 0.0, 20.0 / SCREEN_WIDTH, 20.0 / SCREEN_HEIGHT, mEndTurnModel.mModelMatrix, view, projection);
 
 	if (mDuel->mIsChoiceActive)

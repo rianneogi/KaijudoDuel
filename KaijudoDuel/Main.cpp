@@ -161,7 +161,7 @@ bool initGame()
 	ActiveDuel = new Duel();
 	
 	//ActiveDuel = &(gDuelInterface->mDuel);
-	ActiveDuel->setDecks("Decks\\My Decks\\4 - FD A bomb rush.txt", "Decks\\My Decks\\3 - D Jack Viper Recycling Plant 2.txt");
+	ActiveDuel->setDecks("Decks\\My Decks\\3 - F Valdios Army.txt", "Decks\\My Decks\\2 - FD Hellfire Evo.txt");
 	ActiveDuel->startDuel();
 	ActiveDuel->dispatchAllMessages();
 	gDuelInterface = new DuelInterface(ActiveDuel);

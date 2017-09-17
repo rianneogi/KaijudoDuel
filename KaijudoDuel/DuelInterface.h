@@ -5,9 +5,6 @@
 enum DuelState { DUELSTATE_DUEL, DUELSTATE_MENU, DUELSTATE_SINGLE, DUELSTATE_MULTI };
 enum DuelType { DUELTYPE_SINGLE, DUELTYPE_MULTI, DUELTYPE_AI };
 
-extern int SCREEN_WIDTH;
-extern int SCREEN_HEIGHT;
-
 //extern sf::TcpSocket Socket;
 
 class DuelInterface //: public GameWindow

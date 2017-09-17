@@ -16,6 +16,12 @@ TextRenderer::TextRenderer(std::string path, glm::vec4 color, int size)
 TextRenderer::~TextRenderer()
 {
 	FT_Done_Face(mFace);
+	for (auto i = mCharacters.begin(); i != mCharacters.end(); i++)
+	{
+		glDeleteTextures(1, &(i->second.TextureID));
+	}
+	glDeleteVertexArrays(1, &mVAO);
+	glDeleteBuffers(1, &mVBO);
 }
 
 void TextRenderer::setSize(int size)
@@ -27,12 +33,6 @@ void TextRenderer::setSize(int size)
 void TextRenderer::setColor(glm::vec4 color)
 {
 	mColor = color;
-	for (auto i = mCharacters.begin(); i != mCharacters.end(); i++)
-	{
-		glDeleteTextures(1, &(i->second.TextureID));
-	}
-	glDeleteVertexArrays(1, &mVAO);
-	glDeleteBuffers(1, &mVBO);
 }
 
 bool TextRenderer::load(std::string path, glm::vec4 color, int size)
@@ -254,7 +254,7 @@ void TextRenderer::renderText(std::string text, float x, float y, float sx, floa
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void TextRenderer::renderTextMVP(std::string text, float x, float y, float sx, float sy, const glm::mat4& M, const glm::mat4& V, const glm::mat4& P)
+void TextRenderer::renderTextMVP(std::string text, float x, float y, float sx, float sy, const glm::mat4& M, const glm::mat4& V, const glm::mat4& P) 
 {
 	// Activate corresponding render state	
 	gTextMVPShader.bind();

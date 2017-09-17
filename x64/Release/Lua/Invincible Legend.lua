@@ -39,7 +39,7 @@ Cards["Uberdragon Bajula"] = {
 	breaker = 3,
 
 	HandleMessage = function(id)
-		Abils.Evolution(id,"Armoured Dragon")
+		Abils.Evolution(id,"Dragon")
 		Abils.destroyOppManaOnAttack(id,2)
 	end
 }

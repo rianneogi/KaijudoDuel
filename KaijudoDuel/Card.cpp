@@ -317,8 +317,16 @@ void loadSet(std::string path, std::string set_name)
 				{
 					//printf("power %s\n", it2.second.get<std::string>(boost::property_tree::ptree::path_type("<xmlattr>.value")).c_str());
 					tmp = it2.second.get<std::string>(boost::property_tree::ptree::path_type("<xmlattr>.value"));
-					if(tmp!="")
+					if (tmp != "")
+					{
+						if (tmp[tmp.size() - 1] == '+' || tmp[tmp.size() - 1] == '-')
+						{
+							//printf("old %s\n", tmp.c_str());
+							tmp = tmp.substr(0, tmp.size() - 1);
+							//printf("new %s\n", tmp.c_str());
+						}
 						power = atoi(tmp.c_str());
+					}
 				}
 				if (it2.second.get<std::string>(boost::property_tree::ptree::path_type("<xmlattr>.name")) == "Race")
 				{
@@ -377,6 +385,7 @@ bool initCards()
 	loadSet("Resources/Sets XML/DM-07 Invincible Charge/set.xml", "DM-07 Invincible Charge");
 	loadSet("Resources/Sets XML/DM-08 Invincible Legend/set.xml", "DM-08 Invincible Legend");
 	loadSet("Resources/Sets XML/DM-09 Invincible Blood/set.xml", "DM-09 Invincible Blood");
+	loadSet("Resources/Sets XML/Promo and DMC Packs/set.xml", "Promo and DMC Packs");
 
 	return true;
 }
