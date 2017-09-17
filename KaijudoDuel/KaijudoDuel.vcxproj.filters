@@ -349,5 +349,11 @@
     <None Include="..\x64\Release\Lua\Invicible Soul.lua">
       <Filter>Source Files\Lua</Filter>
     </None>
+    <None Include="..\x64\Release\Lua\Invincible Charge.lua">
+      <Filter>Source Files\Lua</Filter>
+    </None>
+    <None Include="..\x64\Release\Lua\Invincible Legend.lua">
+      <Filter>Source Files\Lua</Filter>
+    </None>
   </ItemGroup>
 </Project>

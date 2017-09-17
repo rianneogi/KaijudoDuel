@@ -242,12 +242,12 @@ void CardModel::setUp(const glm::vec3& up)
 
 int loadCardTexture(const std::string& name, const std::string& set)
 {
-	std::string path = "Resources\\Cards\\" + set + "\\" + name + ".png";
+	std::string path = "Resources\\Cards\\Textures\\Sets\\" + set + "\\Cards\\" + name + ".jpg";
 	gCardTextures.push_back(new Texture());
 	if (!gCardTextures.at(gCardTextures.size() - 1)->loadFromFile(path))
 	{
 		//cout << "ERROR cant load texture " << CardNames.at(CardNames.size() - 1) << endl;
-		printf("ERROR: cant load card texture %s\n", gCardNames.at(gCardNames.size() - 1).c_str());
+		printf("ERROR: cant load card texture %s\n", gCardDatabase[gCardDatabase.size() - 1].Name.c_str());
 	}
 	//printf("Generated texture: %d\n", gCardTextures[gCardTextures.size() - 1]->mTextureID);
 	//gCardTextures.at(gCardTextures.size() - 1).setSmooth(true);

@@ -135,6 +135,15 @@ Abils.Survivor = function(id,func)
     end
 end
 
+Abils.Stealth = function(id,civ) --todo
+	if(getMessageType()=="get creaturecanblock") then
+		if(getMessageInt("attacker")==id) then
+			
+			setMessageInt("canblock",0)
+		end
+	end
+end
+
 Abils.attacksEachTurn = function(id)
     --todo
 end
@@ -236,6 +245,14 @@ Abils.manaAfterDestroyed = function(id)
 	end
 end
 
+Abils.returnAtEOT = function(id)
+	if(getMessageType()=="pre endturn") then
+		if(getMessageInt("player")==getCardOwner(id) and getCardZone(id)==ZONE_BATTLE) then
+			moveCard(id, ZONE_HAND)
+		end
+	end
+end
+
 Abils.onSummon = function(id, func)
     if(getMessageType()=="post cardmove") then
 		if(getMessageInt("card")==id and getMessageInt("to")==ZONE_BATTLE) then
@@ -245,14 +262,14 @@ Abils.onSummon = function(id, func)
 end
 
 Abils.drawOnSummon = function(id, count)
-	func = function(id)
-		drawCards(getTurn(),count)
+	local func = function(id)
+		drawCards(getCardOwner(id),count)
 	end
 	Abils.onSummon(id,func)
 end
 
 Abils.destroyYourManaOnSummon = function(id, count)
-    summon = function(id)
+    local summon = function(id)
         for i=1,count do
             local ch = createChoice("Select mana to destroy",0,id,getCardOwner(id),Checks.InYourMana)
             if(ch>=0) then
@@ -264,7 +281,7 @@ Abils.destroyYourManaOnSummon = function(id, count)
 end
 
 Abils.destroyYourCreatureOnSummon = function(id, count)
-    summon = function(id)
+    local summon = function(id)
         for i=1,count do
             local ch = createChoice("Select creature to destroy",0,id,getCardOwner(id),Checks.InYourBattle)
             if(ch>=0) then
@@ -359,6 +376,14 @@ end
 Abils.destroyModAtSOT = function(cid,mid)
     if(getMessageType()=="pre startturn") then
 		destroyModifier(cid,mid)
+	end
+end
+
+Checks.IsCreature(cid,sid)
+	if(getCardType(sid)==TYPE_CREATURE) then
+		return 1
+	else
+		return 0
 	end
 end
 
@@ -623,6 +648,18 @@ Functions.count = function(id,check)
     local count = 0
     for i=0,(x-1) do
         if(check(id,i)==1) then
+            count=count+1
+        end
+    end
+    return count
+end
+
+Functions.countInZone = function(id,player,zone,check)
+    local size = getZoneSize(player,zone)
+    local count = 0
+    for i=0,(size-1) do
+		local sid = getCardAt(player,zone,i)
+        if(check(id,sid)==1) then
             count=count+1
         end
     end

@@ -1509,10 +1509,10 @@ Cards["Miele, Vizier of Lightning"] = {
 
 	HandleMessage = function(id)
         local summon = function(id)
-            local ch = createChoice("Choose an opponent's creature",1,id,getCardOwner(id),Checks.UntappedInOppBattle)
-            if(ch>=0) then
-                tapCard(ch)
-            end
+			local ch = createChoice("Choose an opponent's creature",1,id,getCardOwner(id),Checks.UntappedInOppBattle)
+			if(ch>=0) then
+				tapCard(ch)
+			end
         end
         Abils.onSummon(id,summon)
 	end

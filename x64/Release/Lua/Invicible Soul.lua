@@ -24,7 +24,7 @@ Cards["Ultra Mantis, Scourge of Fate"] = {
 	blocker = 0,
 	breaker = 2,
 
-	HandleMessage = function(id) --test
+	HandleMessage = function(id)
 		Abils.Evolution(id,"Giant Insect")
 		Abils.cantBeBlockedPower(id,8000)
 	end
@@ -43,9 +43,11 @@ Cards["Laveil, Seeker of Catastrophe"] = {
 Cards["Crystal Jouster"] = {
 	shieldtrigger = 0,
 	blocker = 0,
-	breaker = 1,
+	breaker = 2,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		Abils.Evolution(id,"Liquid People")
+		Abils.returnAfterDestroyed(id)
 	end
 }
 
@@ -301,9 +303,19 @@ Cards["Moontear, Spectral Knight"] = {
 }
 
 Cards["Protective Force"] = {
-	shieldtrigger = 0,
+	shieldtrigger = 1,
 
-	OnCast = function(id) --todo
+	OnCast = function(id)
+		local mod = function(cid,mid)
+			Abils.bonusPower(cid, 4000)
+			Abils.destroyModAtEOT(cid,mid)
+		end
+		
+		local ch = createChoice("Choose a blocker", 0, id, getCardOwner(id), Checks.BlockerInYourBattle)
+		if(ch>=0) then
+			createModifier(ch, mod)
+		end
+		Functions.EndSpell(id)
 	end
 }
 
@@ -319,7 +331,13 @@ Cards["Razorpine Tree"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id) --test
+		if(getMessageType()=="get creaturepower") then
+			if(getMessageInt("creature")==id) then
+				local c = Functions.countInZone(id,getCardOwner(id),ZONE_SHIELD,Checks.True)
+				setMessageInt("power",getMessageInt("power")+c*2000)
+			end
+		end
 	end
 }
 
@@ -439,9 +457,24 @@ Cards["Midnight Crawler"] = {
 }
 
 Cards["Mystic Dreamscape"] = {
-	shieldtrigger = 0,
+	shieldtrigger = 1,
 
-	OnCast = function(id) --todo
+	OnCast = function(id)
+		local ch = createChoice("Choose a card in your mana zone",1,id,getCardOwner(id),Checks.InYourMana)
+        if(ch>=0) then
+			moveCard(ZONE_HAND)
+			
+			local ch2 = createChoice("Choose a card in your mana zone",1,id,getCardOwner(id),Checks.InYourMana)
+			if(ch2>=0) then
+				moveCard(ZONE_HAND)
+
+				local ch3 = createChoice("Choose a card in your mana zone",1,id,getCardOwner(id),Checks.InYourMana)
+				if(ch3>=0) then
+					moveCard(ZONE_HAND)
+				end
+			end
+        end
+		Functions.EndSpell(id)
 	end
 }
 
@@ -552,17 +585,24 @@ Cards["Bazooka Mutant"] = {
 
 Cards["Cursed Pincher"] = {
 	shieldtrigger = 0,
-	blocker = 0,
+	blocker = 1,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		Abils.cantAttack(id)
+		Abils.Slayer(id)
 	end
 }
 
 Cards["Death Smoke"] = {
 	shieldtrigger = 0,
 
-	OnCast = function(id) --todo
+	OnCast = function(id)
+		local ch = createChoice("Choose an opponent's creature",0,id,getCardOwner(id),Checks.UntappedInOppBattle)
+	    if(ch>=0) then
+            destroyCreature(ch)
+        end
+        Functions.EndSpell(id)
 	end
 }
 
@@ -665,9 +705,14 @@ Cards["Lupa, Poison-Tipped Doll"] = {
 }
 
 Cards["Proclamation of Death"] = {
-	shieldtrigger = 0,
+	shieldtrigger = 1,
 
-	OnCast = function(id) --todo
+	OnCast = function(id)
+		local ch = createChoice("Choose a creature in your battlezone",0,id,getOpponet(getCardOwner(id)),Checks.InOppBattle)
+	    if(ch>=0) then
+            destroyCreature(ch)
+        end
+        Functions.EndSpell(id)
 	end
 }
 
@@ -685,7 +730,15 @@ Cards["Skullcutter, Swarm Leader"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id) --test
+		if(getMessageType()=="pre endturn") then
+			if(getMessageInt("player")==getCardOwner(id) and getCardZone(id)==ZONE_BATTLE) then
+				local c = Functions.countInZone(getCardOwner(id), ZONE_BATTLE, Checks.True)
+				if(c<=1) then
+					destroyCreature(id)
+				end
+			end
+		end
 	end
 }
 
@@ -1014,9 +1067,11 @@ Cards["Factory Shell Q"] = {
 }
 
 Cards["Faerie Life"] = {
-	shieldtrigger = 0,
+	shieldtrigger = 1,
 
-	OnCast = function(id) --todo
+	OnCast = function(id)
+		Functions.moveTopCardsFromDeck(getCardOwner(id), ZONE_MANA, 1)
+		Functions.EndSpell(id)
 	end
 }
 
@@ -1122,7 +1177,9 @@ Cards["Trench Scarab"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		Abils.cantAttackPlayers(id)
+		Abils.PowerAttacker(id,4000)
 	end
 }
 

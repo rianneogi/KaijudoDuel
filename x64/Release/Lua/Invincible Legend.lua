@@ -19,9 +19,17 @@ Cards["Emperor Quazla"] = {
 Cards["Super Necrodragon Abzo Dolba"] = {
 	shieldtrigger = 0,
 	blocker = 0,
-	breaker = 1,
+	breaker = 3,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		Abils.Evolution(id, "Dragon")
+
+		if(getMessageType()=="get creaturepower") then
+			if(getMessageInt("creature")==id) then
+				local c = Functions.countInZone(id, getCardOwner(id), ZONE_GRAVEYARD, Checks.IsCreature)
+				setMessageInt("power",getMessageInt("power")+c*2000)
+			end
+		end
 	end
 }
 
@@ -93,16 +101,39 @@ Cards["Kachua, Keeper of the Icegate"] = {
 }
 
 Cards["Dracobarrier"] = {
-	shieldtrigger = 0,
+	shieldtrigger = 1,
 
-	OnCast = function(id) --todo
+	OnCast = function(id)
+		local ch = createChoice("Choose an opponent's creature",1,id,getCardOwner(id),Checks.UntappedInOppBattle)
+        if(ch>=0) then
+			tapCard(ch)
+
+			if(isCreatureOfRace(ch,"Dragon")==1) then
+				Functions.moveTopCardsFromDeck(getCardOwner(id), ZONE_SHIELD, 1)
+			end
+        end
 	end
 }
 
 Cards["Laser Whip"] = {
 	shieldtrigger = 0,
 
-	OnCast = function(id) --todo
+	OnCast = function(id)
+		local ch1 = createChoice("Choose an opponent's creature",1,id,getCardOwner(id),Checks.UntappedInOppBattle)
+        if(ch1>=0) then
+			tapCard(ch1)
+        end
+		
+		local mod = function(cid,mid)
+            Abils.cantBeBlocked(cid)
+	        Abils.destroyModAtEOT(cid,mid)
+        end
+
+		local ch2 = createChoice("Choose a creature in your battlezone",1,id,getCardOwner(id),Checks.InYourBattle)
+		if(ch2>=0) then
+            createModifier(ch2,mod)
+        end
+        Functions.EndSpell(id)
 	end
 }
 
@@ -190,7 +221,8 @@ Cards["Candy Cluster"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		Abils.cantBeBlocked(id)
 	end
 }
 
@@ -277,7 +309,16 @@ Cards["Wave Lance"] = {
 Cards["Corpse Charger"] = {
 	shieldtrigger = 0,
 
-	OnCast = function(id) --todo
+	OnCast = function(id)
+		local ch = createChoice("Choose a creature in your graveyard",0,id,getCardOwner(id),Checks.CreatureInYourGraveyard)
+        if(ch>=0) then
+            moveCard(ch,ZONE_HAND)
+        end
+        Functions.EndSpell(id)
+	end,
+
+	HandleMessage = function(id)
+		Abils.Charger(id)
 	end
 }
 
@@ -317,19 +358,34 @@ Cards["Gigaclaws"] = {
 
 Cards["Motorcycle Mutant"] = {
 	shieldtrigger = 0,
-	blocker = 0,
+	blocker = 1,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		Abils.cantAttack(id)
+
+		if(getMessageType()=="post cardmove") then
+			if(getCardOwner(getMessageInt("card"))==getCardOwner(id) and getMessageInt("to")==ZONE_BATTLE) then
+				destroyCreature(id)
+			end
+		end
 	end
 }
 
 Cards["Necrodragon Galbazeek"] = {
 	shieldtrigger = 0,
 	blocker = 0,
-	breaker = 1,
+	breaker = 2,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		local func = function(id)
+			local ch = createChoice("Choose a shield", 0, id, getCardOwner(id), Checks.InYourShields)
+			if(ch>=0) then
+				moveCard(ch, ZONE_GRAVEYARD)
+			end
+		end
+
+		Abils.onAttack(id,func)
 	end
 }
 
@@ -356,7 +412,12 @@ Cards["Tyrant Worm"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		if(getMessageType()=="post cardmove") then
+			if(getCardOwner(getMessageInt("card"))==getCardOwner(id) and getMessageInt("to")==ZONE_BATTLE) then
+				destroyCreature(id)
+			end
+		end
 	end
 }
 
@@ -365,7 +426,14 @@ Cards["Bruiser Dragon"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		local func = function(id)
+			local ch = createChoice("Choose a shield", 0, id, getCardOwner(id), Checks.InYourShields)
+			if(ch>=0) then
+				moveCard(ch, ZONE_GRAVEYARD)
+			end
+		end
+		Abils.onDestroy(id, func)
 	end
 }
 
@@ -381,7 +449,22 @@ Cards["Kyrstron, Lair Delver"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		local check = function(cid,sid)
+			if(getCardOwner(sid)==getCardOwner(cid) and getCardZone(sid)==ZONE_HAND and isCreatureOfRace(sid, "Dragon")==1) then
+				return 1
+			else
+				return 0
+			end
+		end
+		
+		local func = function(id)
+			local ch = createChoice("Choose a dragon in your hand", 0, id, getCardOwner(id), check)
+			if(ch>=0) then
+				moveCard(ch, ZONE_BATTLE)
+			end
+		end
+		Abils.onDestroy(id,func)
 	end
 }
 
@@ -470,7 +553,15 @@ Cards["Bakkra Horn, the Silent"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		if(getMessageType()=="post cardmove") then
+			local summoned = getMessageInt("card")
+			if(getCardOwner("summoned")==getCardOwner(id) and getMessageInt("to")==ZONE_BATTLE) then
+				if(isCreatureOfRace(summoned, "Dragon")==id or isCreatureOfRace(summoned, "Dragonoid")==id) then
+					Functions.moveTopCardsFromDeck(getCardOwner(id), ZONE_MANA, 1)
+				end
+			end
+		end
 	end
 }
 
@@ -549,9 +640,24 @@ Cards["Senia, Orchard Avenger"] = {
 Cards["Terradragon Gamiratar"] = {
 	shieldtrigger = 0,
 	blocker = 0,
-	breaker = 1,
+	breaker = 2,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		local check = function(cid,sid)
+			if(getCardOwner(sid)~=getCardOwner(cid) and getCardZone(sid)==ZONE_HAND and getCardType(sid)==TYPE_CREATURE) then
+			return 1
+		else
+			return 0
+		end
+
+		local func = function(id)
+			local ch = createChoice("Choose a creature in your hand", 1, id, getOpponent(getCardOwner(id)), check)
+			if(ch>=0) then
+				moveCard(ch, ZONE_BATTLE)
+			end
+		end
+
+		Abils.onSummon(id, func)
 	end
 }
 

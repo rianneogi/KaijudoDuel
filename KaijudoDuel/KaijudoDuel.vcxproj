@@ -224,6 +224,8 @@
     <None Include="..\x64\Release\Lua\Common.lua" />
     <None Include="..\x64\Release\Lua\EvoCrushinators.lua" />
     <None Include="..\x64\Release\Lua\Invicible Soul.lua" />
+    <None Include="..\x64\Release\Lua\Invincible Charge.lua" />
+    <None Include="..\x64\Release\Lua\Invincible Legend.lua" />
     <None Include="..\x64\Release\Lua\Promo.lua" />
     <None Include="..\x64\Release\Lua\Rampage.lua" />
     <None Include="..\x64\Release\Lua\Shadowclash.lua" />

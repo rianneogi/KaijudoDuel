@@ -340,9 +340,9 @@ void loadSet(std::string path, std::string set_name)
 					else printf("ERROR: Unknown type for card %s\n", name.c_str());
 				}
 			}
-			CardData cd(gCardDatabase.size(), name, set_name, race, civ, type, cost, power);
-			gCardDatabase.push_back(cd);
 		}
+		CardData cd(gCardDatabase.size(), name, set_name, race, civ, type, cost, power);
+		gCardDatabase.push_back(cd);
 	}
 }
 
@@ -368,15 +368,15 @@ bool initCards()
 	//lua_pcall(LuaCards, 0, 0, 0); //execute once to load cards
 	//lua_pop(LuaCards, 1);
 
-	loadSet("Resources/Sets XML/DM-01 Base Set/set.xml", "DM01");
-	loadSet("Resources/Sets XML/DM-02 Master of Evolution/set.xml", "DM02");
-	loadSet("Resources/Sets XML/DM-03 Master of Destruction/set.xml", "DM03");
-	loadSet("Resources/Sets XML/DM-04 Challenge of Black Shadow/set.xml", "DM04");
-	loadSet("Resources/Sets XML/DM-05 Return of the Survivor/set.xml", "DM05");
-	loadSet("Resources/Sets XML/DM-06 Invincible Soul/set.xml", "DM06");
-	loadSet("Resources/Sets XML/DM-07 Invincible Charge/set.xml", "DM07");
-	loadSet("Resources/Sets XML/DM-08 Invincible Legend/set.xml", "DM08");
-	loadSet("Resources/Sets XML/DM-09 Invincible Blood/set.xml", "DM09");
+	loadSet("Resources/Sets XML/DM-01 Base Set/set.xml", "DM-01 Base Set");
+	loadSet("Resources/Sets XML/DM-02 Master of Evolution/set.xml", "DM-02 Master of Evolution");
+	loadSet("Resources/Sets XML/DM-03 Master of Destruction/set.xml", "DM-03 Master of Destruction");
+	loadSet("Resources/Sets XML/DM-04 Challenge of Black Shadow/set.xml", "DM-04 Challenge of Black Shadow");
+	loadSet("Resources/Sets XML/DM-05 Return of the Survivor/set.xml", "DM-05 Return of the Survivor");
+	loadSet("Resources/Sets XML/DM-06 Invincible Soul/set.xml", "DM-06 Invincible Soul");
+	loadSet("Resources/Sets XML/DM-07 Invincible Charge/set.xml", "DM-07 Invincible Charge");
+	loadSet("Resources/Sets XML/DM-08 Invincible Legend/set.xml", "DM-08 Invincible Legend");
+	loadSet("Resources/Sets XML/DM-09 Invincible Blood/set.xml", "DM-09 Invincible Blood");
 
 	return true;
 }
