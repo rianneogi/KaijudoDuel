@@ -379,8 +379,16 @@ Abils.destroyModAtSOT = function(cid,mid)
 	end
 end
 
-Checks.IsCreature(cid,sid)
+Checks.IsCreature = function(cid,sid)
 	if(getCardType(sid)==TYPE_CREATURE) then
+		return 1
+	else
+		return 0
+	end
+end
+
+Checks.IsSurvivor = function(cid,sid)
+	if(isCreatureOfRace(sid,"Survivor")==1) then
 		return 1
 	else
 		return 0
@@ -587,6 +595,14 @@ Checks.CreatureInYourDeck = function(cid,sid)
 	end
 end
 
+Checks.SurvivorInYourDeck = function(cid,sid)
+	if(getCardOwner(sid)==getCardOwner(cid) and getCardZone(sid)==ZONE_DECK and getCardType(sid)==TYPE_CREATURE and isCreatureOfRace(sid,"Survivor")==1) then
+		return 1
+	else
+		return 0
+	end
+end
+
 Checks.InYourShields = function(cid,sid)
     if(getCardOwner(sid)==getCardOwner(cid) and getCardZone(sid)==ZONE_SHIELD) then
 		return 1
@@ -640,6 +656,13 @@ Functions.executeForCreaturesInBattle = function(id,player,func)
         if(getCardType(c)==TYPE_CREATURE) then
             func(id,c)
         end
+    end
+end
+
+Functions.executeForCardsInZone = function(id,player,zone,func)
+    local s = getZoneSize(player,zone)
+    for i=0,(s-1) do
+		func(id,getCardAt(player,zone,i))
     end
 end
 

@@ -1228,8 +1228,8 @@ Cards["Rumbling Terahorn"] = {
             closeDeck(owner)
 	        if(ch>=0) then
                 moveCard(ch,ZONE_HAND)
-                shuffleDeck(getCardOwner(ch))
             end
+			shuffleDeck(owner)
         end
         Abils.onSummon(id,func)
 	end

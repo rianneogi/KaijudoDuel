@@ -737,8 +737,8 @@ Cards["Dimension Gate"] = {
         closeDeck(owner)
 	    if(ch>=0) then
             moveCard(ch,ZONE_HAND)
-            shuffleDeck(owner)
         end
+		shuffleDeck(owner)
         Functions.EndSpell(id)
 	end
 }

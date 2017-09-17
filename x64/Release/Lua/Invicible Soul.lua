@@ -54,9 +54,16 @@ Cards["Crystal Jouster"] = {
 Cards["Q-tronic Hypermind"] = {
 	shieldtrigger = 0,
 	blocker = 0,
-	breaker = 1,
+	breaker = 2,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		Abils.Evolution(id, "Survivor")
+		local func = function(id)
+			local owner = getCardOwner(id)
+			local c = Functions.countInZone(owner,ZONE_BATTLE,Checks.IsSurvivor)
+			drawCards(owner, c)
+		end
+		Abils.onSummon(id, func)
 	end
 }
 
@@ -108,16 +115,25 @@ Cards["Cliffcrush Giant"] = {
 Cards["Invincible Aura"] = {
 	shieldtrigger = 0,
 
-	OnCast = function(id) --todo
+	OnCast = function(id)
+		Functions.moveTopCardsFromDeck(getCardOwner(id), ZONE_SHIELD, 3)
+		Functions.EndSpell(id)
 	end
 }
 
 Cards["Lu Gila, Silver Rift Guardian"] = {
 	shieldtrigger = 0,
-	blocker = 0,
+	blocker = 1,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		Abils.cantAttackPlayers(id)
+		if(getMessageType()=="post cardmove") then
+			local evo = getMessageInt("card")
+			if(getCreatureIsEvolution(evo)==1 and getMessageInt("to")==ZONE_BATTLE) then
+				tapCard(evo)
+			end
+		end
 	end
 }
 
@@ -133,14 +149,33 @@ Cards["Aeropica"] = {
 Cards["Invincible Technology"] = {
 	shieldtrigger = 0,
 
-	OnCast = function(id) --todo
+	OnCast = function(id) --test
+		local owner = getCardOwner(id)
+        openDeck(owner)
+		while(true) do
+			local ch = createChoice("Choose a card in your deck",1,id,owner,Checks.InYourDeck)
+			if(ch>=0) then
+				moveCard(ch,ZONE_HAND)
+			end
+			if(ch<0) then
+				break
+			end
+		end
+		shuffleDeck(owner)
+        closeDeck(owner)
+        Functions.EndSpell(id)
 	end
 }
 
 Cards["Invincible Abyss"] = {
 	shieldtrigger = 0,
 
-	OnCast = function(id) --todo
+	OnCast = function(id)
+		local func = function(cid,sid)
+			destroyCreature(sid)
+		end
+		Functions.executeForCreaturesInBattle(id, getOpponent(getCardOwner(id)), func)
+		Functions.EndSpell(id)
 	end
 }
 
@@ -156,7 +191,22 @@ Cards["Tank Mutant"] = {
 Cards["Invincible Cataclysm"] = {
 	shieldtrigger = 0,
 
-	OnCast = function(id) --todo
+	OnCast = function(id)
+		local ch = createChoice("Choose an opponent's shield", 1, id, getCardOwner(id), Checks.InOppShields)
+		if(ch>=0) then
+			moveCard(ch, ZONE_GRAVEYARD)
+
+			local ch2 = createChoice("Choose an opponent's shield", 1, id, getCardOwner(id), Checks.InOppShields)
+			if(ch2>=0) then
+				moveCard(ch, ZONE_GRAVEYARD)
+
+				local ch3 = createChoice("Choose an opponent's shield", 1, id, getCardOwner(id), Checks.InOppShields)
+				if(ch3>=0) then
+					moveCard(ch, ZONE_GRAVEYARD)
+				end
+			end
+		end
+		Functions.EndSpell(id)
 	end
 }
 
@@ -174,7 +224,17 @@ Cards["Valiant Warrior Exorious"] = {
 Cards["Invincible Unity"] = {
 	shieldtrigger = 0,
 
-	OnCast = function(id) --todo
+	OnCast = function(id)
+		local mod = function(cid,mid)
+            Abils.PowerAttacker(cid,8000)
+			Abils.Breaker(cid,3)
+		    Abils.destroyModAtEOT(cid,mid)
+        end
+        local func = function(cid,sid)
+            createModifier(sid,mod)
+        end
+		Functions.executeForCreaturesInBattle(id,getCardOwner(id),func)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -519,7 +579,17 @@ Cards["Ripple Lotus Q"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		local func = function(id)
+			local summon = function(id)
+				local ch = createChoice("Choose an opponent's creature",1,id,getCardOwner(id),Checks.UntappedInOppBattle)
+				if(ch>=0) then
+					tapCard(ch)
+				end
+			end
+			Abils.onSummon(id,summon)
+		end
+		Abils.Survivor(id,func)
 	end
 }
 
@@ -691,7 +761,15 @@ Cards["Lone Tear, Shadow of Solitude"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		if(getMessageType()=="pre endturn") then
+			if(getMessageInt("player")==getCardOwner(id) and getCardZone(id)==ZONE_BATTLE) then
+				local c = Functions.countInZone(getCardOwner(id), ZONE_BATTLE, Checks.True)
+				if(c<=1) then
+					destroyCreature(id)
+				end
+			end
+		end
 	end
 }
 
@@ -722,6 +800,7 @@ Cards["Schuka, Duke of Amnesia"] = {
 	breaker = 1,
 
 	HandleMessage = function(id) --todo
+		
 	end
 }
 
@@ -971,7 +1050,11 @@ Cards["Rumblesaur Q"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		local func = function(id)
+			Abils.SpeedAttacker(id)
+		end
+		Abils.Survivor(id,func)
 	end
 }
 
@@ -1051,9 +1134,18 @@ Cards["Clobber Totem"] = {
 }
 
 Cards["Dimension Gate"] = {
-	shieldtrigger = 0,
+	shieldtrigger = 1,
 
-	OnCast = function(id) --todo
+	OnCast = function(id)
+		local owner = getCardOwner(id)
+        openDeck(owner)
+	    local ch = createChoice("Choose a creature in your deck",0,id,owner,Checks.CreatureInYourDeck)
+        closeDeck(owner)
+	    if(ch>=0) then
+            moveCard(ch,ZONE_HAND)
+        end
+		shuffleDeck(owner)
+        Functions.EndSpell(id)
 	end
 }
 
@@ -1062,7 +1154,21 @@ Cards["Factory Shell Q"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		local func = function(id)
+			local summon = function(id)
+				local owner = getCardOwner(id)
+				openDeck(owner)
+				local ch = createChoice("Choose a creature in your deck",0,id,owner,Checks.SurvivorInYourDeck)
+				closeDeck(owner)
+				if(ch>=0) then
+					moveCard(ch,ZONE_HAND)
+				end
+				shuffleDeck(owner)
+			end
+			Abils.onSummon(id,summon)
+		end
+		Abils.Survivor(id,func)
 	end
 }
 
