@@ -1,3 +1,6 @@
+package.path = package.path .. ';./?.lua;'
+require("Invincible Soul")
+
 Cards["Siri, Glory Elemental"] = {
 	shieldtrigger = 0,
 	blocker = 0,

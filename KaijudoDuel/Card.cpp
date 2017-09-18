@@ -28,6 +28,7 @@ Card::Card(int uid, int cid, int owner) : mUniqueId(uid), mCardId(cid), mOwner(o
 	mCivilization = gCardDatabase[cid].Civilization;
 
 	lua_getglobal(LuaCards, "Cards");
+	//printf("name %s %d\n", gCardDatabase[cid].Name.c_str(), cid);
 	lua_getfield(LuaCards, -1, gCardDatabase[cid].Name.c_str());
 
 	/*lua_getfield(LuaCards, -1, "name");

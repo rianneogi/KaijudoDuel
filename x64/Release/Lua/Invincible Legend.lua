@@ -1,3 +1,6 @@
+package.path = package.path .. ';./?.lua;'
+require("Invincible Charge")
+
 Cards["Nastasha, Channeler of Suns"] = {
 	shieldtrigger = 0,
 	blocker = 0,
@@ -645,9 +648,10 @@ Cards["Terradragon Gamiratar"] = {
 	HandleMessage = function(id)
 		local check = function(cid,sid)
 			if(getCardOwner(sid)~=getCardOwner(cid) and getCardZone(sid)==ZONE_HAND and getCardType(sid)==TYPE_CREATURE) then
-			return 1
-		else
-			return 0
+				return 1
+			else
+				return 0
+			end
 		end
 
 		local func = function(id)

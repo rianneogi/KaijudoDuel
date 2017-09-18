@@ -476,6 +476,13 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 				mGraveyardRenderers[i]->mIsOpen = 0;
 				mDeckRenderers[i]->mIsOpen = 0;
 			}
+
+			if (mHoverCardId != -1 && mSelectedCardId == -1 && mDuel->mIsChoiceActive == false)
+			{
+				Message msg("creatureusetapability");
+				msg.addValue("creature", mHoverCardId);
+				mDuel->handleInterfaceInput(msg);
+			}
 		}
 	}
 	else if (event.type == SDL_MOUSEWHEEL)

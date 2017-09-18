@@ -363,7 +363,7 @@ int Duel::handleMessage(Message& msg)
 		m.addValue("card", cid);
 		mMsgMngr.sendMessage(m);
 
-		mMsgMngr.sendMessage(msg);
+		//mMsgMngr.sendMessage(msg);
 	}
 	//else if (msg.getType() == "creatureevolve")
 	//{
