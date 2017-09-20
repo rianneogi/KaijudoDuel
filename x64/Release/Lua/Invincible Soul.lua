@@ -97,7 +97,12 @@ Cards["Phantasmal Horror Gigazald"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		Abils.Evolution(id, "Chimera")
+		local tap = function(id)
+			discardCardAtRandom(getOpponent(getCardOwner(id)))
+		end
+		Abils.TapAbilityForCiv(id, tap, CIV_DARKNESS)
 	end
 }
 
@@ -290,7 +295,16 @@ Cards["Arc Bine, the Astounding"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		Abils.Evolution(id,"Guardian")
+
+		local tap = function(id)
+			local ch = createChoice("Choose an opponent's creature",1,id,getCardOwner(id),Checks.UntappedInOppBattle)
+			if(ch>=0) then
+				tapCard(ch)
+			end
+		end
+		Abils.TapAbilityForCiv(id,tap,CIV_LIGHT)
 	end
 }
 
@@ -517,7 +531,12 @@ Cards["Fort Megacluster"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		Abils.Evolution(id, "Cyber Cluster")
+		local tap = function(id)
+			drawCards(getCardOwner(id),1)
+		end
+		Abils.TapAbilityForCiv(id, tap, CIV_WATER)
 	end
 }
 
@@ -1383,7 +1402,12 @@ Cards["Living Citadel Vosh"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		Abils.Evolution(id,"Colony Beetle")
+		local tap = function(id)
+			moveTopCardsFromDeck(getCardOwner(id),ZONE_MANA,1)
+		end
+		Abils.TapAbilityForCiv(id, tap, CIV_NATURE)
 	end
 }
 
