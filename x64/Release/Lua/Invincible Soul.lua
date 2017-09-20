@@ -104,9 +104,15 @@ Cards["Phantasmal Horror Gigazald"] = {
 Cards["Bolmeteus Steel Dragon"] = {
 	shieldtrigger = 0,
 	blocker = 0,
-	breaker = 1,
+	breaker = 2,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id) --test
+		if(getMessageType()=="pre creaturebreakshield") then
+			if(getMessageInt("creature")==id)
+				setMessageInt("msgContinue", 0)
+				moveCard(getMessageInt("shield"), ZONE_GRAVEYARD)
+			end
+		end
 	end
 }
 
@@ -1231,9 +1237,9 @@ Cards["Bliss Totem, Avatar of Luck"] = {
 Cards["Cantankerous Giant"] = {
 	shieldtrigger = 0,
 	blocker = 0,
-	breaker = 1,
+	breaker = 2,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
 	end
 }
 
@@ -1242,7 +1248,8 @@ Cards["Carrier Shell"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		Abils.PowerAttacker(id,2000)
 	end
 }
 
@@ -1251,7 +1258,18 @@ Cards["Charmilia, the Enticer"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		local tap = function(id)
+			local owner = getCardOwner(id)
+			openDeck(owner)
+			local ch = createChoice("Choose a creature in your deck",0,id,owner,Checks.CreatureInYourDeck)
+			closeDeck(owner)
+			if(ch>=0) then
+				moveCard(ch,ZONE_HAND)
+			end
+			shuffleDeck(owner)
+		end
+		Abils.TapAbility(id,tap)
 	end
 }
 
@@ -1347,7 +1365,7 @@ Cards["Illusory Berry"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
 	end
 }
 
