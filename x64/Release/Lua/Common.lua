@@ -384,7 +384,7 @@ Abils.returnCreatureFromGraveyardOnAttack = function(id,count)
     Abils.onAttack(id,func)
 end
 
-Abils.untapAtEOT = function(id,name)
+Abils.untapAtEOT = function(id)
     if(getMessageType()=="pre endturn") then
 		if(getMessageInt("player")==getCardOwner(id) and getCardZone(id)==ZONE_BATTLE and isCardTapped(id)==1) then
 			local ch = createChoiceNoCheck("Untap this creature?",2,id,getCardOwner(id),Checks.False)
@@ -601,6 +601,14 @@ end
 
 Checks.InYourHand = function(cid,sid)
     if(getCardOwner(sid)==getCardOwner(cid) and getCardZone(sid)==ZONE_HAND) then
+		return 1
+	else
+		return 0
+	end
+end
+
+Checks.InOppHand = function(cid,sid)
+    if(getCardOwner(sid)~=getCardOwner(cid) and getCardZone(sid)==ZONE_HAND) then
 		return 1
 	else
 		return 0

@@ -126,7 +126,19 @@ Cards["Lava Walker Executo"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		Abils.Evolution(id,"Dragonoid")
+		local tap = function(id)
+			local mod = function(cid,mid)
+				Abils.PowerAttacker(cid,3000)
+				Abils.destroyModAtEOT(cid,mid)
+			end
+			local c = createChoice("Choose creature",0,id,getCardOwner(id),Checks.InYourBattle)
+			if(c>=0) then
+				createModifier(c,mod)
+			end
+		end
+		Abils.TapAbilityForCiv(id,tap,CIV_FIRE)
 	end
 }
 
@@ -218,7 +230,14 @@ Cards["Tank Mutant"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		local tap = function(id)
+			local ch = createChoice("Choose a creature in your battlezone",0,id,getOpponet(getCardOwner(id)),Checks.InOppBattle)
+			if(ch>=0) then
+				destroyCreature(ch)
+			end
+		end
+		Abils.TapAbility(id,tap)
 	end
 }
 
@@ -313,14 +332,22 @@ Cards["Ballas, Vizier of Electrons"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
 	end
 }
 
 Cards["Bonds of Justice"] = {
-	shieldtrigger = 0,
+	shieldtrigger = 1,
 
-	OnCast = function(id) --todo
+	OnCast = function(id) --test
+		local func = function(cid,sid)
+			if(getCreatureIsBlocker(sid)==0) then
+				tapCard(sid)
+			end
+		end
+		Functions.executeForCreaturesInBattle(id,getCardOwner(id),func)
+		Functions.executeForCreaturesInBattle(id,getOpponent(getCardOwner(id)),func)
+		Functions.EndSpell(id)
 	end
 }
 
@@ -542,10 +569,11 @@ Cards["Fort Megacluster"] = {
 
 Cards["Hazard Crawler"] = {
 	shieldtrigger = 0,
-	blocker = 0,
+	blocker = 1,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		Abils.cantAttack(id)
 	end
 }
 
@@ -718,7 +746,18 @@ Cards["Sopian"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		local tap = function(id)
+			local mod = function(cid,mid)
+				Abils.cantBeBlocked(cid)
+				Abils.destroyModAtEOT(cid,mid)
+			end
+			local ch = createChoice("Choose creature",0,id,getCardOwner(id),Checks.InYourBattle)
+			if(ch>=0) then
+				createModifier(ch,mod)
+			end
+		end
+		Abils.TapAbility(id,tap)
 	end
 }
 
@@ -841,16 +880,24 @@ Cards["Gnarvash, Merchant of Blood"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		if(getMessageType()=="pre endturn") then
+			if(getMessageInt("player")==getCardOwner(id) and getCardZone(id)==ZONE_BATTLE) then
+				local c = Functions.countInZone(getCardOwner(id), ZONE_BATTLE, Checks.True)
+				if(c<=1) then
+					destroyCreature(id)
+				end
+			end
+		end
 	end
 }
 
 Cards["Grave Worm Q"] = {
 	shieldtrigger = 0,
 	blocker = 0,
-	breaker = 1,
+	breaker = 2,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
 	end
 }
 
@@ -859,7 +906,22 @@ Cards["Grim Soul, Shadow of Reversal"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		local tap = function(id)
+			local check = function(cid,sid)
+				if(Checks.CreatureInYourGraveyard(cid,sid)==1 and getCardCiv(sid)==CIV_DARKNESS) then
+					return 1
+				else
+					return 0
+				end
+			end
+
+			local ch = createChoice("Choose a creature in your graveyard",0,id,getCardOwner(id),check)
+			if(ch>=0) then
+				moveCard(ch,ZONE_HAND)
+			end
+		end
+		Abils.TapAbility(id,tap)
 	end
 }
 
@@ -885,7 +947,7 @@ Cards["Junkatz, Rabid Doll"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
 	end
 }
 
@@ -912,6 +974,9 @@ Cards["Lupa, Poison-Tipped Doll"] = {
 	breaker = 1,
 
 	HandleMessage = function(id) --todo
+		local tap = function(id)
+		end
+		Abils.TapAbility(id,tap)
 	end
 }
 
@@ -1073,7 +1138,20 @@ Cards["Cocco Lupia"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id) --test
+		if(getMessageType()=="get cardcost") then
+            if(getCardZone(id)==ZONE_BATTLE) then
+                local card = getMessageInt("card")
+                if(getCardType(card)==TYPE_CREATURE and getCardOwner(id)==getCardOwner(card) and isCreatureOfRace(card, "Dragon")==1) then
+                    local cost = getMessageInt("cost")
+					if(cost-2 > 2) then
+						setMessageInt("cost",cost-2)
+                    else
+						setMessageInt("cost",2)
+					end
+                end
+            end
+        end
 	end
 }
 
@@ -1142,7 +1220,25 @@ Cards["Migasa, Adept of Chaos"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		local tap = function(id)
+			local mod = function(cid,mid)
+				Abils.Breaker(cid,2)
+				Abils.destroyModAtEOT(cid,mid)
+			end
+			local check = function(cid,sid)
+				if(Checks.InYourBattle(cid,sid)==1 and getCardCiv(sid)==CIV_FIRE) then
+					return 1
+				else
+					return 0
+				end
+			end
+			local c = createChoice("Choose a fire creature",0,id,getCardOwner(id),check)
+			if(c>=0) then
+				createModifier(c,mod)
+			end
+		end
+		Abils.TapAbility(id,tap)
 	end
 }
 
@@ -1170,7 +1266,7 @@ Cards["Picora's Wrench"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
 	end
 }
 
@@ -1199,7 +1295,14 @@ Cards["Rikabu's Screwdriver"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
+		local tap = function(id)
+			local ch = createChoice("Choose opponent's blocker",0,id,getCardOwner(id),Checks.BlockerInOppBattle)
+			if(ch>=0) then
+				destroyCreature(ch)
+			end
+		end
+		Abils.TapAbility(id,tap)
 	end
 }
 
@@ -1249,7 +1352,24 @@ Cards["Bliss Totem, Avatar of Luck"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id) --test
+		local tap = function(id)
+			local ch1 = createChoice("Choose a card in your graveyard", 1, id, getCardOwner(id), Checks.InYourGraveyard)
+			if(ch1>=0) then
+				moveCard(ch1,ZONE_MANA)
+
+				local ch2 = createChoice("Choose a card in your graveyard", 1, id, getCardOwner(id), Checks.InYourGraveyard)
+				if(ch2>=0) then
+					moveCard(ch2,ZONE_MANA)
+
+					local ch3 = createChoice("Choose a card in your graveyard", 1, id, getCardOwner(id), Checks.InYourGraveyard)
+					if(ch3>=0) then
+						moveCard(ch3,ZONE_MANA)
+					end
+				end
+			end
+		end
+		Abils.TapAbility(id,tap)
 	end
 }
 
@@ -1460,7 +1580,7 @@ Cards["Slumber Shell"] = {
 	blocker = 0,
 	breaker = 1,
 
-	HandleMessage = function(id) --todo
+	HandleMessage = function(id)
 	end
 }
 

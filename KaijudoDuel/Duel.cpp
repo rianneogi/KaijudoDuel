@@ -864,7 +864,7 @@ int Duel::handleInterfaceInput(Message& msg)
 	{
 		if (mAttackphase == PHASE_BLOCK)
 		{
-			printf("mDefenderType: %d\n", mDefenderType);
+			//printf("mDefenderType: %d\n", mDefenderType);
 			if (mDefenderType == DEFENDER_CREATURE)
 			{
 				Message m("creaturebattle");
@@ -877,7 +877,7 @@ int Duel::handleInterfaceInput(Message& msg)
 			}
 			else if (mDefenderType == DEFENDER_PLAYER)
 			{
-				printf("defender: %d\n", mDefender);
+				//printf("defender: %d\n", mDefender);
 				if (mShields[mDefender].mCards.size() == 0)
 				{
 					mWinner = getOpponent(mDefender);
@@ -886,7 +886,7 @@ int Duel::handleInterfaceInput(Message& msg)
 				else
 				{
 					//attackphase = PHASE_TARGET;
-					printf("changing phase\n");
+					//printf("changing phase\n");
 					Message m("changeattackphase");
 					m.addValue("phase", PHASE_TARGET);
 					m.addValue("oldphase", mAttackphase);

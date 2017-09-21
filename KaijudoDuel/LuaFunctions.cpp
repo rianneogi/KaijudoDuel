@@ -416,6 +416,12 @@ static int getCreatureIsEvolution(lua_State* L)
 	return 1;
 }
 
+static int getCreatureHasTapAbility(lua_State* L)
+{
+	lua_pushinteger(L, ActiveDuel->getCreatureHasTapAbility(lua_tointeger(L, 1)));
+	return 1;
+}
+
 static int isCardTapped(lua_State* L)
 {
 	lua_pushinteger(L, ActiveDuel->mCardList.at(lua_tointeger(L, 1))->mIsTapped);
@@ -498,6 +504,7 @@ void registerLua(lua_State* L)
 	lua_register(L, "getCreatureCanBlock", getCreatureCanBlock);
 	lua_register(L, "getCreatureIsBlocker", getCreatureIsBlocker);
 	lua_register(L, "getCreatureIsEvolution", getCreatureIsEvolution);
+	lua_register(L, "getCreatureHasTapAbility", getCreatureHasTapAbility);
 	lua_register(L, "isCardTapped", isCardTapped);
 	lua_register(L, "getAttacker", getAttacker);
 	lua_register(L, "getDefender", getDefender);

@@ -355,5 +355,17 @@
     <None Include="..\x64\Release\Lua\Invincible Soul.lua">
       <Filter>Source Files\Lua</Filter>
     </None>
+    <None Include="..\x64\Release\Lua\Eternal Arms.lua">
+      <Filter>Source Files\Lua</Filter>
+    </None>
+    <None Include="..\x64\Release\Lua\Eternal Vortex.lua">
+      <Filter>Source Files\Lua</Filter>
+    </None>
+    <None Include="..\x64\Release\Lua\Eternal Wave.lua">
+      <Filter>Source Files\Lua</Filter>
+    </None>
+    <None Include="..\x64\Release\Lua\Invincible Blood.lua">
+      <Filter>Source Files\Lua</Filter>
+    </None>
   </ItemGroup>
 </Project>
