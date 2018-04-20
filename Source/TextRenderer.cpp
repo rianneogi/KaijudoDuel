@@ -96,7 +96,7 @@ bool TextRenderer::load(std::string path, glm::vec4 color, int size)
 			texture,
 			glm::ivec2(mFace->glyph->bitmap.width, mFace->glyph->bitmap.rows),
 			glm::ivec2(mFace->glyph->bitmap_left, mFace->glyph->bitmap_top),
-			mFace->glyph->advance.x
+			(unsigned int)mFace->glyph->advance.x
 		};
 		mCharacters.insert(std::pair<GLchar, Character>(c, character));
 	}
