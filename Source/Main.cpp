@@ -164,11 +164,15 @@ bool initGame()
 	ActiveDuel->setDecks("Decks/My Decks/7 - L Tappy Tappy.txt", "Decks/My Decks/7 - L Tappy Tappy.txt");
 	ActiveDuel->startDuel();
 	ActiveDuel->dispatchAllMessages();
+
+	return true;
+}
+
+bool initGUIInterface()
+{
 	gDuelInterface = new DuelInterface(ActiveDuel);
 
 	gFuture = std::async(&Duel::loopInput, ActiveDuel);
-
-	return true;
 }
 
 void cleanup()
@@ -386,6 +390,14 @@ void startGUI()
 		// _getch();
 	}
 	
+	initGUIInterface();
+	printf("Loading GUI Interface...\n");
+	if (!initGUIInterface())
+	{
+		printf("ERROR initializing GUI interface\n");
+		// _getch();
+	}
+	
 	// mainLoop();
 
 	cleanup();
@@ -393,6 +405,14 @@ void startGUI()
 
 void startConsole()
 {
+	printf("Loading Cards...\n");
+	if (!initCards())
+	{
+		printf("ERROR initializing cards\n");
+		// _getch();
+	}
+	
+	printf("Loading Game...\n");
 	//using namespace std;
 	if (!initGame())
 	{
@@ -404,6 +424,8 @@ void startConsole()
 
 	while (true)
 	{
+		ActiveDuel->dispatchAllMessages();
+		
 		std::cin >> s;
 		std::vector<Message> moves = ActiveDuel->getPossibleMoves();
 
@@ -423,6 +445,13 @@ void startConsole()
 			std::cin >> d;
 			ActiveDuel->handleInterfaceInput(moves[d]);
 		}
+		
+		if(s=="card")
+		{
+			int d = -1;
+			std::cin >> d;
+			printf("%s\n", (ActiveDuel->mCardList[d]->mName).c_str());
+		}
 	}
 
 	cleanup();
@@ -430,8 +459,8 @@ void startConsole()
 
 int main(int argc, char* args[])
 {
-	startGUI();
-	//startConsole();
+	// startGUI();
+	startConsole();
 
 	return 0;
 }
