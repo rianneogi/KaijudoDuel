@@ -302,6 +302,7 @@ void mainLoop()
 			//}
 			gMutex.lock();
 			handleEvent(e, deltaTime);
+			gDuelInterface->mDuel->dispatchAllMessages();
 			gMutex.unlock();
 			//break;
 		}
