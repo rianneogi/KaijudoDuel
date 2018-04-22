@@ -6,6 +6,7 @@ MeshData::MeshData()
 	IB = 0;
 	NumIndices = 0;
 	MaterialIndex = 0;
+	VAO = 0;
 }
 
 MeshData::~MeshData()
@@ -40,8 +41,10 @@ bool MeshData::init(const std::vector<Vertex>& verts, const std::vector<unsigned
 	clear();
 
 	mVertices = verts;
-
+	
+	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VB);
+	glBindVertexArray(VAO);
 	// The following commands will talk about our 'vertexbuffer' buffer
 	glBindBuffer(GL_ARRAY_BUFFER, VB);
 	// Give our vertices to OpenGL.
@@ -62,6 +65,10 @@ bool MeshData::init(const std::vector<Vertex>& verts, const std::vector<unsigned
 	NumIndices = inds.size();
 	printf("Creating Mesh %d %d, Size: %d %d\n", (int)VB, (int)IB, (int)verts.size(), (int)inds.size());
 	
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+	
 	debugOpengl("Creating Mesh... MeshData::init()");
 	
 	return true;
@@ -72,6 +79,8 @@ void MeshData::render()
 	debugOpengl("Prep Draw, MeshData::render()");
 	
 	assert(VB!=0 && IB!=0);
+	
+	glBindVertexArray(VAO);
 	
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
@@ -100,6 +109,8 @@ void MeshData::render()
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
+	
+	glBindVertexArray(0);
 }
 
 MeshDataTexture3D::MeshDataTexture3D()
