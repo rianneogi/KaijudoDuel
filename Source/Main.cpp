@@ -52,7 +52,7 @@ bool initSDL()
 	//SDL_SetRelativeMouseMode(SDL_TRUE);
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	
 	///*SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
@@ -75,6 +75,8 @@ bool initSDL()
 
 	SDL_GL_MakeCurrent(gWindow, gContext);
 	glEnable(GL_MULTISAMPLE);
+	
+	debugOpengl("Finished Initializing SDL\n");
 
 	return true;
 }
@@ -83,7 +85,9 @@ bool initGL()
 {
 	//Initialize GLEW
 	glewExperimental = GL_TRUE;
+	debugOpengl("test4");
 	GLenum glewError = glewInit();
+	debugOpengl("test3");
 	if (glewError != GLEW_OK)
 	{
 		printf("Error initializing GLEW! %s\n", glewGetErrorString(glewError));
@@ -115,13 +119,13 @@ bool initGL()
 		printf("framebuffer objects not supported\n");
 		_getch();
 	}*/
-
+	
 	//Set the viewport
 	glViewport(0.f, 0.f, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	//Initialize clear color
 	glClearColor(0, 0, 0, 1);
-
+	
 	//Enable texturing
 	//glEnable(GL_TEXTURE_2D);
 	//glEnable(GL_TEXTURE_3D);
@@ -134,7 +138,7 @@ bool initGL()
 	//Blending
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+	
 	// Cull triangles which normal is not towards the camera
 	glEnable(GL_CULL_FACE);
 
@@ -152,6 +156,10 @@ bool initGL()
 	glGetIntegerv(GL_MAJOR_VERSION, &versionMajor);
 	glGetIntegerv(GL_MINOR_VERSION, &versionMinor);
 	printf("VERS %d %d\n", versionMajor, versionMinor);
+	
+	// GLuint vao;
+	// glGenVertexArrays(1, &vao);
+	// glBindVertexArray(vao);
 
 	return true;
 }
@@ -171,8 +179,9 @@ bool initGame()
 bool initGUIInterface()
 {
 	gDuelInterface = new DuelInterface(ActiveDuel);
-
 	gFuture = std::async(&Duel::loopInput, ActiveDuel);
+	
+	return true;
 }
 
 void cleanup()
@@ -398,7 +407,7 @@ void startGUI()
 		// _getch();
 	}
 	
-	// mainLoop();
+	mainLoop();
 
 	cleanup();
 }
@@ -459,8 +468,8 @@ void startConsole()
 
 int main(int argc, char* args[])
 {
-	// startGUI();
-	startConsole();
+	startGUI();
+	// startConsole();
 
 	return 0;
 }

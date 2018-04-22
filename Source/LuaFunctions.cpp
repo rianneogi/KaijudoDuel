@@ -148,11 +148,11 @@ static int destroyCreature(lua_State* L)
 	ActiveDuel->mMsgMngr.sendMessage(msg);
 	if (ActiveDuel->mCardList.at(cid)->mZone != ZONE_BATTLE)
 	{
-		//cout << "WARNING: destroyCreature called on creature that is not in battle zone" << endl;
+		printf("WARNING: destroyCreature called on creature that is not in battle zone\n");
 	}
 	if (ActiveDuel->mCardList.at(cid)->mType != TYPE_CREATURE)
 	{
-		//cout << "WARNING: destroyCreature called on card that is not a creature" << endl;
+		printf("WARNING: destroyCreature called on card that is not a creature\n");
 	}
 
 	return 0;

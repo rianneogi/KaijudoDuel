@@ -26,17 +26,17 @@ bool loadMeshs()
 	gMeshs.resize(MESH_NB);
 	if (!gMeshs[MESH_CARD].loadFromFile("Resources/Meshs/card.obj"))
 	{
-		printf("ERROR: Could not load mesh\n");
+		printf("ERROR: Could not load card mesh\n");
 		return false;
 	}
 	if (!gMeshs[MESH_TABLE].loadFromFile("Resources/Meshs/table.obj"))
 	{
-		printf("ERROR: Could not load table\n");
+		printf("ERROR: Could not load table mesh\n");
 		return false;
 	}
 	if (!gMeshs[MESH_ENDTURN].loadFromFile("Resources/Meshs/endturn.obj"))
 	{
-		printf("ERROR: Could not load table\n");
+		printf("ERROR: Could not load endturn button mesh\n");
 		return false;
 	}
 	return true;

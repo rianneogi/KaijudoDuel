@@ -130,13 +130,14 @@ void DuelInterface::render()
 	//gShaders[gActiveShader].setUniformVec4f(4, glm::vec4(mCamera.mPosition, 1.0));
 	//gShaders[gActiveShader].setUniformVec3f(5, glm::vec3(1,1,1));
 	//gShaders[gActiveShader].setUniformInt(6, 75);
+	
 	mTableModel.render();
 	gShaders[gActiveShader].setUniformMat4f(0, mEndTurnModel.mModelMatrix);
 	mEndTurnModel.render();
 	gShaders[gActiveShader].setUniformMat4f(0, mButton2Model.mModelMatrix);
 	mButton2Model.render();
 
-	//render cards
+	//Render Cards
 	for (size_t i = 0; i < mCardModels.size(); i++)
 	{
 		mCardModels[i]->render(true);

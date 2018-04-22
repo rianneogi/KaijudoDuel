@@ -15,6 +15,8 @@ MeshData::~MeshData()
 
 void MeshData::clear()
 {
+	printf("Deleting Mesh %d %d\n", (int)VB, (int)IB);
+	
 	// Disable the two vertex array attributes.
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
@@ -29,6 +31,8 @@ void MeshData::clear()
 	glDeleteBuffers(1, &IB);
 
 	mVertices.clear();
+	
+	debugOpengl("Deleting Mesh... MeshData::clear()");
 }
 
 bool MeshData::init(const std::vector<Vertex>& verts, const std::vector<unsigned int>& inds)
@@ -56,7 +60,10 @@ bool MeshData::init(const std::vector<Vertex>& verts, const std::vector<unsigned
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, inds.size() * sizeof(unsigned int), &inds[0], GL_STATIC_DRAW);
 
 	NumIndices = inds.size();
-	printf("making mesh %d %d\n", (int)VB, (int)IB);
+	printf("Creating Mesh %d %d, Size: %d %d\n", (int)VB, (int)IB, (int)verts.size(), (int)inds.size());
+	
+	debugOpengl("Creating Mesh... MeshData::init()");
+	
 	return true;
 }
 
@@ -64,11 +71,14 @@ void MeshData::render()
 {
 	debugOpengl("Prep Draw, MeshData::render()");
 	
+	assert(VB!=0 && IB!=0);
+	
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, VB);
+	
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)offsetof(Vertex, Pos));
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)offsetof(Vertex, UV));
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)offsetof(Vertex, Normal));

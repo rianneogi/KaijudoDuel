@@ -35,12 +35,12 @@ void ShaderProgram::freeProgram()
 
 bool ShaderProgram::bind()
 {
-	debugOpengl("binding shader 0");
+	debugOpengl("ShaderProgram::bind() begin binding shader");
 
 	//Use shader
 	glUseProgram(mProgramID);
 
-	return debugOpengl("binding shader");
+	return debugOpengl("ShaderProgram::bind() done binding shader");
 }
 
 void ShaderProgram::unbind()
