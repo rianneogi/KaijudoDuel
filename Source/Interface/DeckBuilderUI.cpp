@@ -99,11 +99,11 @@ DeckBuilderUI::~DeckBuilderUI()
 
 void DeckBuilderUI::init()
 {
-	for(int i = 0;i<10;i++)
+	for(int i = 0;i<DECKBUILDER_ROWS;i++)
 	{
-		for(int j = 0;j<10;j++)
+		for(int j = 0;j<DECKBUILDER_COLS;j++)
 		{
-			CardModel* c = new CardModel(0, 10*i + j);
+			CardModel* c = new CardModel(0, DECKBUILDER_COLS*i + j);
 			mCollectionModels.push_back(c);
 			c->setPosition(glm::vec3(8.5f - (CONST_CARDSEPERATION_VERT/2)*j, 15.f, -2.f - i*CONST_CARDSEPERATION_HORI));
 		}
@@ -138,7 +138,7 @@ void DeckBuilderUI::init()
 void DeckBuilderUI::updateCard(CardModel* model, int pos, int size, int hovercard)
 {
 	Orientation o;
-	o.pos = glm::vec3(-3, 15 + CONST_CARDTHICKNESS*pos, -3 + mScrollPos + (size-pos-1)*0.4);
+	o.pos = glm::vec3(-4, 15 + CONST_CARDTHICKNESS*pos, -3 + mScrollPos + (size-pos-1)*CONST_CARD_SCROLLER_SEPERATION);
 	if (model->mUniqueId == hovercard)
 	{
 		o.pos.y += 1;
@@ -170,7 +170,7 @@ void DeckBuilderUI::update(int deltaTime)
 		projview = proj*view;
 		Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
 		
-		for (int i = 0; i < mCardModels.size(); i++)
+		for (int i = mCardModels.size()-1; i>=0; i--)
 		{
 			if (mCardModels[i]->rayTrace(mousePos, projview, screendim))
 			{

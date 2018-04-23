@@ -1,9 +1,5 @@
 #include "DuelInterface.h"
 
-float gZoomDistance = 25.f;
-const float gCameraSpeed = 0.0001f;
-const int HOVER_CARD_TIME = 500;
-
 DuelInterface::DuelInterface()
 {
 	printf("WARNING: Duel interface init through default constructor\n");

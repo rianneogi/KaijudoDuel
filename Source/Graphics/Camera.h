@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TextRenderer.h"
+#include "Interface/InterfaceConstants.h"
 
 typedef std::vector<glm::vec4> Frustum;
 
@@ -36,4 +37,3 @@ public:
 	float verticalAngle;
 	float aspectRatio;
 };
-

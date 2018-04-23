@@ -1,8 +1,5 @@
 #include "Camera.h"
 
-float CONST_FOV = 45;
-float CONST_ASPECTRATIO = 16.0f/10.0f;
-
 Camera::Camera()
 {
 	FoV = CONST_FOV;
