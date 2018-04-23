@@ -85,7 +85,7 @@ void DeckData::save(std::string path)
 	
 }
 
-DeckBuilderUI::DeckBuilderUI() : mActiveDeckId(0)
+DeckBuilderUI::DeckBuilderUI() : mActiveDeckId(0), mScrollPos(0)
 {
 }
 
@@ -125,10 +125,54 @@ void DeckBuilderUI::init()
 	mTableModel.mModelMatrix = glm::scale(mTableModel.mModelMatrix, glm::vec3(8, 8, 8));
 }
 
+void DeckBuilderUI::updateCard(CardModel* model, int pos, int size, int hovercard)
+{
+	Orientation o;
+	o.pos = glm::vec3(-2, 20 + CONST_CARDTHICKNESS*pos, -3 + mScrollPos + (size-pos-1)*0.4);
+	if (model->mUniqueId == hovercard)
+	{
+		o.pos.y += 1;
+	}
+	o.dir = glm::vec3(0, 0, 1);
+	o.up = glm::vec3(0, 1, 0);
+	o.calculateQuat();
+	if (model->mUniqueId == hovercard)
+	{
+		model->setHoverMovement(o, 1000);
+	}
+	else
+	{
+		model->setMovement(o, 1000);
+	}
+}
+
 void DeckBuilderUI::update(int deltaTime)
 {
+	Vector2i mousePos;
+	SDL_GetMouseState(&mousePos.x, &mousePos.y);
+	
+	int hovercard = -1;
+	
+	if (mousePos.x >= 0 && mousePos.y >= 0)
+	{
+		glm::mat4 view, proj, projview;
+		mCamera.render(view, proj);
+		projview = proj*view;
+		Vector2i screendim(SCREEN_WIDTH, SCREEN_HEIGHT);
+		
+		for (int i = 0; i < mCardModels.size(); i++)
+		{
+			if (mCardModels[i]->rayTrace(mousePos, projview, screendim))
+			{
+				hovercard = i;
+				break;
+			}
+		}
+	}
+	
 	for(int i = 0;i<mCardModels.size();i++)
 	{
+		updateCard(mCardModels[i], i, mCardModels.size(), hovercard);
 		mCardModels[i]->update(deltaTime);
 	}
 }
@@ -163,5 +207,10 @@ void DeckBuilderUI::render()
 
 int DeckBuilderUI::handleEvent(const SDL_Event& event, int callback)
 {
+	if (event.type == SDL_MOUSEWHEEL)
+	{
+		mScrollPos += event.wheel.y;
+	}
+	
 	return 0;
 }

@@ -27,6 +27,8 @@ public:
 	Camera mCamera;
 	Model mTableModel;
 	
+	int mScrollPos;
+	
 	DeckBuilderUI();
 	~DeckBuilderUI();
 
@@ -34,4 +36,6 @@ public:
 	void update(int deltaTime);
 	void render();
 	int handleEvent(const SDL_Event& event, int callback);
+	
+	void updateCard(CardModel* model, int pos, int size, int hovercard);
 };
