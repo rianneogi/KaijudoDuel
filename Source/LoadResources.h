@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Movement.h"
+#include "Interface/Movement.h"
 
 extern Texture gTableTexture;
 extern Texture gCardBackTexture;

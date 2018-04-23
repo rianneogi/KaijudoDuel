@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MessageManager.h"
+#include "Game/MessageManager.h"
 
 class SoundManager
 {
@@ -14,4 +14,3 @@ public:
 };
 
 extern SoundManager* SoundMngr;
-

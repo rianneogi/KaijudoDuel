@@ -1,7 +1,7 @@
 #pragma once
 
 #include "LoadResources.h"
-#include "Bot.h"
+#include "AI/Bot.h"
 
 extern int SCREEN_WIDTH;
 extern int SCREEN_HEIGHT;

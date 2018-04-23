@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Camera.h"
+#include "Graphics/Camera.h"
 
 struct Orientation
 {
@@ -41,4 +41,3 @@ public:
 	void update(Orientation& newcurrent, int deltaTime);
 	bool isFinished();
 };
-

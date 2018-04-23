@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ShaderProgram.h"
+#include "Graphics/ShaderProgram.h"
 
 class Timer
 {
@@ -13,4 +13,3 @@ public:
 
 	Uint32 mStartTime;
 };
-

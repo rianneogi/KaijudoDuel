@@ -1,4 +1,4 @@
-#include "DeckBuilderUI.h"
+#include "Interface/DeckBuilderUI.h"
 
 #include <iostream>
 // #include <conio.h>
@@ -17,6 +17,7 @@ SDL_GLContext gContext;
 
 std::future<void> gFuture;
 DuelInterface* gDuelInterface;
+DeckBuilderUI* gDeckBuilder;
 
 bool initSDL()
 {
@@ -87,7 +88,7 @@ bool initGL()
 	glewExperimental = GL_TRUE;
 	debugOpengl("test4");
 	GLenum glewError = glewInit();
-	debugOpengl("test3");
+	debugOpengl("glewInit callled, initGL()");
 	if (glewError != GLEW_OK)
 	{
 		printf("Error initializing GLEW! %s\n", glewGetErrorString(glewError));
@@ -180,6 +181,13 @@ bool initGUIInterface()
 {
 	gDuelInterface = new DuelInterface(ActiveDuel);
 	gFuture = std::async(&Duel::loopInput, ActiveDuel);
+	
+	return true;
+}
+
+bool initDeckBuilder()
+{
+	gDeckBuilder = new DeckBuilderUI();
 	
 	return true;
 }
@@ -400,11 +408,17 @@ void startGUI()
 		// _getch();
 	}
 	
-	initGUIInterface();
 	printf("Loading GUI Interface...\n");
 	if (!initGUIInterface())
 	{
 		printf("ERROR initializing GUI interface\n");
+		// _getch();
+	}
+	
+	printf("Loading Deck Builder...\n");
+	if (!initDeckBuilder())
+	{
+		printf("ERROR initializing Deck Builder\n");
 		// _getch();
 	}
 	

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Duel.h"
+#include "Game/Duel.h"
 // #include <NNInclude.h>
 
 class Bot

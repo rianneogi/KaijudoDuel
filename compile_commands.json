@@ -1,202 +1,37 @@
 [
 {
   "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/MessageManager.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/MessageManager.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/MessageManager.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/BattleZoneRenderer.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/BattleZoneRenderer.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/BattleZoneRenderer.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/CardModel.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/CardModel.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/CardModel.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/GraveyardRenderer.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/GraveyardRenderer.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/GraveyardRenderer.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/SoundManager.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/SoundManager.cpp",
+  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2 -I/home/rian/Code/Projects/KaijudoDuel/Source  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/SoundManager.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/SoundManager.cpp",
   "file": "/home/rian/Code/Projects/KaijudoDuel/Source/SoundManager.cpp"
 },
 {
   "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Hand.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Hand.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/Hand.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/BattleZone.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/BattleZone.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/BattleZone.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/HandRenderer.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/HandRenderer.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/HandRenderer.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/DeckBuilderUI.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/DeckBuilderUI.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/DeckBuilderUI.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/ManaZone.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/ManaZone.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/ManaZone.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/CardData.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/CardData.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/CardData.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Texture.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Texture.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/Texture.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Message.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Message.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/Message.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/ManaZoneRenderer.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/ManaZoneRenderer.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/ManaZoneRenderer.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Bot.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Bot.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/Bot.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/CRandom.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/CRandom.cpp",
+  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2 -I/home/rian/Code/Projects/KaijudoDuel/Source  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/CRandom.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/CRandom.cpp",
   "file": "/home/rian/Code/Projects/KaijudoDuel/Source/CRandom.cpp"
 },
 {
   "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Modifier.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Modifier.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/Modifier.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Camera.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Camera.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/Camera.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Main.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Main.cpp",
+  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2 -I/home/rian/Code/Projects/KaijudoDuel/Source  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Main.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Main.cpp",
   "file": "/home/rian/Code/Projects/KaijudoDuel/Source/Main.cpp"
 },
 {
   "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/DeckRenderer.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/DeckRenderer.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/DeckRenderer.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Card.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Card.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/Card.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Mesh.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Mesh.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/Mesh.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Duel.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Duel.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/Duel.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/ShaderProgram.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/ShaderProgram.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/ShaderProgram.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/LuaFunctions.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/LuaFunctions.cpp",
+  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2 -I/home/rian/Code/Projects/KaijudoDuel/Source  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/LuaFunctions.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/LuaFunctions.cpp",
   "file": "/home/rian/Code/Projects/KaijudoDuel/Source/LuaFunctions.cpp"
 },
 {
   "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Zone.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Zone.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/Zone.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/TextRenderer.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/TextRenderer.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/TextRenderer.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/ShieldZone.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/ShieldZone.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/ShieldZone.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Model.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Model.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/Model.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Choice.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Choice.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/Choice.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/ZoneRenderer.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/ZoneRenderer.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/ZoneRenderer.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/MeshData.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/MeshData.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/MeshData.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Timer.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Timer.cpp",
+  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2 -I/home/rian/Code/Projects/KaijudoDuel/Source  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Timer.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Timer.cpp",
   "file": "/home/rian/Code/Projects/KaijudoDuel/Source/Timer.cpp"
 },
 {
   "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Deck.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Deck.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/Deck.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/LoadResources.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/LoadResources.cpp",
+  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2 -I/home/rian/Code/Projects/KaijudoDuel/Source  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/LoadResources.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/LoadResources.cpp",
   "file": "/home/rian/Code/Projects/KaijudoDuel/Source/LoadResources.cpp"
 },
 {
   "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Movement.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Movement.cpp",
+  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2 -I/home/rian/Code/Projects/KaijudoDuel/Source  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Movement.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Movement.cpp",
   "file": "/home/rian/Code/Projects/KaijudoDuel/Source/Movement.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/GraphicsInclude.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/GraphicsInclude.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/GraphicsInclude.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/DuelInterface.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/DuelInterface.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/DuelInterface.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/ShieldZoneRenderer.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/ShieldZoneRenderer.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/ShieldZoneRenderer.cpp"
-},
-{
-  "directory": "/home/rian/Code/Projects/KaijudoDuel/Build",
-  "command": "/usr/bin/c++    -I/home/rian/Code/Libraries/DevIL/DevIL/include -I/usr/include/assimp -I/usr/include/freetype2  -Wall -Wextra -g -O3   -std=c++14 -o CMakeFiles/DuelMasters3D.dir/Source/Graveyard.cpp.o -c /home/rian/Code/Projects/KaijudoDuel/Source/Graveyard.cpp",
-  "file": "/home/rian/Code/Projects/KaijudoDuel/Source/Graveyard.cpp"
 }
 ]

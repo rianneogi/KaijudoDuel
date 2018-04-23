@@ -48,10 +48,15 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Bin)
 include_directories("/home/rian/Code/Libraries/DevIL/DevIL/include")
 include_directories("/usr/include/assimp")
 include_directories("/usr/include/freetype2")
+include_directories("Source/")
 link_directories("/home/rian/Code/Libraries/DevIL/DevIL/build/lib/x64")
 
 file(GLOB SOURCE_FILES
     Source/*.cpp
+    Source/Game/*.cpp
+    Source/Interface/*.cpp
+    Source/AI/*.cpp
+    Source/Graphics/*.cpp
 )
 
 add_executable(DuelMasters3D ${SOURCE_FILES})
