@@ -311,7 +311,7 @@ bool initTextRender()
 		return false;
 	}
 
-	if (!gTextShader.loadProgram("Resources/Shaders/text"))
+	if (!gTextShader.loadProgram("Shaders/text"))
 	{
 		printf("ERROR: Could not load text shader\n");
 		return false;
@@ -320,7 +320,7 @@ bool initTextRender()
 	gTextShader.addUniform("text_color");
 	//gTextShader.addUniform("texture");
 
-	if (!gTextMVPShader.loadProgram("Resources/Shaders/text_mvp"))
+	if (!gTextMVPShader.loadProgram("Shaders/text_mvp"))
 	{
 		printf("ERROR: Could not load text shader\n");
 		return false;

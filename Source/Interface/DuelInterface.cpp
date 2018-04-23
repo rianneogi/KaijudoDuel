@@ -121,7 +121,7 @@ void DuelInterface::render()
 	gShaders[gActiveShader].setUniformMat4f(0, mTableModel.mModelMatrix);
 	gShaders[gActiveShader].setUniformMat4f(1, view);
 	gShaders[gActiveShader].setUniformMat4f(2, projection);
-	//gShaders[gActiveShader].setUniformVec3f(3, mCamera.mPosition);
+	// gShaders[gActiveShader].setUniformVec3f(3, mCamera.mPosition);
 	//gShaders[gActiveShader].setUniformInt(4, 1);
 	//gShaders[gActiveShader].setUniformVec4f(4, glm::vec4(mCamera.mPosition, 1.0));
 	//gShaders[gActiveShader].setUniformVec3f(5, glm::vec3(1,1,1));

@@ -45,7 +45,7 @@ bool loadMeshs()
 bool loadShaders()
 {
 	gShaders.resize(SHADER_NB);
-	if (!gShaders[SHADER_BASIC].loadProgram("Resources/Shaders/mvp"))
+	if (!gShaders[SHADER_BASIC].loadProgram("Shaders/mvp"))
 	{
 		printf("ERROR: Could not load shader\n");
 		return false;
@@ -55,7 +55,7 @@ bool loadShaders()
 	gShaders[SHADER_BASIC].addUniform("V");
 	gShaders[SHADER_BASIC].addUniform("P");
 
-	if (!gShaders[SHADER_PHONG].loadProgram("Resources/Shaders/phong"))
+	if (!gShaders[SHADER_PHONG].loadProgram("Shaders/phong"))
 	{
 		printf("ERROR: Could not load shader\n");
 		return false;
