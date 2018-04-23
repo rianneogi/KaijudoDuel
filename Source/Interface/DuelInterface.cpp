@@ -225,7 +225,7 @@ int DuelInterface::handleEvent(const SDL_Event& event, int callback)
 					{
 						assert(mHoverCardId < mDuel->mCardList.size());
 						mSelectedCardId = mHoverCardId;
-						printf("Select: %d\n", mSelectedCardId);
+						// printf("Select: %d\n", mSelectedCardId);
 						//mDuel.CardList[mHoverCardId]->move(target, 0);
 					}
 					else if (mDuel->mCardList[mHoverCardId]->mZone == ZONE_MANA) //tap mana
@@ -690,7 +690,7 @@ void DuelInterface::update(int deltaTime)
 		&& (newhovercard != mHoverException || mHoverException == -1))
 	{
 		mHoverCardId = newhovercard;
-		printf("Hover: %d\n", mHoverCardId);
+		// printf("Hover: %d\n", mHoverCardId);
 		mHoverTimer.restart();
 		//mHandRenderers[mDuel->turn]->mHoverCard = mHoverCardId;
 		//mHandRenderers[0].update(mHoverCardId); //update hand
