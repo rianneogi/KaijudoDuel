@@ -669,10 +669,14 @@ void DuelInterface::update(int deltaTime)
 			mousepixel.y = -(mousePos.y / (SCREEN_HEIGHT / 2.f) - 1.f);
 
 			Orientation o;
-			o.pos = glm::vec3(8*mousepixel.x, (mCamera.mPosition + mCamera.mDirection*gHandStraightDistance).y, 8*mousepixel.y);
+			o.pos = glm::vec3(9*mousepixel.x, 
+				(mCamera.mPosition + mCamera.mDirection*gHandStraightDistance).y, 
+				5.5*mousepixel.y);
 			o.dir = mCamera.mUp;
 			o.up = -mCamera.mDirection;
 			mCardModels[mSelectedCardId]->setOrientation(o);
+			
+			// printf("mouse %d %d %f %f\n", mousePos.x, mousePos.y, mousepixel.x, mousepixel.y);
 		}
 	}
 

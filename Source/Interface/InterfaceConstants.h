@@ -27,6 +27,10 @@ const float gCastingCardZ = 0;
 //SCROLLER
 const float CONST_CARD_SCROLLER_SEPERATION = 0.3f;
 
+//MOVEMENT
+const float CONST_CARD_MOVESPEED = 0.0005;
+const float CONST_CARD_TURNSPEED = 0.00015;
+
 //GAME INTERFACE
 const float gZoomDistance = 25.f;
 const float gCameraSpeed = 0.0001f;

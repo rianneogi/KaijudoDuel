@@ -5,8 +5,8 @@ CardModel::CardModel() : mCardId(-1), mRender(glm::vec3(0, 0, 0), glm::vec3(0, 0
 	mFrontModel.mMesh = &gMeshs[MESH_CARD];
 	mBackModel.mMesh = &gMeshs[MESH_CARD];
 
-	mMoveSpeed = 0.0005;
-	mTurnSpeed = 0.00015;
+	mMoveSpeed = CONST_CARD_MOVESPEED;
+	mTurnSpeed = CONST_CARD_TURNSPEED;
 }
 
 CardModel::CardModel(int uid, int cid) : mUniqueId(uid), mCardId(cid), mRender(glm::vec3(0,0,0), glm::vec3(0, 0, 1), glm::vec3(0,1,0))
@@ -16,8 +16,8 @@ CardModel::CardModel(int uid, int cid) : mUniqueId(uid), mCardId(cid), mRender(g
 	mFrontModel.mMesh = &gMeshs[MESH_CARD];
 	mBackModel.mMesh = &gMeshs[MESH_CARD];
 
-	mMoveSpeed = 0.0005;
-	mTurnSpeed = 0.00015;
+	mMoveSpeed = CONST_CARD_MOVESPEED;
+	mTurnSpeed = CONST_CARD_TURNSPEED;
 }
 
 CardModel::~CardModel()
