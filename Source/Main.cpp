@@ -190,6 +190,7 @@ bool initGUIInterface()
 bool initDeckBuilder()
 {
 	gDeckBuilder = new DeckBuilderUI();
+	gDeckBuilder->init();
 	
 	return true;
 }
@@ -424,7 +425,7 @@ void startGUI()
 		// _getch();
 	}
 	
-	gActiveWindow = gDuelInterface;
+	gActiveWindow = gDeckBuilder;
 	
 	mainLoop();
 

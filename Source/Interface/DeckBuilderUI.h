@@ -24,6 +24,9 @@ public:
 	
 	std::vector<CardModel*> mCardModels;
 	
+	Camera mCamera;
+	Model mTableModel;
+	
 	DeckBuilderUI();
 	~DeckBuilderUI();
 

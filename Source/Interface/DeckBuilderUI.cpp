@@ -111,6 +111,18 @@ void DeckBuilderUI::init()
 			id++;
 		}
 	}
+	
+	mCamera.setPosition(glm::vec3(0, 0, 0));
+	mCamera.setHorizontalAngle(0);
+	mCamera.setVerticalAngle(-M_PI / 2);
+	mCamera.update();
+	mCamera.mPosition = -mCamera.mDirection * gZoomDistance;
+	mCamera.update();
+
+	mTableModel.setMesh(&gMeshs[MESH_TABLE]);
+	mTableModel.setTexture(&gTableTexture);
+	mTableModel.setPosition(glm::vec3(0, 0, 0));
+	mTableModel.mModelMatrix = glm::scale(mTableModel.mModelMatrix, glm::vec3(8, 8, 8));
 }
 
 void DeckBuilderUI::update(int deltaTime)
@@ -123,6 +135,26 @@ void DeckBuilderUI::update(int deltaTime)
 
 void DeckBuilderUI::render()
 {
+	glm::mat4 view, projection;
+	mCamera.render(view, projection);
+	//glDisable(GL_CULL_FACE);
+	//Vector2i mousePos;
+	//SDL_GetMouseState(&mousePos.x, &mousePos.y);
+
+	gActiveShader = SHADER_BASIC;
+	gShaders[gActiveShader].bind();
+	gShaders[gActiveShader].setUniformMat4f(0, mTableModel.mModelMatrix);
+	gShaders[gActiveShader].setUniformMat4f(1, view);
+	gShaders[gActiveShader].setUniformMat4f(2, projection);
+	//gShaders[gActiveShader].setUniformVec3f(3, mCamera.mPosition);
+	//gShaders[gActiveShader].setUniformInt(4, 1);
+	//gShaders[gActiveShader].setUniformVec4f(4, glm::vec4(mCamera.mPosition, 1.0));
+	//gShaders[gActiveShader].setUniformVec3f(5, glm::vec3(1,1,1));
+	//gShaders[gActiveShader].setUniformInt(6, 75);
+	
+	mTableModel.render();
+
+	
 	for(int i = 0;i<mCardModels.size();i++)
 	{
 		mCardModels[i]->render(true);
