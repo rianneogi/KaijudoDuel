@@ -1,13 +1,16 @@
 #include "Camera.h"
 
+float CONST_FOV = 45;
+float CONST_ASPECTRATIO = 16.0f/10.0f;
+
 Camera::Camera()
 {
-	FoV = 45;
+	FoV = CONST_FOV;
 	screenNear = 0.5;
 	screenDepth = 1000;
 	horizontalAngle = 0;
 	verticalAngle = 0;
-	aspectRatio = 4.0f / 3.0f;
+	aspectRatio = CONST_ASPECTRATIO;
 	mPosition = glm::vec3(0, 0, 0);
 	update();
 }

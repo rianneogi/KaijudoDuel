@@ -23,6 +23,7 @@ public:
 	DeckData mActiveDeckData;
 	
 	std::vector<CardModel*> mCardModels;
+	std::vector<CardModel*> mCollectionModels;
 	
 	Camera mCamera;
 	Model mTableModel;

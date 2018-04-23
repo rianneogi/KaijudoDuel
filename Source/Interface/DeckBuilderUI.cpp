@@ -99,6 +99,16 @@ DeckBuilderUI::~DeckBuilderUI()
 
 void DeckBuilderUI::init()
 {
+	for(int i = 0;i<10;i++)
+	{
+		for(int j = 0;j<10;j++)
+		{
+			CardModel* c = new CardModel(0, 10*i + j);
+			mCollectionModels.push_back(c);
+			c->setPosition(glm::vec3(8.5f - (CONST_CARDSEPERATION_VERT/2)*j, 15.f, -2.f - i*CONST_CARDSEPERATION_HORI));
+		}
+	}
+	
 	mActiveDeckData.load("Decks/My Decks/7 - L Tappy Tappy.txt");
 	int id = 0;
 	for (int i = 0; i < mActiveDeckData.mCards.size(); i++)
@@ -107,7 +117,7 @@ void DeckBuilderUI::init()
 		{
 			CardModel* c = new CardModel(id, mActiveDeckData.mCards[i]);
 			mCardModels.push_back(c);
-			c->setPosition(glm::vec3(2.f + CONST_CARDSEPERATION_VERT*mCardModels.size(), 0.1f, 2.f));
+			// c->setPosition(glm::vec3(2.f + CONST_CARDSEPERATION_VERT*mCardModels.size(), 0.1f, 2.f));
 			id++;
 		}
 	}
@@ -128,7 +138,7 @@ void DeckBuilderUI::init()
 void DeckBuilderUI::updateCard(CardModel* model, int pos, int size, int hovercard)
 {
 	Orientation o;
-	o.pos = glm::vec3(-2, 20 + CONST_CARDTHICKNESS*pos, -3 + mScrollPos + (size-pos-1)*0.4);
+	o.pos = glm::vec3(-3, 15 + CONST_CARDTHICKNESS*pos, -3 + mScrollPos + (size-pos-1)*0.4);
 	if (model->mUniqueId == hovercard)
 	{
 		o.pos.y += 1;
@@ -202,6 +212,10 @@ void DeckBuilderUI::render()
 	for(int i = 0;i<mCardModels.size();i++)
 	{
 		mCardModels[i]->render(true);
+	}
+	for(int i = 0;i<mCollectionModels.size();i++)
+	{
+		mCollectionModels[i]->render(true);
 	}
 }
 

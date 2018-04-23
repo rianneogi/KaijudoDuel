@@ -6,8 +6,8 @@
 
 const int MAX_FPS = 60;
 
-int SCREEN_WIDTH = 1000;
-int SCREEN_HEIGHT = 750;
+int SCREEN_WIDTH = 1280;
+int SCREEN_HEIGHT = 800;
 
 const float ZOOM_MIN = 8.f;
 const float ZOOM_MAX = 20.f;
