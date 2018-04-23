@@ -7,7 +7,7 @@ enum DuelType { DUELTYPE_SINGLE, DUELTYPE_MULTI, DUELTYPE_AI };
 
 //extern sf::TcpSocket Socket;
 
-class DuelInterface //: public GameWindow
+class DuelInterface : public GameWindow
 {
 public:
 	Duel* mDuel;

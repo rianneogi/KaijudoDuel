@@ -16,8 +16,10 @@ SDL_Window* gWindow = NULL;
 SDL_GLContext gContext;
 
 std::future<void> gFuture;
-DuelInterface* gDuelInterface;
-DeckBuilderUI* gDeckBuilder;
+DuelInterface* gDuelInterface = NULL;
+DeckBuilderUI* gDeckBuilder = NULL;
+
+GameWindow* gActiveWindow = NULL;
 
 bool initSDL()
 {
@@ -200,7 +202,7 @@ void cleanup()
 
 void handleEvent(const SDL_Event& e, unsigned int deltaTime)
 {
-	gDuelInterface->handleEvent(e, 0);
+	gActiveWindow->handleEvent(e, 0);
 	//glm::vec3 dir = gCamera.mDirection;
 
 	//// Movement
@@ -258,12 +260,12 @@ void handleEvent(const SDL_Event& e, unsigned int deltaTime)
 
 void render()
 {
-	gDuelInterface->render();
+	gActiveWindow->render();
 }
 
 void update(int deltaTime)
 {
-	gDuelInterface->update(deltaTime);
+	gActiveWindow->update(deltaTime);
 }
 
 void mainLoop()
@@ -421,6 +423,8 @@ void startGUI()
 		printf("ERROR initializing Deck Builder\n");
 		// _getch();
 	}
+	
+	gActiveWindow = gDuelInterface;
 	
 	mainLoop();
 

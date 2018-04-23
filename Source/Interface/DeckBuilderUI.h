@@ -15,7 +15,7 @@ struct DeckData
 	void save(std::string path);
 };
 
-class DeckBuilderUI
+class DeckBuilderUI : public GameWindow
 {
 public:
 	std::vector<std::string> mDecks;
