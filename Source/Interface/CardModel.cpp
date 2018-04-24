@@ -145,25 +145,24 @@ void CardModel::update(int deltaTime)
 	//printf("dir %f %f %f\n", mRender.dir.x, mRender.dir.y, mRender.dir.z);
 	//printf("up %f %f %f\n", mRender.up.x, mRender.up.y, mRender.up.z);
 
-	/*if (glm::length(mTarget.dir - mRender.dir) <= 0.1 && glm::length(mTarget.up - mRender.up) <= 0.1)
-	{
-		mRender.dir = mTarget.dir;
-		mRender.up = mTarget.up;
-	}
-	else
-	{*/
+	// if ((glm::length(mTarget.dir - mRender.dir) <= 0.1 && glm::length(mTarget.up - mRender.up) <= 0.1))
+	// {
+	// 	mRender.dir = mTarget.dir;
+	// 	mRender.up = mTarget.up;
+	// }
+	// else
+	// {
 		/*glm::quat tq1 = getRotationBetweenVectors(glm::vec3(0, 0, 1), mTarget.dir);
 		glm::vec3 newUp = tq1*glm::vec3(0, 1, 0);
 		glm::quat tq2 = getRotationBetweenVectors(newUp, mTarget.up);
 		glm::quat tq = tq2*tq1;
-
+	
 		glm::quat sq1 = getRotationBetweenVectors(glm::vec3(0, 0, 1), mRender.dir);
 		newUp = sq1*glm::vec3(0, 1, 0);
 		glm::quat sq2 = getRotationBetweenVectors(newUp, mRender.up);
 		glm::quat sq = sq2*sq1;*/
-
-		mRender.quat = glm::slerp(mRender.quat, mTarget.quat, deltaTime*mTurnSpeed);
-	//}
+		mRender.quat = glm::slerp(mRender.quat, mTarget.quat, (deltaTime*mTurnSpeed));
+	// }
 }
 
 bool CardModel::rayTrace(Vector2i mousePos, const glm::mat4& projview, const Vector2i& screenDimensions)

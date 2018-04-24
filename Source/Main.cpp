@@ -425,8 +425,8 @@ void startGUI()
 		// _getch();
 	}
 	
-	gActiveWindow = gDuelInterface;
-	// gActiveWindow = gDeckBuilder;
+	// gActiveWindow = gDuelInterface;
+	gActiveWindow = gDeckBuilder;
 	
 	mainLoop();
 

@@ -28,7 +28,8 @@ public:
 	Camera mCamera;
 	Model mTableModel;
 	
-	int mScrollPos;
+	int mDeckScrollPos;
+	int mCollectionScrollPos;
 	
 	DeckBuilderUI();
 	~DeckBuilderUI();

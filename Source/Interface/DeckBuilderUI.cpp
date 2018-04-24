@@ -85,7 +85,7 @@ void DeckData::save(std::string path)
 	
 }
 
-DeckBuilderUI::DeckBuilderUI() : mActiveDeckId(0), mScrollPos(0)
+DeckBuilderUI::DeckBuilderUI() : mActiveDeckId(0), mDeckScrollPos(0), mCollectionScrollPos(0)
 {
 }
 
@@ -105,7 +105,9 @@ void DeckBuilderUI::init()
 		{
 			CardModel* c = new CardModel(0, DECKBUILDER_COLS*i + j);
 			mCollectionModels.push_back(c);
-			c->setPosition(glm::vec3(8.5f - (CONST_CARDSEPERATION_VERT/2)*j, 15.f, -2.f - i*CONST_CARDSEPERATION_HORI));
+			c->setPosition(glm::vec3(CONST_DECKBUILDER_COLLECTION_X - CONST_DECKBUILDER_COLLECTION_SEPERATION_X*j,
+				 CONST_DECKBUILDER_COLLECTION_Y + i*CONST_CARDTHICKNESS, 
+				 CONST_DECKBUILDER_COLLECTION_Z - i*CONST_DECKBUILDER_COLLECTION_SEPERATION_Z));
 		}
 	}
 	
@@ -138,7 +140,7 @@ void DeckBuilderUI::init()
 void DeckBuilderUI::updateCard(CardModel* model, int pos, int size, int hovercard)
 {
 	Orientation o;
-	o.pos = glm::vec3(-4, 15 + CONST_CARDTHICKNESS*pos, -3 + mScrollPos + (size-pos-1)*CONST_CARD_SCROLLER_SEPERATION);
+	o.pos = glm::vec3(CONST_DECKBUILDER_DECK_X, CONST_DECKBUILDER_DECK_Y + CONST_CARDTHICKNESS*pos, CONST_DECKBUILDER_DECK_Z + mDeckScrollPos + (size-pos-1)*CONST_CARD_SCROLLER_SEPERATION);
 	if (model->mUniqueId == hovercard)
 	{
 		o.pos.y += 1;
@@ -221,9 +223,35 @@ void DeckBuilderUI::render()
 
 int DeckBuilderUI::handleEvent(const SDL_Event& event, int callback)
 {
+	Vector2i mousePos;
+	SDL_GetMouseState(&mousePos.x, &mousePos.y);
+	
 	if (event.type == SDL_MOUSEWHEEL)
 	{
-		mScrollPos += event.wheel.y;
+		if(mousePos.x >= 600)
+		{
+			mDeckScrollPos += event.wheel.y;
+			if(mDeckScrollPos>0)
+			{
+				mDeckScrollPos = 0;
+			}
+		}
+		else
+		{
+			mCollectionScrollPos += event.wheel.y;
+			if(mCollectionScrollPos<0)
+			{
+				mCollectionScrollPos = 0;
+			}
+			
+			for(int i = 0;i<DECKBUILDER_ROWS;i++)
+			{
+				for(int j = 0;j<DECKBUILDER_COLS;j++)
+				{
+					mCollectionModels[i*DECKBUILDER_COLS+j]->mCardId = mCollectionScrollPos*DECKBUILDER_COLS + i*DECKBUILDER_COLS+j;
+				}
+			}
+		}
 	}
 	
 	return 0;
