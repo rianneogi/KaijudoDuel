@@ -182,8 +182,7 @@ bool initGame()
 bool initGUIInterface()
 {
 	gDuelInterface = new DuelInterface(ActiveDuel);
-	gFuture = std::async(&Duel::loopInput, ActiveDuel);
-	
+	gFuture = std::async(std::launch::async, &Duel::loopInput, ActiveDuel);
 	return true;
 }
 
@@ -313,7 +312,7 @@ void mainLoop()
 			//}
 			gMutex.lock();
 			handleEvent(e, deltaTime);
-			gDuelInterface->mDuel->dispatchAllMessages();
+			// gDuelInterface->mDuel->dispatchAllMessages();
 			gMutex.unlock();
 			//break;
 		}
@@ -425,8 +424,8 @@ void startGUI()
 		// _getch();
 	}
 	
-	// gActiveWindow = gDuelInterface;
-	gActiveWindow = gDeckBuilder;
+	gActiveWindow = gDuelInterface;
+	// gActiveWindow = gDeckBuilder;
 	
 	mainLoop();
 
