@@ -137,7 +137,28 @@ void DeckBuilderUI::init()
 	mTableModel.mModelMatrix = glm::scale(mTableModel.mModelMatrix, glm::vec3(8, 8, 8));
 }
 
-void DeckBuilderUI::updateCard(CardModel* model, int pos, int size, int hovercard)
+void DeckBuilderUI::updateDeckCard(CardModel* model, int pos, int size, int hovercard)
+{
+	Orientation o;
+	o.pos = glm::vec3(CONST_DECKBUILDER_DECK_X, CONST_DECKBUILDER_DECK_Y + CONST_CARDTHICKNESS*pos, CONST_DECKBUILDER_DECK_Z + mDeckScrollPos + (size-pos-1)*CONST_CARD_SCROLLER_SEPERATION);
+	if (model->mUniqueId == hovercard)
+	{
+		o.pos.y += 1;
+	}
+	o.dir = glm::vec3(0, 0, 1);
+	o.up = glm::vec3(0, 1, 0);
+	o.calculateQuat();
+	if (model->mUniqueId == hovercard)
+	{
+		model->setHoverMovement(o, 1000);
+	}
+	else
+	{
+		model->setMovement(o, 1000);
+	}
+}
+
+void DeckBuilderUI::updateCollectionCard(CardModel* model, int pos, int size, int hovercard)
 {
 	Orientation o;
 	o.pos = glm::vec3(CONST_DECKBUILDER_DECK_X, CONST_DECKBUILDER_DECK_Y + CONST_CARDTHICKNESS*pos, CONST_DECKBUILDER_DECK_Z + mDeckScrollPos + (size-pos-1)*CONST_CARD_SCROLLER_SEPERATION);
@@ -184,8 +205,14 @@ void DeckBuilderUI::update(int deltaTime)
 	
 	for(int i = 0;i<mCardModels.size();i++)
 	{
-		updateCard(mCardModels[i], i, mCardModels.size(), hovercard);
+		updateDeckCard(mCardModels[i], i, mCardModels.size(), hovercard);
 		mCardModels[i]->update(deltaTime);
+	}
+	
+	for(int i = 0;i<mCollectionModels.size();i++)
+	{
+		updateCollectionCard(mCollectionModels[i], i, mCollectionModels.size(), hovercard);
+		mCollectionModels[i]->update(deltaTime);
 	}
 }
 
@@ -225,6 +252,13 @@ int DeckBuilderUI::handleEvent(const SDL_Event& event, int callback)
 {
 	Vector2i mousePos;
 	SDL_GetMouseState(&mousePos.x, &mousePos.y);
+	
+	if(event.type==SDL_MOUSEBUTTONDOWN)
+	{
+		if (event.button.button == SDL_BUTTON_LEFT)
+		{
+		}
+	}
 	
 	if (event.type == SDL_MOUSEWHEEL)
 	{
